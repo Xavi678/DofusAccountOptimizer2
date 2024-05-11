@@ -5,25 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DofusAccountOptimizer2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="776" Initialized="Window_Initialized" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="ThreeDBorderWindow" FontSize="14" SizeToContent="WidthAndHeight">
+        Title="MainWindow" Initialized="Window_Initialized" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="ThreeDBorderWindow" FontSize="14" Height="350" Width="776" ResizeMode="CanMinimize">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="247*"/>
-            <RowDefinition Height="87*"/>
-        </Grid.RowDefinitions>
-        <CheckBox x:Name="checkBox" Margin="10,10,0,0" Grid.RowSpan="2">
+        <CheckBox x:Name="checkBox" Margin="10,10,0,0" Content="Afegir les icones automàticament" VerticalAlignment="Top" >
 
 
 
         </CheckBox>
-
-        <WrapPanel x:Name="panel" Margin="10,30,10,40" Grid.RowSpan="2"></WrapPanel>
-        <Label x:Name="label" Margin="10,57,610,0" Width="156" Height="30" Content="Tecla Canvi de Finestra" Grid.Row="1" >
+        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+            <StackPanel x:Name="panel" Margin="10,40,10,40" Orientation="Horizontal" />
+        </ScrollViewer>
+        <Label x:Name="label" Margin="10,294,610,10" Width="156" Height="30" Content="Tecla Canvi de Finestra" >
 
         </Label>
-        <TextBox x:Name="textBox" TextWrapping="Wrap" Text="TextBox" Width="120" Height="30" Margin="185,57,471,0" Grid.Row="1"/>
-        <Button x:Name="button" Content="Canviar les icones" Height="30" Width="120" Margin="626,51,30,6" Grid.Row="1"/>
-        <Button x:Name="button1" Content="Afegir" Height="30" Width="55" Margin="686,0,35,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBox" TextWrapping="Wrap" Text="TextBox" Width="120" Height="30" Margin="171,299,485,5" />
+        <Button x:Name="button" Content="Canviar les icones" Height="30" Width="120" Margin="646,294,10,10" />
+        <Button x:Name="btnAdd" Content="Afegir" Height="30" Width="55" Margin="711,2,10,0" VerticalAlignment="Top" Click="btnAdd_Click" />
     </Grid>
 
 </Window>
