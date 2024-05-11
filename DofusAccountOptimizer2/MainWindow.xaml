@@ -1,0 +1,29 @@
+﻿<Window x:Class="DofusAccountOptimizer2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DofusAccountOptimizer2"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="776" Initialized="Window_Initialized" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="ThreeDBorderWindow" FontSize="14" SizeToContent="WidthAndHeight">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="247*"/>
+            <RowDefinition Height="87*"/>
+        </Grid.RowDefinitions>
+        <CheckBox x:Name="checkBox" Margin="10,10,0,0" Grid.RowSpan="2">
+
+
+
+        </CheckBox>
+
+        <WrapPanel x:Name="panel" Margin="10,30,10,40" Grid.RowSpan="2"></WrapPanel>
+        <Label x:Name="label" Margin="10,57,610,0" Width="156" Height="30" Content="Tecla Canvi de Finestra" Grid.Row="1" >
+
+        </Label>
+        <TextBox x:Name="textBox" TextWrapping="Wrap" Text="TextBox" Width="120" Height="30" Margin="185,57,471,0" Grid.Row="1"/>
+        <Button x:Name="button" Content="Canviar les icones" Height="30" Width="120" Margin="626,51,30,6" Grid.Row="1"/>
+        <Button x:Name="button1" Content="Afegir" Height="30" Width="55" Margin="686,0,35,0" VerticalAlignment="Top"/>
+    </Grid>
+
+</Window>
