@@ -1,0 +1,7 @@
+﻿SHGetPropertyStore
+ShowWindow
+SetForegroundWindow
+SendMessage
+GetForegroundWindow
+keybd_event
+SetWindowText

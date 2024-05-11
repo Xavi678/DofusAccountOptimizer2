@@ -7,18 +7,18 @@
         mc:Ignorable="d"
         Title="MainWindow" Initialized="Window_Initialized" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="ThreeDBorderWindow" FontSize="14" Height="350" Width="776" ResizeMode="CanMinimize">
     <Grid>
-        <CheckBox x:Name="checkBox" Margin="10,10,0,0" Content="Afegir les icones automàticament" VerticalAlignment="Top" >
+        <CheckBox x:Name="cbxCanviIcones" Margin="10,10,0,0" Content="Afegir les icones automàticament" VerticalAlignment="Top" >
 
 
 
-        </CheckBox>
+        </CheckBox >
         <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
             <StackPanel x:Name="panel" Margin="10,40,10,40" Orientation="Horizontal" />
         </ScrollViewer>
         <Label x:Name="label" Margin="10,294,610,10" Width="156" Height="30" Content="Tecla Canvi de Finestra" >
 
         </Label>
-        <TextBox x:Name="textBox" TextWrapping="Wrap" Text="TextBox" Width="120" Height="30" Margin="171,299,485,5" />
+        <TextBox x:Name="tbxKey" TextWrapping="Wrap" Text="TextBox" Width="120" Height="30" Margin="171,299,485,5" />
         <Button x:Name="button" Content="Canviar les icones" Height="30" Width="120" Margin="646,294,10,10" />
         <Button x:Name="btnAdd" Content="Afegir" Height="30" Width="55" Margin="711,2,10,0" VerticalAlignment="Top" Click="btnAdd_Click" />
     </Grid>
