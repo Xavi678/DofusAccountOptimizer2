@@ -15,6 +15,7 @@ namespace DofusAccountOptimizer2.Tables
         public string NOM { get; set; }
         public int POSICIO { get; set; }
         public int ID_CLASSE { get; set; }
+        public bool IS_ACTIVE { get; set; }
 
     }
 }

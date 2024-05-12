@@ -167,7 +167,7 @@ namespace DofusAccountOptimizer2
                 if (t != null && t.Count != 0)
                 {
 
-                    var primer = accounts.OrderBy(x => x.POSICIO);
+                    var primer = accounts.Where(x => x.IS_ACTIVE).OrderBy(x => x.POSICIO);
                     if (primer.Count() > 0)
                     {
                         try
@@ -189,7 +189,7 @@ namespace DofusAccountOptimizer2
             else
             {
                 var e = accounts.FirstOrDefault(x => act.MainWindowTitle.Contains(x.NOM));
-                var p1 = accounts.OrderBy(x => x.POSICIO).FirstOrDefault(x => x.POSICIO > e.POSICIO);
+                var p1 = accounts.Where(x => x.IS_ACTIVE).OrderBy(x => x.POSICIO).FirstOrDefault(x => x.POSICIO > e.POSICIO);
                 if (p1 != null)
                 {
                     try
@@ -211,7 +211,7 @@ namespace DofusAccountOptimizer2
                 }
                 else
                 {
-                    var primer = accounts.OrderBy(x => x.POSICIO);
+                    var primer = accounts.Where(x=>x.IS_ACTIVE).OrderBy(x => x.POSICIO);
                     if (primer.Count() > 0)
                     {
                         try
@@ -246,7 +246,7 @@ namespace DofusAccountOptimizer2
                 do
                 {
 
-                    next = accounts.OrderBy(x => x.POSICIO).FirstOrDefault(x => x.POSICIO > pos);
+                    next = accounts.Where(x=>x.IS_ACTIVE).OrderBy(x => x.POSICIO).FirstOrDefault(x => x.POSICIO > pos);
                     if (next == null)
                     {
                         break;
@@ -434,6 +434,7 @@ namespace DofusAccountOptimizer2
                 personatge.btnDreta.Click += BtnDreta_Click;
                 personatge.btnEsquerra.Click += BtnEsquerra_Click;
                 personatge.tbPos.TextChanged += TbPos_TextChanged;
+                personatge.cbxIsActive.Click += CbxIsActive_Click;
                 var classe = dofusContext.clases.FirstOrDefault(x => x.ID == account.ID_CLASSE);
                 if (classe != null)
                 {
@@ -443,6 +444,20 @@ namespace DofusAccountOptimizer2
                 }
 
                 this.panel.Children.Add(personatge);
+            }
+        }
+
+        private async void CbxIsActive_Click(object sender, RoutedEventArgs e)
+        {
+            var cbox = ((CheckBox)sender);
+            var @checked= cbox.IsChecked.GetValueOrDefault(); 
+            var p = ((Personatge)((Grid)cbox.Parent).Parent);
+            var account = await dofusContext.accounts.FirstOrDefaultAsync(x => x.NOM == p.account.NOM);
+            if (account != null)
+            {
+                account.IS_ACTIVE = @checked;
+                await dofusContext.SaveChangesAsync();
+                await SetDataSource();
             }
         }
 
@@ -582,15 +597,15 @@ namespace DofusAccountOptimizer2
             if (@checked)
             {
                 var allProcess = GetAllProcess();
-                foreach (var account in accounts.OrderBy(x=>x.POSICIO))
+                foreach (var account in accounts.OrderBy(x => x.POSICIO))
                 {
                     if (cbxOrder.IsChecked.GetValueOrDefault())
                     {
                         var pr = allProcess.FirstOrDefault(x => x.MainWindowTitle.Contains(account.NOM));
                         if (pr != null)
                         {
-                            var resH= PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
-                            var resS=PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
+                            var resH = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
+                            var resS = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
                             Console.WriteLine($"{account.NOM} {resS} {resH}");
                         }
                     }

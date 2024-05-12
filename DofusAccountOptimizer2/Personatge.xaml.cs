@@ -28,6 +28,7 @@ namespace DofusAccountOptimizer2
             InitializeComponent();
             this.account = account;
             tbPos.Text = $"{account.POSICIO}";
+            cbxIsActive.IsChecked = account.IS_ACTIVE;
         }
         public void SetNom(string name)
         {

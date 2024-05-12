@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:DofusAccountOptimizer2"
              mc:Ignorable="d" d:DesignWidth="143
              " Width="143" Height="143" BorderThickness="1" BorderBrush="Black">
-    <Grid Margin="0,0,0,0">
+    <Grid  Margin="0,0,0,0">
         <Image x:Name="image" Height="56" VerticalAlignment="Top" Width="56" Margin="0,10,0,0"/>
         <Button x:Name="btnDreta" Content="&gt;" HorizontalAlignment="Right" 
                 VerticalAlignment="Top" Width="25" Height="40" Margin="0,17,10,0"/>
@@ -18,5 +18,6 @@
         <TextBlock x:Name="tbClasse" Margin="0,105,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" TextAlignment="Center"/>
         <Button x:Name="btnRemove" Content="X" Margin="120,1,0,0" VerticalAlignment="Top" Height="15" Width="15" Foreground="#FFE60606" FontSize="6" FontWeight="ExtraBold" Background="{x:Null}" HorizontalAlignment="Center" Click="button_Click"/>
         <TextBox x:Name="tbPos" HorizontalAlignment="Right" Margin="0,54,80,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="18" Height="13" FontSize="10" TextAlignment="Center" CharacterCasing="Upper" FontWeight="Bold" />
+        <CheckBox Content="" Margin="0,53,36,0" VerticalAlignment="Top" FontSize="14" HorizontalAlignment="Right" Width="20" Panel.ZIndex="2" x:Name="cbxIsActive"/>
     </Grid>
 </UserControl>
