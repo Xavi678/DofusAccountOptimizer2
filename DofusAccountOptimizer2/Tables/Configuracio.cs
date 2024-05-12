@@ -15,6 +15,7 @@ namespace DofusAccountOptimizer2.Tables
         public int ID { get; set; }
         public bool UPDATE_ICONS { get; set; }
         public int KEY { get; set; }
+        public bool  ORDER_WINDOWS { get; set; }
 
     }
 }

@@ -5,22 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DofusAccountOptimizer2"
         mc:Ignorable="d"
-        Title="MainWindow" Initialized="Window_Initialized" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="ThreeDBorderWindow" FontSize="14" Height="350" Width="776" ResizeMode="CanMinimize">
+        Title="MainWindow" Initialized="Window_Initialized" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"  WindowStyle="ThreeDBorderWindow" FontSize="14" Height="400" Width="776" ResizeMode="CanMinimize" >
     <Grid>
-        <CheckBox x:Name="cbxCanviIcones" Margin="10,10,0,0" Content="Afegir les icones automàticament" VerticalAlignment="Top" Checked="cbxCanviIcones_Checked" >
-
-
-
-        </CheckBox >
-        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
-            <StackPanel x:Name="panel" Margin="10,40,10,40" Orientation="Horizontal" />
+        <CheckBox x:Name="cbxCanviIcones" Margin="10,10,0,0" Content="Afegir les icones automàticament" VerticalAlignment="Top" Checked="cbxCanviIcones_Checked" ClickMode="Press" IsChecked="False" Cursor="Hand" Click="cbxCanviIcones_Click" />
+        <CheckBox x:Name="cbxOrder" Margin="10,30,0,0" Content="Ordenar les finestres" VerticalAlignment="Top" ClickMode="Press" IsChecked="False" Cursor="Hand" Click="cbxOrder_Click" />
+        <ScrollViewer VerticalScrollBarVisibility="Disabled" Margin="10,50,10,40" HorizontalScrollBarVisibility="Auto">
+            <StackPanel x:Name="panel" Margin="10,10,10,40" Orientation="Horizontal" >
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type local:Personatge}">
+                        <Setter Property="Margin" Value="0,10,0,0"/>
+                    </Style>
+                </StackPanel.Resources>
+            </StackPanel>
         </ScrollViewer>
-        <Label x:Name="label" Margin="10,294,610,10" Width="156" Height="30" Content="Tecla Canvi de Finestra" >
+        <Label x:Name="label" Margin="10,0,0,10" Width="156" Height="30" Content="Tecla Canvi de Finestra" VerticalAlignment="Bottom" HorizontalAlignment="Left" >
 
         </Label>
-        <TextBox x:Name="tbxKey" TextWrapping="Wrap" Text="TextBox" Width="120" Height="30" Margin="171,299,485,5" KeyDown="tbxKey_KeyDown" />
-        <Button x:Name="button" Content="Canviar les icones" Height="30" Width="120" Margin="646,294,10,10" />
-        <Button x:Name="btnAdd" Content="Afegir" Height="30" Width="55" Margin="711,2,10,0" VerticalAlignment="Top" Click="btnAdd_Click" />
+        <TextBox x:Name="tbxKey" TextWrapping="Wrap" Text="TextBox" Width="120" Height="30" Margin="171,0,0,5" KeyDown="tbxKey_KeyDown" VerticalAlignment="Bottom" HorizontalAlignment="Left" />
+        <Button x:Name="btnChangeIcons" Content="Canviar les icones" Height="30" Width="120" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="btnChangeIcons_Click"  />
+        <Button x:Name="btnAdd" Content="Afegir" Height="30" Width="55" Margin="0,2,10,0" VerticalAlignment="Top" Click="btnAdd_Click" HorizontalAlignment="Right" />
+        
     </Grid>
 
 </Window>

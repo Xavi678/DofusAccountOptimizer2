@@ -24,6 +24,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Key = System.Windows.Input.Key;
 using Windows.Win32.UI.WindowsAndMessaging;
 using Windows.Win32.Foundation;
+using System.Threading;
 
 namespace DofusAccountOptimizer2
 {
@@ -32,6 +33,8 @@ namespace DofusAccountOptimizer2
     /// </summary>
     public partial class MainWindow : Window
     {
+
+
         DofusContext dofusContext = new DofusContext();
         static private List<Account> accounts = new List<Account>();
         static System.Timers.Timer windowChecker;
@@ -192,7 +195,14 @@ namespace DofusAccountOptimizer2
                     try
                     {
                         var at = t.FirstOrDefault(x => x.MainWindowTitle.Contains(p1.NOM));
-                        FocusWindow(t, p1, at);
+                        if (at != null)
+                        {
+                            FocusWindow(t, p1, at);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"El Personatge no existeix '{p1.NOM}'", "Error");
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -298,7 +308,7 @@ namespace DofusAccountOptimizer2
         }
         private static void SetWindowsIcons()
         {
-            var allProcess = Process.GetProcessesByName("Dofus").ToList();
+            var allProcess = GetAllProcess();
             if (allProcess == null || (allProcess != null && allProcess.Count == 0))
             {
                 windowChecker.Stop();
@@ -406,11 +416,24 @@ namespace DofusAccountOptimizer2
         private async Task SetDataSource()
         {
             this.panel.Children.Clear();
-            var accounts = await dofusContext.accounts.ToListAsync();
+            var allProcess = GetAllProcess();
+            accounts = await dofusContext.accounts.OrderBy(x => x.POSICIO).ToListAsync();
             foreach (var account in accounts)
             {
+                if (cbxOrder.IsChecked.GetValueOrDefault())
+                {
+                    var pr = allProcess.FirstOrDefault(x => x.MainWindowTitle.Contains(account.NOM));
+                    if (pr != null)
+                    {
+                        PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
+                        PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
+                    }
+                }
                 Personatge personatge = new Personatge(account);
                 personatge.btnRemove.Click += BtnRemove_Click;
+                personatge.btnDreta.Click += BtnDreta_Click;
+                personatge.btnEsquerra.Click += BtnEsquerra_Click;
+                personatge.tbPos.TextChanged += TbPos_TextChanged;
                 var classe = dofusContext.clases.FirstOrDefault(x => x.ID == account.ID_CLASSE);
                 if (classe != null)
                 {
@@ -423,10 +446,78 @@ namespace DofusAccountOptimizer2
             }
         }
 
+        private async void TbPos_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var tbox = ((TextBox)sender);
+            var p = ((Personatge)((Grid)tbox.Parent).Parent);
+            var txt = tbox.Text;
+            int res = 0;
+            if (Int32.TryParse(txt, out res))
+            {
+                var found = await dofusContext.accounts.FirstOrDefaultAsync(x => x.NOM == p.account.NOM);
+                if (found != null)
+                {
+                    var next = await dofusContext.accounts.FirstOrDefaultAsync(x => x.POSICIO == res);
+                    if (next != null)
+                    {
+                        var nextPos = next.POSICIO;
+                        next.POSICIO = found.POSICIO;
+                        found.POSICIO = nextPos;
+                        await dofusContext.SaveChangesAsync();
+                        e.Handled = true;
+                        await SetDataSource();
+                    }
+                    else
+                    {
+                        e.Handled = false;
+                        MessageBox.Show("La posició no existeix", "Error");
+                    }
+                }
+            }
+        }
+
+        private async void BtnEsquerra_Click(object sender, RoutedEventArgs e)
+        {
+            var p = ((Personatge)((Grid)((Button)sender).Parent).Parent);
+            var index = panel.Children.IndexOf(p);
+            var pos = p.account.POSICIO;
+            if (index > 0)
+            {
+
+                var nextPos = index - 1;
+                Personatge next = (Personatge)panel.Children[nextPos];
+                var accountActual = await dofusContext.accounts.FirstAsync(x => x.NOM == p.account.NOM);
+                var accountNext = await dofusContext.accounts.FirstAsync(x => x.NOM == next.account.NOM);
+                accountNext.POSICIO = pos;
+                accountActual.POSICIO = nextPos;
+                await dofusContext.SaveChangesAsync();
+                await SetDataSource();
+            }
+        }
+
+        private async void BtnDreta_Click(object sender, RoutedEventArgs e)
+        {
+            var p = ((Personatge)((Grid)((Button)sender).Parent).Parent);
+            var index = panel.Children.IndexOf(p);
+            var pos = p.account.POSICIO;
+            if (index + 1 < panel.Children.Count)
+            {
+
+                var nextPos = index + 1;
+                Personatge next = (Personatge)panel.Children[nextPos];
+                var accountActual = await dofusContext.accounts.FirstAsync(x => x.NOM == p.account.NOM);
+                var accountNext = await dofusContext.accounts.FirstAsync(x => x.NOM == next.account.NOM);
+                accountNext.POSICIO = pos;
+                accountActual.POSICIO = nextPos;
+                await dofusContext.SaveChangesAsync();
+                await SetDataSource();
+            }
+        }
+
         private async void BtnRemove_Click(object sender, RoutedEventArgs e)
         {
             var btn = (Button)sender;
-            var p=((Personatge)((Grid)btn.Parent).Parent);
+            var p = ((Personatge)((Grid)btn.Parent).Parent);
             dofusContext.accounts.Remove(p.account);
             await dofusContext.SaveChangesAsync();
             await SetDataSource();
@@ -442,7 +533,7 @@ namespace DofusAccountOptimizer2
             {
                 Classe classe = (Classe)add.cbxClasse.SelectedItem;
                 var last = await dofusContext.accounts.OrderBy(x => x.POSICIO).LastOrDefaultAsync();
-                var lastPosition = last != null ? last.POSICIO : 0;
+                var lastPosition = last != null ? last.POSICIO + 1 : 0;
                 await dofusContext.accounts.AddAsync(new Tables.Account()
                 {
                     NOM = add.tbxName.Text,
@@ -457,12 +548,6 @@ namespace DofusAccountOptimizer2
 
         private void cbxCanviIcones_Checked(object sender, RoutedEventArgs e)
         {
-            bool @checked = cbxCanviIcones.IsChecked.GetValueOrDefault();
-            StartIconsChecker(@checked);
-
-            var trobat = dofusContext.config.First();
-            trobat.UPDATE_ICONS = @checked;
-            dofusContext.SaveChanges();
 
         }
 
@@ -478,6 +563,57 @@ namespace DofusAccountOptimizer2
 
             tbxKey.Text = key.ToString();
             this.Activate();
+        }
+
+        private void cbxCanviIcones_Click(object sender, RoutedEventArgs e)
+        {
+            bool @checked = cbxCanviIcones.IsChecked.GetValueOrDefault();
+            StartIconsChecker(@checked);
+
+            var trobat = dofusContext.config.First();
+            trobat.UPDATE_ICONS = @checked;
+            dofusContext.SaveChanges();
+            e.Handled = true;
+        }
+
+        private async void cbxOrder_Click(object sender, RoutedEventArgs e)
+        {
+            bool @checked = cbxOrder.IsChecked.GetValueOrDefault();
+            if (@checked)
+            {
+                var allProcess = GetAllProcess();
+                foreach (var account in accounts.OrderBy(x=>x.POSICIO))
+                {
+                    if (cbxOrder.IsChecked.GetValueOrDefault())
+                    {
+                        var pr = allProcess.FirstOrDefault(x => x.MainWindowTitle.Contains(account.NOM));
+                        if (pr != null)
+                        {
+                            var resH= PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
+                            var resS=PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
+                            Console.WriteLine($"{account.NOM} {resS} {resH}");
+                        }
+                    }
+                    Thread.Sleep(500);
+                }
+            }
+
+            var found = await dofusContext.config.FirstOrDefaultAsync();
+            if (found != null)
+            {
+                found.ORDER_WINDOWS = @checked;
+                await dofusContext.SaveChangesAsync();
+            }
+        }
+
+        private static List<Process> GetAllProcess()
+        {
+            return Process.GetProcessesByName("Dofus").ToList();
+        }
+
+        private void btnChangeIcons_Click(object sender, RoutedEventArgs e)
+        {
+            SetWindowsIcons();
         }
     }
 }

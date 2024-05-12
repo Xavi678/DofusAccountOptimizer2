@@ -14,8 +14,9 @@
                 VerticalAlignment="Top" Width="25" Height="40" Margin="10,17,0,0"/>
         <Label x:Name="lblNom" Visibility="Hidden" Content="Label" Margin="0,70,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="50"/>
         <Label x:Name="lblClasse" Visibility="Hidden" Content="Label" Margin="0,105,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="50"/>
-        <TextBlock x:Name="tbName" Margin="0,70,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="50" FontSize="14" FontWeight="Bold"/>
-        <TextBlock x:Name="tbClasse" Margin="0,105,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="50" FontSize="14" FontWeight="Bold"/>
+        <TextBlock x:Name="tbName" Margin="0,70,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" TextAlignment="Center"/>
+        <TextBlock x:Name="tbClasse" Margin="0,105,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" TextAlignment="Center"/>
         <Button x:Name="btnRemove" Content="X" Margin="120,1,0,0" VerticalAlignment="Top" Height="15" Width="15" Foreground="#FFE60606" FontSize="6" FontWeight="ExtraBold" Background="{x:Null}" HorizontalAlignment="Center" Click="button_Click"/>
+        <TextBox x:Name="tbPos" HorizontalAlignment="Right" Margin="0,54,80,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="18" Height="13" FontSize="10" TextAlignment="Center" CharacterCasing="Upper" FontWeight="Bold" />
     </Grid>
 </UserControl>

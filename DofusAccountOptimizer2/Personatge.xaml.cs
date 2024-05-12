@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DofusAccountOptimizer2
 {
@@ -26,6 +27,7 @@ namespace DofusAccountOptimizer2
         {
             InitializeComponent();
             this.account = account;
+            tbPos.Text = $"{account.POSICIO}";
         }
         public void SetNom(string name)
         {
