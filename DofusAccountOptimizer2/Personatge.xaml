@@ -12,7 +12,10 @@
                 VerticalAlignment="Top" Width="25" Height="40" Margin="0,17,10,0"/>
         <Button x:Name="btnEsquerra" Content="&lt;" HorizontalAlignment="Left" 
                 VerticalAlignment="Top" Width="25" Height="40" Margin="10,17,0,0"/>
-        <Label x:Name="lblNom" Content="Label" Margin="0,70,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="50"/>
-        <Label x:Name="lblClasse" Content="Label" Margin="0,105,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="50"/>
+        <Label x:Name="lblNom" Visibility="Hidden" Content="Label" Margin="0,70,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="50"/>
+        <Label x:Name="lblClasse" Visibility="Hidden" Content="Label" Margin="0,105,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="50"/>
+        <TextBlock x:Name="tbName" Margin="0,70,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="50" FontSize="14" FontWeight="Bold"/>
+        <TextBlock x:Name="tbClasse" Margin="0,105,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="50" FontSize="14" FontWeight="Bold"/>
+        <Button x:Name="btnRemove" Content="X" Margin="120,1,0,0" VerticalAlignment="Top" Height="15" Width="15" Foreground="#FFE60606" FontSize="6" FontWeight="ExtraBold" Background="{x:Null}" HorizontalAlignment="Center" Click="button_Click"/>
     </Grid>
 </UserControl>

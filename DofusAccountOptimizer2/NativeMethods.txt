@@ -5,3 +5,8 @@ SendMessage
 GetForegroundWindow
 keybd_event
 SetWindowText
+GetModuleHandle
+SetWindowsHookEx
+MouseHookHandler
+FocusWindow
+CallNextHookEx

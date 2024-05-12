@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DofusAccountOptimizer2.Tables;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,22 +21,33 @@ namespace DofusAccountOptimizer2
     /// </summary>
     public partial class Personatge : UserControl
     {
-        public Personatge()
+        public Account account { get; private set; }
+        public Personatge(Account account)
         {
             InitializeComponent();
+            this.account = account;
         }
         public void SetNom(string name)
         {
-            lblNom.Content = name;
+            tbName.Text = name;
+            var w = lblNom.Width / 2;
+            var tW = this.Width / 2;
+            //new Thickness(0,tbName.Margin.Top, 0, tbName.Margin.Bottom);
+            //lblNom.Margin = new Point(tW - w, lblNom.Location.Y);
         }
         public void SetClasse(string classe)
         {
-            lblClasse.Content = classe;
+            tbClasse.Text = classe;
         }
         public void SetFoto(string foto)
         {
 
             this.image.Source = new BitmapImage(new Uri($"{AppDomain.CurrentDomain.BaseDirectory}\\Resources\\{foto}.png"));
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }
