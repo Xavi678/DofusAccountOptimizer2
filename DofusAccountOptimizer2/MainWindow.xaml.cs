@@ -630,5 +630,11 @@ namespace DofusAccountOptimizer2
         {
             SetWindowsIcons();
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.Hide();
+            e.Cancel = true;
+        }
     }
 }

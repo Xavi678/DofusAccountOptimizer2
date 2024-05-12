@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DofusAccountOptimizer2"
         mc:Ignorable="d"
-        Title="MainWindow" Initialized="Window_Initialized" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"  WindowStyle="ThreeDBorderWindow" FontSize="14" Height="400" Width="776" ResizeMode="CanMinimize" >
+        Title="MainWindow" Initialized="Window_Initialized" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"  WindowStyle="ThreeDBorderWindow" FontSize="14" Height="400" Width="776" ResizeMode="CanMinimize" Closing="Window_Closing" >
     <Grid>
         <CheckBox x:Name="cbxCanviIcones" Margin="10,10,0,0" Content="Afegir les icones automàticament" VerticalAlignment="Top" Checked="cbxCanviIcones_Checked" ClickMode="Press" IsChecked="False" Cursor="Hand" Click="cbxCanviIcones_Click" />
         <CheckBox x:Name="cbxOrder" Margin="10,30,0,0" Content="Ordenar les finestres" VerticalAlignment="Top" ClickMode="Press" IsChecked="False" Cursor="Hand" Click="cbxOrder_Click" />

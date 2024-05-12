@@ -22,7 +22,8 @@ namespace DofusAccountOptimizer2
             NotifyIcon.Icon = new Icon($"{AppDomain.CurrentDomain.BaseDirectory}\\Resources\\pandawa_ico.ico");
             NotifyIcon.Visible = true;
             //NotifyIcon.ShowBalloonTip(5000, "Title", "Text", System.Windows.Forms.ToolTipIcon.Info);
-            NotifyIcon.Click += NotifyIcon_Click;
+
+            NotifyIcon.MouseClick += NotifyIcon_MouseClick;
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
             ToolStripButton toolStripButton = new ToolStripButton();
             toolStripButton.Text = "Exit";
@@ -32,6 +33,18 @@ namespace DofusAccountOptimizer2
             
         }
 
+        private void NotifyIcon_MouseClick(object? sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                NotifyIcon.ContextMenuStrip.Show();
+            }
+            else if(e.Button == MouseButtons.Left)
+            {
+                this.MainWindow.Show();
+            }
+        }
+
         private void ToolStripButton_Click(object? sender, EventArgs e)
         {
             this.Shutdown();
@@ -39,7 +52,8 @@ namespace DofusAccountOptimizer2
 
         private void NotifyIcon_Click(object? sender, EventArgs e)
         {
-            NotifyIcon.ContextMenuStrip.Show();
+            
+            
         }
     }
 }
