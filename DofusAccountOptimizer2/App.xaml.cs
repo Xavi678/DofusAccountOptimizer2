@@ -42,6 +42,7 @@ namespace DofusAccountOptimizer2
             else if(e.Button == MouseButtons.Left)
             {
                 this.MainWindow.Show();
+                this.MainWindow.Focus();
             }
         }
 
