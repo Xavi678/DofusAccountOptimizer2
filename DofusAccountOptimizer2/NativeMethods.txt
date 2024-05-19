@@ -10,3 +10,4 @@ SetWindowsHookEx
 MouseHookHandler
 FocusWindow
 CallNextHookEx
+UnhookWindowsHookEx

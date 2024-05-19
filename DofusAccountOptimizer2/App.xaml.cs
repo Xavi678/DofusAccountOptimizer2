@@ -22,6 +22,7 @@ namespace DofusAccountOptimizer2
         NotifyIcon NotifyIcon = new NotifyIcon();
         public App()
         {
+            this.Exit += App_Exit;
             using (DofusContext dofusContext = new DofusContext())
             {
                 dofusContext.Database.EnsureCreated();
@@ -38,6 +39,21 @@ namespace DofusAccountOptimizer2
             contextMenuStrip.Items.Add(toolStripButton);
             NotifyIcon.ContextMenuStrip = contextMenuStrip;
 
+            
+        }
+
+        private void App_Exit(object sender, ExitEventArgs e)
+        {
+            var hookId = DofusAccountOptimizer2.MainWindow._hookID;
+            var hookIdM = DofusAccountOptimizer2.MainWindow._hookIDM;
+            if (hookId != IntPtr.Zero)
+            {
+                PInvoke.UnhookWindowsHookEx(new Windows.Win32.UI.WindowsAndMessaging.HHOOK(hookId));
+            }
+            if (hookIdM != IntPtr.Zero)
+            {
+                PInvoke.UnhookWindowsHookEx(new Windows.Win32.UI.WindowsAndMessaging.HHOOK(hookIdM));
+            }
         }
 
         private void NotifyIcon_MouseClick(object? sender, MouseEventArgs e)
@@ -56,6 +72,7 @@ namespace DofusAccountOptimizer2
 
         private void ToolStripButton_Click(object? sender, EventArgs e)
         {
+
             this.Shutdown();
         }
 

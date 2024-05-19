@@ -41,8 +41,8 @@ namespace DofusAccountOptimizer2
         static Dictionary<string, Process> ProcessList = new Dictionary<string, Process>();
         private static ManagementEventWatcher startWatch;
 
-        private static IntPtr _hookID = IntPtr.Zero;
-        private static IntPtr _hookIDM = IntPtr.Zero;
+        public static IntPtr _hookID = IntPtr.Zero;
+        public static IntPtr _hookIDM = IntPtr.Zero;
         private static int handleKey = 113;
         private const int WM_SETICON = 0x80;
         private const int ICON_SMALL = 0;
