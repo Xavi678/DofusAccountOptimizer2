@@ -13,7 +13,7 @@
             <StackPanel x:Name="panel" Margin="10,10,10,40" Orientation="Horizontal" >
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type local:Personatge}">
-                        <Setter Property="Margin" Value="0,10,0,0"/>
+                        <Setter Property="Margin" Value="0,30,0,0"/>
                     </Style>
                 </StackPanel.Resources>
             </StackPanel>
@@ -24,7 +24,8 @@
         <TextBox x:Name="tbxKey" TextWrapping="Wrap" Text="TextBox" Width="120" Height="30" Margin="171,0,0,5" KeyDown="tbxKey_KeyDown" VerticalAlignment="Bottom" HorizontalAlignment="Left" />
         <Button x:Name="btnChangeIcons" Content="Canviar les icones" Height="30" Width="120" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="btnChangeIcons_Click"  />
         <Button x:Name="btnAdd" Content="Afegir" Height="30" Width="55" Margin="0,2,10,0" VerticalAlignment="Top" Click="btnAdd_Click" HorizontalAlignment="Right" />
-        
+        <Button x:Name="btnChangeOrder" Content="Ordenar les Finestres" Height="30" Width="160" Margin="0,0,160,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="btnChangeOrder_Click" />
+
     </Grid>
 
 </Window>

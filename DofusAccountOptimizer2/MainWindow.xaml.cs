@@ -57,6 +57,7 @@ namespace DofusAccountOptimizer2
         private static HOOKPROC _proc = MainWindow.HookCallbackM;
         private static HOOKPROC _procKeyBoard = MainWindow.HookCallback;
         static int window = 0;
+        bool isOrdered = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -420,13 +421,14 @@ namespace DofusAccountOptimizer2
             accounts = await dofusContext.accounts.OrderBy(x => x.POSICIO).ToListAsync();
             foreach (var account in accounts)
             {
-                if (cbxOrder.IsChecked.GetValueOrDefault())
+                if (cbxOrder.IsChecked.GetValueOrDefault() && !isOrdered)
                 {
                     var pr = allProcess.FirstOrDefault(x => x.MainWindowTitle.Contains(account.NOM));
                     if (pr != null)
                     {
                         PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
                         PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
+                        isOrdered = true;
                     }
                 }
                 Personatge personatge = new Personatge(account);
@@ -594,23 +596,9 @@ namespace DofusAccountOptimizer2
         private async void cbxOrder_Click(object sender, RoutedEventArgs e)
         {
             bool @checked = cbxOrder.IsChecked.GetValueOrDefault();
-            if (@checked)
+            if (@checked && !isOrdered)
             {
-                var allProcess = GetAllProcess();
-                foreach (var account in accounts.OrderBy(x => x.POSICIO))
-                {
-                    if (cbxOrder.IsChecked.GetValueOrDefault())
-                    {
-                        var pr = allProcess.FirstOrDefault(x => x.MainWindowTitle.Contains(account.NOM));
-                        if (pr != null)
-                        {
-                            var resH = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
-                            var resS = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
-                            Console.WriteLine($"{account.NOM} {resS} {resH}");
-                        }
-                    }
-                    Thread.Sleep(500);
-                }
+                OrderWindows();
             }
 
             var found = await dofusContext.config.FirstOrDefaultAsync();
@@ -618,6 +606,25 @@ namespace DofusAccountOptimizer2
             {
                 found.ORDER_WINDOWS = @checked;
                 await dofusContext.SaveChangesAsync();
+            }
+        }
+
+        private void OrderWindows()
+        {
+            var allProcess = GetAllProcess();
+            foreach (var account in accounts.OrderBy(x => x.POSICIO))
+            {
+
+                    var pr = allProcess.FirstOrDefault(x => x.MainWindowTitle.Contains(account.NOM));
+                    if (pr != null)
+                    {
+                        var resH = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
+                        var resS = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
+                        Console.WriteLine($"{account.NOM} {resS} {resH}");
+                        isOrdered = true;
+                    }
+                
+                Thread.Sleep(500);
             }
         }
 
@@ -635,6 +642,11 @@ namespace DofusAccountOptimizer2
         {
             this.Hide();
             e.Cancel = true;
+        }
+
+        private void btnChangeOrder_Click(object sender, RoutedEventArgs e)
+        {
+            OrderWindows();
         }
     }
 }
