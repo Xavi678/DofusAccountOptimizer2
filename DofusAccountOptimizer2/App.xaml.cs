@@ -60,13 +60,19 @@ namespace DofusAccountOptimizer2
         {
             if (e.Button == MouseButtons.Right)
             {
-                NotifyIcon.ContextMenuStrip.Show();
+                if (NotifyIcon != null)
+                {
+                    NotifyIcon.ContextMenuStrip.Show();
+                }
             }
             else if(e.Button == MouseButtons.Left)
             {
-                this.MainWindow.Show();
-                IntPtr windowHandle = new WindowInteropHelper(this.MainWindow).Handle;
-                PInvoke.SetForegroundWindow(new Windows.Win32.Foundation.HWND(windowHandle));
+                if (this.MainWindow != null)
+                {
+                    this.MainWindow.Show();
+                    IntPtr windowHandle = new WindowInteropHelper(this.MainWindow).Handle;
+                    PInvoke.SetForegroundWindow(new Windows.Win32.Foundation.HWND(windowHandle));
+                }
             }
         }
 

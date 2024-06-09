@@ -120,13 +120,41 @@ namespace DofusAccountOptimizer2
         }
         private static LRESULT HookCallbackM(int code, WPARAM wParam, LPARAM lParam)
         {
-            if (code >= 0 && (wParam == 524))
+            if (code >= 0 && (wParam == WM_XBUTTONUP))
             {
-                HandleHook();
+                MSLLHOOKSTRUCT mSLLHOOKSTRUCT = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam.Value);
+                //Debug.WriteLine(t.dwExtraInfo);
+                //var f=Marshal.ReadInt32(t.wHitTestCode);
+                Debug.WriteLine(String.Format("{0:X}", mSLLHOOKSTRUCT.mouseData));
+                HandleHook(mSLLHOOKSTRUCT.mouseData == VM_XBUTTON1 ? true : false);
                 //SetForegroundWindow(currentIntpr);
             }
 
             return PInvoke.CallNextHookEx(new HHOOK(_hookIDM), code, wParam, lParam);
+        }
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MOUSEHOOKSTRUCTEX
+        {
+            public IntPtr mouseData;
+        }
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MSLLHOOKSTRUCT
+        {
+            public Point point { get; set; }
+            public IntPtr mouseData { get; set; }
+            public IntPtr flags { get; set; }
+            public IntPtr time { get; set; }
+            public IntPtr dwExtraInfo { get; set; }
+        }
+        private const int WM_XBUTTONDOWN = 0x020B;
+        private const nint VM_XBUTTON1 = 0x020000;
+        private const nint VM_XBUTTON2 = 0x010000;
+        private const int WM_XBUTTONUP = 0x020C;
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Point
+        {
+            public int X { get; set; }
+            public int Y { get; set; }
         }
         //public void GetPersonatges()
         //{
@@ -150,7 +178,7 @@ namespace DofusAccountOptimizer2
         //        };
         //    }
         //}
-        private static void HandleHook()
+        private static void HandleHook(bool forward = true)
         {
             var list = Process.GetProcesses().ToList();
             var actual = PInvoke.GetForegroundWindow();
@@ -168,7 +196,15 @@ namespace DofusAccountOptimizer2
                 if (t != null && t.Count != 0)
                 {
 
-                    var primer = accounts.Where(x => x.IS_ACTIVE).OrderBy(x => x.POSICIO);
+                    IOrderedEnumerable<Account> primer;
+                    if (forward)
+                    {
+                        primer = accounts.Where(x => x.IS_ACTIVE).OrderBy(x => x.POSICIO);
+                    }
+                    else
+                    {
+                        primer = accounts.Where(x => x.IS_ACTIVE).OrderByDescending(x => x.POSICIO);
+                    }
                     if (primer.Count() > 0)
                     {
                         try
@@ -190,7 +226,15 @@ namespace DofusAccountOptimizer2
             else
             {
                 var e = accounts.FirstOrDefault(x => act.MainWindowTitle.Contains(x.NOM));
-                var p1 = accounts.Where(x => x.IS_ACTIVE).OrderBy(x => x.POSICIO).FirstOrDefault(x => x.POSICIO > e.POSICIO);
+                Account? p1;
+                if (forward)
+                {
+                    p1 = accounts.Where(x => x.IS_ACTIVE).OrderBy(x => x.POSICIO).FirstOrDefault(x => x.POSICIO > e.POSICIO);
+                }
+                else
+                {
+                    p1 = accounts.Where(x => x.IS_ACTIVE).OrderByDescending(x => x.POSICIO).FirstOrDefault(x => x.POSICIO < e.POSICIO);
+                }
                 if (p1 != null)
                 {
                     try
@@ -212,7 +256,17 @@ namespace DofusAccountOptimizer2
                 }
                 else
                 {
-                    var primer = accounts.Where(x=>x.IS_ACTIVE).OrderBy(x => x.POSICIO);
+                    IOrderedEnumerable<Account> primer;
+                    if (forward)
+                    {
+                        primer = accounts.Where(x => x.IS_ACTIVE).OrderBy(x => x.POSICIO);
+                    }
+                    else
+                    {
+                        primer = accounts.Where(x => x.IS_ACTIVE).OrderByDescending(x => x.POSICIO);
+                    }
+
+
                     if (primer.Count() > 0)
                     {
                         try
@@ -247,7 +301,7 @@ namespace DofusAccountOptimizer2
                 do
                 {
 
-                    next = accounts.Where(x=>x.IS_ACTIVE).OrderBy(x => x.POSICIO).FirstOrDefault(x => x.POSICIO > pos);
+                    next = accounts.Where(x => x.IS_ACTIVE).OrderBy(x => x.POSICIO).FirstOrDefault(x => x.POSICIO > pos);
                     if (next == null)
                     {
                         break;
@@ -452,7 +506,7 @@ namespace DofusAccountOptimizer2
         private async void CbxIsActive_Click(object sender, RoutedEventArgs e)
         {
             var cbox = ((CheckBox)sender);
-            var @checked= cbox.IsChecked.GetValueOrDefault(); 
+            var @checked = cbox.IsChecked.GetValueOrDefault();
             var p = ((Personatge)((Grid)cbox.Parent).Parent);
             var account = await dofusContext.accounts.FirstOrDefaultAsync(x => x.NOM == p.account.NOM);
             if (account != null)
@@ -615,15 +669,15 @@ namespace DofusAccountOptimizer2
             foreach (var account in accounts.OrderBy(x => x.POSICIO))
             {
 
-                    var pr = allProcess.FirstOrDefault(x => x.MainWindowTitle.Contains(account.NOM));
-                    if (pr != null)
-                    {
-                        var resH = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
-                        var resS = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
-                        Console.WriteLine($"{account.NOM} {resS} {resH}");
-                        isOrdered = true;
-                    }
-                
+                var pr = allProcess.FirstOrDefault(x => x.MainWindowTitle.Contains(account.NOM));
+                if (pr != null)
+                {
+                    var resH = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
+                    var resS = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
+                    Console.WriteLine($"{account.NOM} {resS} {resH}");
+                    isOrdered = true;
+                }
+
                 Thread.Sleep(500);
             }
         }
