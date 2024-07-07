@@ -25,6 +25,7 @@ using Key = System.Windows.Input.Key;
 using Windows.Win32.UI.WindowsAndMessaging;
 using Windows.Win32.Foundation;
 using System.Threading;
+using System.ComponentModel;
 
 namespace DofusAccountOptimizer2
 {
@@ -672,13 +673,26 @@ namespace DofusAccountOptimizer2
                 var pr = allProcess.FirstOrDefault(x => x.MainWindowTitle.Contains(account.NOM));
                 if (pr != null)
                 {
-                    var resH = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
-                    var resS = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
-                    Console.WriteLine($"{account.NOM} {resS} {resH}");
-                    isOrdered = true;
+                    int i = 0;
+                    BOOL resH;
+                    BOOL resS;
+                    int errorCodeH;
+                    int errorCodeS;
+                    do
+                    {
+                        i++;
+                        resH = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
+                        var winexH = new Win32Exception(Marshal.GetLastWin32Error());
+                        errorCodeH=winexH.ErrorCode;
+                        resS = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
+                        var winexS = new Win32Exception(Marshal.GetLastWin32Error());
+                        errorCodeS = winexS.ErrorCode;
+                        Console.WriteLine($"{account.NOM} {resS} {resH}");
+                        isOrdered = true;
+                    } while ((resH.Value != 24 || resS.Value != 0) && i < 3);
                 }
 
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
             }
         }
 

@@ -11,3 +11,4 @@ MouseHookHandler
 FocusWindow
 CallNextHookEx
 UnhookWindowsHookEx
+GetLastError
