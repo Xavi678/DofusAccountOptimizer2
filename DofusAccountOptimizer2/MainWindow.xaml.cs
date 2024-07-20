@@ -35,7 +35,7 @@ namespace DofusAccountOptimizer2
     public partial class MainWindow : Window
     {
 
-
+        private CollectionViewSource personatgeViewSource;
         DofusContext dofusContext = new DofusContext();
         static private List<Account> accounts = new List<Account>();
         static System.Timers.Timer windowChecker;
@@ -62,7 +62,7 @@ namespace DofusAccountOptimizer2
         public MainWindow()
         {
             InitializeComponent();
-
+            personatgeViewSource = (CollectionViewSource)FindResource(nameof(personatgeViewSource));
             //db.Database.Log = X => { Console.WriteLine(X); };
             var trobat = dofusContext.config.FirstOrDefault();
             if (trobat != null)
@@ -464,7 +464,11 @@ namespace DofusAccountOptimizer2
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            dofusContext.accounts.Load();
 
+            // bind to the source
+            personatgeViewSource.Source =
+                dofusContext.accounts.Local.ToObservableCollection();
             await SetDataSource();
 
         }

@@ -16,7 +16,9 @@
         <Label x:Name="lblClasse" Visibility="Hidden" Content="Label" Margin="0,105,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="50"/>
         <TextBlock x:Name="tbName" Margin="0,70,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" TextAlignment="Center"/>
         <TextBlock x:Name="tbClasse" Margin="0,105,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" TextAlignment="Center"/>
-        <Button x:Name="btnRemove" Content="X" Margin="120,1,0,0" VerticalAlignment="Top" Height="15" Width="15" Foreground="#FFE60606" FontSize="6" FontWeight="ExtraBold" Background="{x:Null}" HorizontalAlignment="Center" Click="button_Click"/>
+        <Button x:Name="btnRemove" Margin="120,1,0,0" VerticalAlignment="Top" Height="15" Width="15" Foreground="#FFE60606" FontWeight="ExtraBold" Background="{x:Null}" HorizontalAlignment="Center" Click="button_Click" FontSize="6">
+            <Image Source="/Resources/close.png" />
+        </Button>
         <TextBox x:Name="tbPos" HorizontalAlignment="Right" Margin="0,54,80,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="18" Height="13" FontSize="10" TextAlignment="Center" CharacterCasing="Upper" FontWeight="Bold" />
         <CheckBox Content="" Margin="0,53,36,0" VerticalAlignment="Top" FontSize="14" HorizontalAlignment="Right" Width="20" Panel.ZIndex="2" x:Name="cbxIsActive"/>
     </Grid>

@@ -3,21 +3,42 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:local="clr-namespace:DofusAccountOptimizer2"
         mc:Ignorable="d"
         Title="MainWindow" Initialized="Window_Initialized" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"  WindowStyle="ThreeDBorderWindow" FontSize="14" Height="400" Width="776" ResizeMode="CanMinimize" Closing="Window_Closing" >
+    <Window.Resources>
+        <CollectionViewSource x:Key="personatgeViewSource">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="POSICIO">
+                    
+                </scm:SortDescription>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
     <Grid>
         <CheckBox x:Name="cbxCanviIcones" Margin="10,10,0,0" Content="Afegir les icones automàticament" VerticalAlignment="Top" Checked="cbxCanviIcones_Checked" ClickMode="Press" IsChecked="False" Cursor="Hand" Click="cbxCanviIcones_Click" />
         <CheckBox x:Name="cbxOrder" Margin="10,30,0,0" Content="Ordenar les finestres" VerticalAlignment="Top" ClickMode="Press" IsChecked="False" Cursor="Hand" Click="cbxOrder_Click" />
         <ScrollViewer VerticalScrollBarVisibility="Disabled" Margin="10,50,10,40" HorizontalScrollBarVisibility="Auto">
-            <StackPanel x:Name="panel" Margin="10,10,10,40" Orientation="Horizontal" >
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type local:Personatge}">
-                        <Setter Property="Margin" Value="0,30,0,0"/>
-                    </Style>
-                </StackPanel.Resources>
-            </StackPanel>
+            <ItemsControl  ItemsSource="{Binding Source={StaticResource personatgeViewSource}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate >
+                        <StackPanel  Orientation="Horizontal">
+                        </StackPanel>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:Personatge CustomText="{Binding NOM}" Position="{Binding POSICIO}">
+                            
+                        </local:Personatge>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
+        <StackPanel x:Name="panel" Visibility="Hidden">
+            
+        </StackPanel>
         <Label x:Name="label" Margin="10,0,0,10" Width="156" Height="30" Content="Tecla Canvi de Finestra" VerticalAlignment="Bottom" HorizontalAlignment="Left" >
 
         </Label>
