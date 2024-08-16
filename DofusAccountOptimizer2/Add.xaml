@@ -17,7 +17,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{Binding GetImage}" Height="32" Width="32">
                         </Image>
-                        <TextBlock Text="{Binding NOM}" Margin="10,0,10,0" />
+                        <TextBlock Text="{Binding Nom}" Margin="10,0,10,0" />
 
                     </StackPanel>
                 </DataTemplate>

@@ -203,11 +203,11 @@ namespace DofusAccountOptimizer2
                     IOrderedEnumerable<Personatge> primer;
                     if (forward)
                     {
-                        primer = accounts.Where(x => x.GetActive()).OrderBy(x => x.Posicio);
+                        primer = accounts.Where(x => x.GetActive).OrderBy(x => x.Posicio);
                     }
                     else
                     {
-                        primer = accounts.Where(x => x.GetActive()).OrderByDescending(x => x.Posicio);
+                        primer = accounts.Where(x => x.GetActive).OrderByDescending(x => x.Posicio);
                     }
                     if (primer.Count() > 0)
                     {
@@ -233,11 +233,11 @@ namespace DofusAccountOptimizer2
                 Personatge? p1;
                 if (forward)
                 {
-                    p1 = accounts.Where(x => x.GetActive()).OrderBy(x => x.Posicio).FirstOrDefault(x => x.Posicio > e.Posicio);
+                    p1 = accounts.Where(x => x.GetActive).OrderBy(x => x.Posicio).FirstOrDefault(x => x.Posicio > e.Posicio);
                 }
                 else
                 {
-                    p1 = accounts.Where(x => x.GetActive()).OrderByDescending(x => x.Posicio).FirstOrDefault(x => x.Posicio < e.Posicio);
+                    p1 = accounts.Where(x => x.GetActive).OrderByDescending(x => x.Posicio).FirstOrDefault(x => x.Posicio < e.Posicio);
                 }
                 if (p1 != null)
                 {
@@ -263,11 +263,11 @@ namespace DofusAccountOptimizer2
                     IOrderedEnumerable<Personatge> primer;
                     if (forward)
                     {
-                        primer = accounts.Where(x => x.GetActive()).OrderBy(x => x.Posicio);
+                        primer = accounts.Where(x => x.GetActive).OrderBy(x => x.Posicio);
                     }
                     else
                     {
-                        primer = accounts.Where(x => x.GetActive()).OrderByDescending(x => x.Posicio);
+                        primer = accounts.Where(x => x.GetActive).OrderByDescending(x => x.Posicio);
                     }
 
 
@@ -305,7 +305,7 @@ namespace DofusAccountOptimizer2
                 do
                 {
 
-                    next = accounts.Where(x => x.GetActive()).OrderBy(x => x.Posicio).FirstOrDefault(x => x.Posicio > pos);
+                    next = accounts.Where(x => x.GetActive).OrderBy(x => x.Posicio).FirstOrDefault(x => x.Posicio > pos);
                     if (next == null)
                     {
                         break;

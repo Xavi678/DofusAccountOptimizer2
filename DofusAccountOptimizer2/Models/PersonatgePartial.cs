@@ -8,9 +8,9 @@ namespace DofusAccountOptimizer2.Models
 {
     public partial class Personatge
     {
-        public bool GetActive()
+        public bool GetActive
         {
-            return this.IsActive == 1;
+            get { return this.IsActive == 1; }
         }
         public void SetActive(bool isActive)
         {

@@ -10,7 +10,7 @@
     <Window.Resources>
         <CollectionViewSource x:Key="personatgeViewSource">
             <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="POSICIO">
+                <scm:SortDescription PropertyName="Posicio">
                     
                 </scm:SortDescription>
             </CollectionViewSource.SortDescriptions>
@@ -29,7 +29,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <local:Character CustomText="{Binding NOM}" Position="{Binding POSICIO}">
+                        <local:Character CustomText="{Binding Nom}" Position="{Binding Posicio}" Foto="{Binding IdClasseNavigation.Foto}" Classe="{Binding IdClasseNavigation.Nom}" IsActive="{Binding GetActive}">
                             
                         </local:Character>
                     </DataTemplate>

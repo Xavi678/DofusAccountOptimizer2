@@ -56,7 +56,7 @@ propertyChangedCallback: new PropertyChangedCallback(OnIsActiveChanged)));
         private static void OnIsActiveChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var p = d as Character;
-            p.cbxIsActive.IsChecked=(bool)e.NewValue;
+            p.cbxIsActive.IsChecked= Convert.ToBoolean(e.NewValue);
         }
 
         private static void OnPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -149,7 +149,7 @@ propertyChangedCallback: new PropertyChangedCallback(OnIsActiveChanged)));
 
             this.account = account;
             tbPos.Text = $"{account.Posicio}";
-            cbxIsActive.IsChecked = account.GetActive();
+            cbxIsActive.IsChecked = account.GetActive;
         }
         public void SetNom(string name)
         {
