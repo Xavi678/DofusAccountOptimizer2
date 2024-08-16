@@ -1,4 +1,4 @@
-﻿using DofusAccountOptimizer2.Tables;
+﻿using DofusAccountOptimizer2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,65 +20,65 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 namespace DofusAccountOptimizer2
 {
     /// <summary>
-    /// Lógica de interacción para Personatge.xaml
+    /// Lógica de interacción para Character.xaml
     /// </summary>
-    public partial class Personatge : UserControl
+    public partial class Character : UserControl
     {
         public static DependencyProperty CustomTextProperty =
              DependencyProperty.Register("CustomText", typeof(string),
-             typeof(Personatge), typeMetadata: new FrameworkPropertyMetadata("",
+             typeof(Character), typeMetadata: new FrameworkPropertyMetadata("",
           flags: FrameworkPropertyMetadataOptions.AffectsRender,
           propertyChangedCallback: new PropertyChangedCallback(OnCustomTextChanged)));
 
         public static DependencyProperty FotoProperty =
              DependencyProperty.Register("Foto", typeof(string),
-             typeof(Personatge), typeMetadata: new FrameworkPropertyMetadata("",
+             typeof(Character), typeMetadata: new FrameworkPropertyMetadata("",
           flags: FrameworkPropertyMetadataOptions.AffectsRender,
           propertyChangedCallback: new PropertyChangedCallback(OnFotoChanged)));
 
         public static DependencyProperty ClasseProperty =
      DependencyProperty.Register("Classe", typeof(string),
-     typeof(Personatge), typeMetadata: new FrameworkPropertyMetadata("",
+     typeof(Character), typeMetadata: new FrameworkPropertyMetadata("",
   flags: FrameworkPropertyMetadataOptions.AffectsRender,
   propertyChangedCallback: new PropertyChangedCallback(OnClasseChanged)));
         public static DependencyProperty PositionProperty =
 DependencyProperty.Register("Position", typeof(string),
-typeof(Personatge), typeMetadata: new FrameworkPropertyMetadata("",
+typeof(Character), typeMetadata: new FrameworkPropertyMetadata("",
 flags: FrameworkPropertyMetadataOptions.AffectsRender,
 propertyChangedCallback: new PropertyChangedCallback(OnPositionChanged)));
 
         public static DependencyProperty IsActiveProperty =
 DependencyProperty.Register("IsActive", typeof(string),
-typeof(Personatge), typeMetadata: new FrameworkPropertyMetadata("",
+typeof(Character), typeMetadata: new FrameworkPropertyMetadata("",
 flags: FrameworkPropertyMetadataOptions.AffectsRender,
 propertyChangedCallback: new PropertyChangedCallback(OnIsActiveChanged)));
 
         private static void OnIsActiveChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var p = d as Personatge;
+            var p = d as Character;
             p.cbxIsActive.IsChecked=(bool)e.NewValue;
         }
 
         private static void OnPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var p = d as Personatge;
+            var p = d as Character;
             p.tbPos.Text = $"{e.NewValue}";
         }
 
         private static void OnCustomTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var p = d as Personatge;
+            var p = d as Character;
             p.tbName.Text = (string)e.NewValue;
         }
         private static void OnFotoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var p = d as Personatge;
+            var p = d as Character;
             p.image.Source = new BitmapImage(new Uri($"{AppDomain.CurrentDomain.BaseDirectory}\\Resources\\{e.NewValue}.png"));
 
         }
         private static void OnClasseChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var p = d as Personatge;
+            var p = d as Character;
             p.tbClasse.Text = (string)e.NewValue;
 
         }
@@ -138,18 +138,18 @@ propertyChangedCallback: new PropertyChangedCallback(OnIsActiveChanged)));
                 SetValue(IsActiveProperty, value);
             }
         }
-        public Account account { get; private set; }
-        public Personatge()
+        public Personatge account { get; private set; }
+        public Character()
         {
             InitializeComponent();
         }
 
-        public Personatge(Account account) : this()
+        public Character(Personatge account) : this()
         {
 
             this.account = account;
-            tbPos.Text = $"{account.POSICIO}";
-            cbxIsActive.IsChecked = account.IS_ACTIVE;
+            tbPos.Text = $"{account.Posicio}";
+            cbxIsActive.IsChecked = account.GetActive();
         }
         public void SetNom(string name)
         {

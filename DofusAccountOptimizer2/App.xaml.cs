@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DofusAccountOptimizer2.Context;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;

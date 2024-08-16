@@ -1,4 +1,4 @@
-﻿using DofusAccountOptimizer2.Tables;
+﻿/*using DofusAccountOptimizer2.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -71,3 +71,4 @@ namespace DofusAccountOptimizer2
         public DbSet<Configuracio> config { get; set; }
     }
 }
+*/

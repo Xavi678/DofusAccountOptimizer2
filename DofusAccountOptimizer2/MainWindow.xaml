@@ -29,9 +29,9 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <local:Personatge CustomText="{Binding NOM}" Position="{Binding POSICIO}">
+                        <local:Character CustomText="{Binding NOM}" Position="{Binding POSICIO}">
                             
-                        </local:Personatge>
+                        </local:Character>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

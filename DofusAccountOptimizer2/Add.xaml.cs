@@ -1,4 +1,4 @@
-﻿using DofusAccountOptimizer2.Tables;
+﻿using DofusAccountOptimizer2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
