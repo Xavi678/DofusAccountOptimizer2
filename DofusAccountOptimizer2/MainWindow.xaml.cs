@@ -629,6 +629,7 @@ namespace DofusAccountOptimizer2
                     BOOL resS;
                     int errorCodeH;
                     int errorCodeS;
+                    File.AppendAllText("ordenar finestres.txt", "-------------------------------START------------------------------------");
                     do
                     {
                         i++;
@@ -638,10 +639,11 @@ namespace DofusAccountOptimizer2
                         resS = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
                         var winexS = new Win32Exception(Marshal.GetLastWin32Error());
                         errorCodeS = winexS.ErrorCode;
-                        File.AppendAllText("ordenar finestres.txt", "-------------------------------------------------------------------");
+                        
                         File.AppendAllText("ordenar finestres.txt",$"\n{account.Nom} {resS} {resH} {pr.MainWindowHandle} {pr.MainWindowTitle} {errorCodeH} {errorCodeS} {winexH.Message} {winexS.Message}");
                         isOrdered = true;
                     } while ((resH.Value != 24 || resS.Value != 0) && i < 3);
+                    File.AppendAllText("ordenar finestres.txt", "-------------------------------END------------------------------------");
                 }
 
                 Thread.Sleep(1000);
