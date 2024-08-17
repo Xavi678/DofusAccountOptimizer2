@@ -28,6 +28,7 @@ using Windows.Win32.Foundation;
 using System.Threading;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace DofusAccountOptimizer2
 {
@@ -637,7 +638,7 @@ namespace DofusAccountOptimizer2
                         resS = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
                         var winexS = new Win32Exception(Marshal.GetLastWin32Error());
                         errorCodeS = winexS.ErrorCode;
-                        Console.WriteLine($"{account.Nom} {resS} {resH}");
+                        File.AppendAllText("ordenar finestres.txt",$"\n{account.Nom} {resS} {resH}");
                         isOrdered = true;
                     } while ((resH.Value != 24 || resS.Value != 0) && i < 3);
                 }

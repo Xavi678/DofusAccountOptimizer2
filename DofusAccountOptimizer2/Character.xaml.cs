@@ -205,46 +205,6 @@ flags: FrameworkPropertyMetadataOptions.AffectsRender));
             InitializeComponent();
         }
 
-        public Character(Personatge account) : this()
-        {
-
-            this.account = account;
-            tbPos.Text = $"{account.Posicio}";
-            cbxIsActive.IsChecked = account.GetActive;
-        }
-        public void SetNom(string name)
-        {
-            tbName.Text = name;
-            var w = lblNom.Width / 2;
-            var tW = this.Width / 2;
-            //new Thickness(0,tbName.Margin.Top, 0, tbName.Margin.Bottom);
-            //lblNom.Margin = new Point(tW - w, lblNom.Location.Y);
-        }
-        public void SetClasse(string classe)
-        {
-            tbClasse.Text = classe;
-        }
-        public void SetFoto(string foto)
-        {
-
-            this.image.Source = new BitmapImage(new Uri($"{AppDomain.CurrentDomain.BaseDirectory}\\Resources\\{foto}.png"));
-        }
-
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void tbPos_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //Position = tbPos.Text;
-        }
-
-        private void button_Click_1(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show(Position);
-        }
-
         private void tbPos_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
