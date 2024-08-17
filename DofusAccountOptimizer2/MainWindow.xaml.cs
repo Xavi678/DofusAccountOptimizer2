@@ -37,9 +37,9 @@ namespace DofusAccountOptimizer2
     public partial class MainWindow : Window
     {
 
-        private CollectionViewSource personatgeViewSource;
+        private static CollectionViewSource personatgeViewSource;
         DofusContext dofusContext = new DofusContext();
-        static private List<Personatge> accounts = new List<Personatge>();
+        //static private List<Personatge> accounts = new List<Personatge>();
         static System.Timers.Timer windowChecker;
         static Dictionary<string, Process> ProcessList = new Dictionary<string, Process>();
         private static ManagementEventWatcher startWatch;
@@ -188,6 +188,7 @@ namespace DofusAccountOptimizer2
         //}
         private static void HandleHook(bool forward = true)
         {
+            var accounts=(ObservableCollection<Personatge>)personatgeViewSource.Source;
             var list = Process.GetProcesses().ToList();
             var actual = PInvoke.GetForegroundWindow();
             var t = list.Where(x => x.ProcessName == "Dofus").ToList();
@@ -295,6 +296,7 @@ namespace DofusAccountOptimizer2
         }
         private static void FocusWindow(List<Process> t, Personatge p1, Process at)
         {
+            var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
             if (at != null)
             {
                 PInvoke.ShowWindow(new Windows.Win32.Foundation.HWND(at.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOWMAXIMIZED);
@@ -371,6 +373,7 @@ namespace DofusAccountOptimizer2
         }
         private static void SetWindowsIcons()
         {
+            var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
             var allProcess = GetAllProcess();
             if (allProcess == null || (allProcess != null && allProcess.Count == 0))
             {
@@ -391,7 +394,7 @@ namespace DofusAccountOptimizer2
         }
         private static void SetSettings(Process process)
         {
-
+            var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
             string img = null;
             string title = null;
             //var i=Icon.ExtractAssociatedIcon(process.MainModule.FileName);
@@ -425,13 +428,6 @@ namespace DofusAccountOptimizer2
                 }
             }
         }
-        public void SetPersonatges()
-        {
-            using (DofusContext db = new DofusContext())
-            {
-                accounts = db.Personatges.ToList();
-            }
-        }
 
         private static void StartWatch_EventArrived(object sender, EventArrivedEventArgs e)
         {
@@ -449,6 +445,7 @@ namespace DofusAccountOptimizer2
         }
         private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e, uint processId)
         {
+            var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
             var process = Process.GetProcesses().OfType<Process>().FirstOrDefault(x => x.Id == processId);
             if (process != null)
             {
@@ -471,6 +468,7 @@ namespace DofusAccountOptimizer2
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            var mw = sender as MainWindow;
             await dofusContext.Personatges.LoadAsync();
             await dofusContext.Classes.LoadAsync();
             var obsCollection = dofusContext.Personatges.Local.ToObservableCollection();
@@ -482,41 +480,41 @@ namespace DofusAccountOptimizer2
 
         }
 
-        private async Task SetDataSource()
-        {
+        //private async Task SetDataSource()
+        //{
 
-            //this.panel.Children.Clear();
-            var allProcess = GetAllProcess();
-            accounts = await dofusContext.Personatges.OrderBy(x => x.Posicio).ToListAsync();
-            foreach (var account in accounts)
-            {
-                if (cbxOrder.IsChecked.GetValueOrDefault() && !isOrdered)
-                {
-                    var pr = allProcess.FirstOrDefault(x => x.MainWindowTitle.Contains(account.Nom));
-                    if (pr != null)
-                    {
-                        PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
-                        PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
-                        isOrdered = true;
-                    }
-                }
-                Character personatge = new Character(account);
-                personatge.btnRemove.Click += BtnRemove_Click;
-                personatge.btnDreta.Click += BtnDreta_Click;
-                personatge.btnEsquerra.Click += BtnEsquerra_Click;
-                personatge.tbPos.TextChanged += TbPos_TextChanged;
-                personatge.cbxIsActive.Click += CbxIsActive_Click;
-                var classe = dofusContext.Classes.FirstOrDefault(x => x.Id == account.IdClasse);
-                if (classe != null)
-                {
-                    //personatge.SetClasse(classe.Nom);
-                    //personatge.SetFoto(classe.Foto);
-                    //personatge.SetNom(account.Nom);
-                }
+        //    //this.panel.Children.Clear();
+        //    var allProcess = GetAllProcess();
+        //    accounts = await dofusContext.Personatges.OrderBy(x => x.Posicio).ToListAsync();
+        //    foreach (var account in accounts)
+        //    {
+        //        if (cbxOrder.IsChecked.GetValueOrDefault() && !isOrdered)
+        //        {
+        //            var pr = allProcess.FirstOrDefault(x => x.MainWindowTitle.Contains(account.Nom));
+        //            if (pr != null)
+        //            {
+        //                PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
+        //                PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
+        //                isOrdered = true;
+        //            }
+        //        }
+        //        Character personatge = new Character(account);
+        //        personatge.btnRemove.Click += BtnRemove_Click;
+        //        personatge.btnDreta.Click += BtnDreta_Click;
+        //        personatge.btnEsquerra.Click += BtnEsquerra_Click;
+        //        personatge.tbPos.TextChanged += TbPos_TextChanged;
+        //        personatge.cbxIsActive.Click += CbxIsActive_Click;
+        //        var classe = dofusContext.Classes.FirstOrDefault(x => x.Id == account.IdClasse);
+        //        if (classe != null)
+        //        {
+        //            //personatge.SetClasse(classe.Nom);
+        //            //personatge.SetFoto(classe.Foto);
+        //            //personatge.SetNom(account.Nom);
+        //        }
 
-                //this.panel.Children.Add(personatge);
-            }
-        }
+        //        //this.panel.Children.Add(personatge);
+        //    }
+        //}
 
         private async void CbxIsActive_Click(object sender, RoutedEventArgs e)
         {
@@ -528,77 +526,14 @@ namespace DofusAccountOptimizer2
             {
                 account.SetActive(@checked);
                 await dofusContext.SaveChangesAsync();
-                await SetDataSource();
+                personatgeViewSource.View.Refresh();
+                //await SetDataSource();
             }
         }
 
-        private async void TbPos_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var tbox = ((TextBox)sender);
-            var p = ((Character)((Grid)tbox.Parent).Parent);
-            var txt = tbox.Text;
-            int res = 0;
-            if (Int32.TryParse(txt, out res))
-            {
-                var found = await dofusContext.Personatges.FirstOrDefaultAsync(x => x.Nom == p.account.Nom);
-                if (found != null)
-                {
-                    var next = await dofusContext.Personatges.FirstOrDefaultAsync(x => x.Posicio == res);
-                    if (next != null)
-                    {
-                        var nextPos = next.Posicio;
-                        next.Posicio = found.Posicio;
-                        found.Posicio = nextPos;
-                        await dofusContext.SaveChangesAsync();
-                        e.Handled = true;
-                        await SetDataSource();
-                    }
-                    else
-                    {
-                        e.Handled = false;
-                        MessageBox.Show("La posició no existeix", "Error");
-                    }
-                }
-            }
-        }
 
-        private async void BtnEsquerra_Click(object sender, RoutedEventArgs e)
-        {
-            //var p = ((Character)((Grid)((Button)sender).Parent).Parent);
-            //var index = panel.Children.IndexOf(p);
-            //var pos = p.account.Posicio;
-            //if (index > 0)
-            //{
 
-            //    var nextPos = index - 1;
-            //    Character next = (Character)panel.Children[nextPos];
-            //    var accountActual = await dofusContext.Personatges.FirstAsync(x => x.Nom == p.account.Nom);
-            //    var accountNext = await dofusContext.Personatges.FirstAsync(x => x.Nom == next.account.Nom);
-            //    accountNext.Posicio = pos;
-            //    accountActual.Posicio = nextPos;
-            //    await dofusContext.SaveChangesAsync();
-            //    await SetDataSource();
-            //}
-        }
 
-        private async void BtnDreta_Click(object sender, RoutedEventArgs e)
-        {
-            //var p = ((Character)((Grid)((Button)sender).Parent).Parent);
-            //var index = panel.Children.IndexOf(p);
-            //var pos = p.account.Posicio;
-            //if (index + 1 < panel.Children.Count)
-            //{
-
-            //    var nextPos = index + 1;
-            //    Character next = (Character)panel.Children[nextPos];
-            //    var accountActual = await dofusContext.Personatges.FirstAsync(x => x.Nom == p.account.Nom);
-            //    var accountNext = await dofusContext.Personatges.FirstAsync(x => x.Nom == next.account.Nom);
-            //    accountNext.Posicio = pos;
-            //    accountActual.Posicio = nextPos;
-            //    await dofusContext.SaveChangesAsync();
-            //    await SetDataSource();
-            //}
-        }
 
         private async void BtnRemove_Click(object sender, RoutedEventArgs e)
         {
@@ -606,7 +541,7 @@ namespace DofusAccountOptimizer2
             var p = ((Character)((Grid)btn.Parent).Parent);
             dofusContext.Personatges.Remove(p.account);
             await dofusContext.SaveChangesAsync();
-            await SetDataSource();
+            //await SetDataSource();
         }
 
         private async void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -628,7 +563,7 @@ namespace DofusAccountOptimizer2
 
                 });
                 await dofusContext.SaveChangesAsync();
-                await SetDataSource();
+                personatgeViewSource.View.Refresh();
             }
         }
 
@@ -680,6 +615,7 @@ namespace DofusAccountOptimizer2
 
         private void OrderWindows()
         {
+            var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
             var allProcess = GetAllProcess();
             foreach (var account in accounts.OrderBy(x => x.Posicio))
             {
