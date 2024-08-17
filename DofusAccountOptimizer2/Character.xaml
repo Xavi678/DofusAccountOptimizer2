@@ -5,21 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DofusAccountOptimizer2"
              mc:Ignorable="d" d:DesignWidth="143
-             " Width="143" Height="143" BorderThickness="1" BorderBrush="Black">
+             " Width="143" Height="100" BorderThickness="1" BorderBrush="Black">
     <Grid  Margin="0,0,0,0">
         <Image x:Name="image" Height="56" VerticalAlignment="Top" Width="56" Margin="0,10,0,0"/>
         <Button x:Name="btnDreta" Content="&gt;" HorizontalAlignment="Right" 
-                VerticalAlignment="Top" Width="25" Height="40" Margin="0,17,10,0"/>
+                VerticalAlignment="Top" Width="25" Height="40" Margin="0,17,10,0" Click="btnDreta_Click"/>
         <Button x:Name="btnEsquerra" Content="&lt;" HorizontalAlignment="Left" 
-                VerticalAlignment="Top" Width="25" Height="40" Margin="10,17,0,0"/>
+                VerticalAlignment="Top" Width="25" Height="40" Margin="10,17,0,0" Click="btnEsquerra_Click"/>
         <Label x:Name="lblNom" Visibility="Hidden" Content="Label" Margin="0,70,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="50"/>
         <Label x:Name="lblClasse" Visibility="Hidden" Content="Label" Margin="0,105,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="50"/>
         <TextBlock x:Name="tbName" Margin="0,70,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" TextAlignment="Center"/>
-        <TextBlock x:Name="tbClasse" Margin="0,105,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" TextAlignment="Center"/>
+        <TextBlock Visibility="Hidden" x:Name="tbClasse" Margin="0,105,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" TextAlignment="Center"/>
         <Button x:Name="btnRemove" Margin="120,1,0,0" VerticalAlignment="Top" Height="15" Width="15" Foreground="#FFE60606" FontWeight="ExtraBold" Background="{x:Null}" HorizontalAlignment="Center" Click="button_Click" FontSize="6">
             <Image Source="/Resources/close.png" />
         </Button>
-        <TextBox x:Name="tbPos" HorizontalAlignment="Right" Margin="0,54,80,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="18" Height="13" FontSize="10" TextAlignment="Center" CharacterCasing="Upper" FontWeight="Bold" />
+        <TextBox MaxLength="1" x:Name="tbPos" HorizontalAlignment="Right" Margin="0,54,80,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="18" Height="13" FontSize="10" TextAlignment="Center" CharacterCasing="Upper" FontWeight="Bold" Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:Character}}, Path=Position}" KeyUp="tbPos_KeyUp"/>
         <CheckBox Content="" Margin="0,53,36,0" VerticalAlignment="Top" FontSize="14" HorizontalAlignment="Right" Width="20" Panel.ZIndex="2" x:Name="cbxIsActive"/>
     </Grid>
 </UserControl>

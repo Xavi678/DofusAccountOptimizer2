@@ -11,7 +11,7 @@
         <CollectionViewSource x:Key="personatgeViewSource">
             <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="Posicio">
-                    
+
                 </scm:SortDescription>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
@@ -20,25 +20,20 @@
         <CheckBox x:Name="cbxCanviIcones" Margin="10,10,0,0" Content="Afegir les icones automàticament" VerticalAlignment="Top" Checked="cbxCanviIcones_Checked" ClickMode="Press" IsChecked="False" Cursor="Hand" Click="cbxCanviIcones_Click" />
         <CheckBox x:Name="cbxOrder" Margin="10,30,0,0" Content="Ordenar les finestres" VerticalAlignment="Top" ClickMode="Press" IsChecked="False" Cursor="Hand" Click="cbxOrder_Click" />
         <ScrollViewer VerticalScrollBarVisibility="Disabled" Margin="10,50,10,40" HorizontalScrollBarVisibility="Auto">
-            <ItemsControl  ItemsSource="{Binding Source={StaticResource personatgeViewSource}}">
+            <ItemsControl Name="itemsControl" ItemsSource="{Binding Source={StaticResource personatgeViewSource}}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate >
-                        <StackPanel  Orientation="Horizontal">
+                        <StackPanel  Orientation="Horizontal" Margin="10">
                         </StackPanel>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <local:Character CustomText="{Binding Nom}" Position="{Binding Posicio}" Foto="{Binding IdClasseNavigation.Foto}" Classe="{Binding IdClasseNavigation.Nom}" IsActive="{Binding GetActive}">
-                            
-                        </local:Character>
+                    <DataTemplate >
+                        <local:Character ItemsLength="{Binding Source={x:Static Application.Current},Path=MainWindow.ItemsCount}"  Margin="5,0,5,0" CustomText="{Binding Nom}" Position="{Binding Posicio,Mode=TwoWay}" Foto="{Binding IdClasseNavigation.Foto}" Classe="{Binding IdClasseNavigation.Nom}" IsActive="{Binding GetActive}"   PositionChanged="Character_PositionChanged" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        <StackPanel x:Name="panel" Visibility="Hidden">
-            
-        </StackPanel>
         <Label x:Name="label" Margin="10,0,0,10" Width="156" Height="30" Content="Tecla Canvi de Finestra" VerticalAlignment="Bottom" HorizontalAlignment="Left" >
 
         </Label>
