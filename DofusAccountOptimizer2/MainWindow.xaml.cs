@@ -29,6 +29,8 @@ using System.Threading;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows.Markup;
+using System.Globalization;
 
 namespace DofusAccountOptimizer2
 {
@@ -64,11 +66,13 @@ namespace DofusAccountOptimizer2
         bool isOrdered = false;
 
         public static int ItemsCount { get; set; } = -1;
+        public string LanguageCode { get; set; } = "en";
         public MainWindow()
         {
             InitializeComponent();
+            
             personatgeViewSource = (CollectionViewSource)FindResource(nameof(personatgeViewSource));
-
+            //DataContext = this;
             //db.Database.Log = X => { Console.WriteLine(X); };
             var trobat = dofusContext.Configuracios.FirstOrDefault();
             if (trobat != null)
@@ -79,7 +83,7 @@ namespace DofusAccountOptimizer2
                     StartIconsChecker(updIcons);
                 }
                 cbxCanviIcones.IsChecked = updIcons;
-
+                LanguageCode = trobat.Language;
                 tbxKey.Text = ((Key)trobat.Key).ToString();
             }
             else
@@ -689,6 +693,18 @@ namespace DofusAccountOptimizer2
             }
             dofusContext.SaveChanges();
             personatgeViewSource.View.Refresh();
+        }
+
+        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var trobat = dofusContext.Configuracios.FirstOrDefault();
+            if (trobat != null && trobat.Language != (string)comboBox.SelectedValue)
+            {
+                trobat.Language= (string)comboBox.SelectedValue;
+                
+                dofusContext.SaveChanges();
+                MessageBox.Show("Restart the app to apply the language changes");
+            }
         }
     }
 }

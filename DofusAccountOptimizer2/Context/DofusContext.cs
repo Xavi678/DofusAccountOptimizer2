@@ -55,6 +55,11 @@ namespace DofusAccountOptimizer2.Context
 
                 entity.Property(e => e.Key).HasColumnName("KEY");
 
+                entity.Property(e => e.Language)
+                    .HasColumnType("VARCHAR(2)")
+                    .HasColumnName("LANGUAGE")
+                    .HasDefaultValueSql("'en'");
+
                 entity.Property(e => e.OrderWindows).HasColumnName("ORDER_WINDOWS");
 
                 entity.Property(e => e.UpdateIcons).HasColumnName("UPDATE_ICONS");

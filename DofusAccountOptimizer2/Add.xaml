@@ -4,20 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DofusAccountOptimizer2"
+        xmlns:prop="clr-namespace:DofusAccountOptimizer2.Properties"
+        xmlns:classes="clr-namespace:DofusAccountOptimizer2.Classes"
         mc:Ignorable="d"
         Title="Add" Height="200" Width="240" FontSize="14" Topmost="True" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <classes:NameClassConverter x:Key="nameClassConverter"/>
+    </Window.Resources>
     <Grid>
-        <Label x:Name="lblName" Content="Name" HorizontalAlignment="Left" Margin="40,5,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Label x:Name="lblName" Content="{x:Static prop:Resources.name}" HorizontalAlignment="Left" Margin="40,5,0,0" VerticalAlignment="Top" FontSize="14"/>
         <TextBox x:Name="tbxName" HorizontalAlignment="Left" Margin="40,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-        <Label x:Name="lblClasse" Content="Classe" HorizontalAlignment="Left" Margin="40,60,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Left" Margin="140,135,0,0" VerticalAlignment="Top" Width="50" Click="btnAdd_Click"/>
+        <Label x:Name="lblClasse" Content="{x:Static prop:Resources.name_class}" HorizontalAlignment="Left" Margin="40,60,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Button x:Name="btnAdd" Content="{x:Static prop:Resources.add}" HorizontalAlignment="Left" Margin="140,135,0,0" VerticalAlignment="Top" Width="50" Click="btnAdd_Click"/>
         <ComboBox x:Name="cbxClasse" HorizontalAlignment="Left" Margin="40,90,0,0" VerticalAlignment="Top" Width="150">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{Binding GetImage}" Height="32" Width="32">
                         </Image>
-                        <TextBlock Text="{Binding Nom}" Margin="10,0,10,0" />
+                        <TextBlock Text="{Binding Path=Id,Converter={StaticResource nameClassConverter}}" Margin="10,0,10,0" />
 
                     </StackPanel>
                 </DataTemplate>

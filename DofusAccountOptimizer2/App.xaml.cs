@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
@@ -21,12 +23,29 @@ namespace DofusAccountOptimizer2
     public partial class App : Application
     {
         NotifyIcon NotifyIcon = new NotifyIcon();
+
+        public static void ChangeLanguage(string langCode)
+        {
+            CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture(langCode);
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            Thread.CurrentThread.CurrentUICulture = cultureInfo;
+        }
         public App()
         {
+
             this.Exit += App_Exit;
             using (DofusContext dofusContext = new DofusContext())
             {
                 dofusContext.Database.EnsureCreated();
+               var conf= dofusContext.Configuracios.FirstOrDefault();
+                if (conf != null)
+                {
+                    ChangeLanguage(conf.Language);
+                }
+                else
+                {
+                    ChangeLanguage("en");
+                }
             }
             NotifyIcon.Icon = new Icon($"{AppDomain.CurrentDomain.BaseDirectory}\\Resources\\pandawa_ico.ico");
             NotifyIcon.Visible = true;
