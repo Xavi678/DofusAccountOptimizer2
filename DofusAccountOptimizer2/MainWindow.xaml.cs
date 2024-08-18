@@ -748,7 +748,8 @@ namespace DofusAccountOptimizer2
 
         private void btnHelp_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("First, Create your in game characters (The name has to be the same exactly the name as it is called on dofus), once created you can use the left side buttons of your mouse to switch between windows, first button you go forward second button you go backwards, if you dont have this buttons in your mouse, you can use a keyboard key, by default is 'F1' but you can change it using the textbox you have on the bottom left side of the program.\n You can toggle the navigation of a certain character by disablign or enabling the checkbox taht every character has, also you can delete them using the red cross button of the top right side. You can change the characters position by modifiying the number, or by clicking on the left/right arrows.", Properties.Resources.help, MessageBoxButton.OK, MessageBoxImage.Question);
+            Help help = new Help();
+            help.ShowDialog();
         }
     }
 }

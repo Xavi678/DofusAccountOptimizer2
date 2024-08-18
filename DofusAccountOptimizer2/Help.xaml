@@ -1,0 +1,19 @@
+﻿<Window x:Class="DofusAccountOptimizer2.Help"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DofusAccountOptimizer2"
+        mc:Ignorable="d"
+        Title="Help" Height="300" Width="450" WindowStartupLocation="CenterScreen">
+    <Grid >
+        <TextBlock x:Name="textblock" TextWrapping="WrapWithOverflow" Margin="10,10,10,10" Width="440" Height="280" FontSize="14">
+        First, Create your in game characters (The name has to be the same exactly the name as it is called on dofus) suing the 'Add' button, once created you can use the left side buttons of your mouse to switch between windows, first button you go forward second button you go backwards, if you dont have this buttons in your mouse, you can use a keyboard key, by default is 'F1' but you can change it using the textbox you have on the bottom left side of the program.\n You can toggle the navigation of a certain character by disablign or enabling the checkbox taht every character has, also you can delete them using the red cross button of the top right side. You can change the characters position by modifiying the number, or by clicking on the left/right arrows.
+        </TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Panel.ZIndex="2" Width="200" Margin="10,0,0,27">
+            <Hyperlink NavigateUri="https://github.com/Xavi678/DofusAccountOptimizer2" RequestNavigate="Hyperlink_RequestNavigate" FontSize="16">
+                Official Github Repository
+            </Hyperlink>
+        </TextBlock>
+    </Grid>
+</Window>
