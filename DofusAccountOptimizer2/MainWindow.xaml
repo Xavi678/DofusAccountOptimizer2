@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:src="clr-namespace:DofusAccountOptimizer2.Classes"
-        Title="MainWindow" Initialized="Window_Initialized" 
+        Title="Dofus Account Optimizer 2" Initialized="Window_Initialized" 
         Loaded="Window_Loaded" 
         WindowStartupLocation="CenterScreen" 
         WindowStyle="ThreeDBorderWindow" 
