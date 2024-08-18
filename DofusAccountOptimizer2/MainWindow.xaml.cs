@@ -70,7 +70,7 @@ namespace DofusAccountOptimizer2
         public MainWindow()
         {
             InitializeComponent();
-            
+
             personatgeViewSource = (CollectionViewSource)FindResource(nameof(personatgeViewSource));
             //DataContext = this;
             //db.Database.Log = X => { Console.WriteLine(X); };
@@ -193,7 +193,7 @@ namespace DofusAccountOptimizer2
         //}
         private static void HandleHook(bool forward = true)
         {
-            var accounts=(ObservableCollection<Personatge>)personatgeViewSource.Source;
+            var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
             var list = Process.GetProcesses().ToList();
             var actual = PInvoke.GetForegroundWindow();
             var t = list.Where(x => x.ProcessName == "Dofus").ToList();
@@ -553,22 +553,37 @@ namespace DofusAccountOptimizer2
         {
 
             var clases = await dofusContext.Classes.AsNoTracking().ToListAsync();
-            Add add = new Add(clases);
-
-            if (add.ShowDialog().GetValueOrDefault())
+            if ((await dofusContext.Personatges.CountAsync()) < 8)
             {
-                Classe classe = (Classe)add.cbxClasse.SelectedItem;
-                var last = await dofusContext.Personatges.OrderBy(x => x.Posicio).LastOrDefaultAsync();
-                var lastPosition = last != null ? last.Posicio + 1 : 0;
-                await dofusContext.Personatges.AddAsync(new Personatge()
-                {
-                    Nom = add.tbxName.Text,
-                    Posicio = lastPosition,
-                    IdClasse = classe.Id
+                Add add = new Add(clases);
 
-                });
-                await dofusContext.SaveChangesAsync();
-                personatgeViewSource.View.Refresh();
+                if (add.ShowDialog().GetValueOrDefault())
+                {
+                    Classe classe = (Classe)add.cbxClasse.SelectedItem;
+                    var last = await dofusContext.Personatges.OrderBy(x => x.Posicio).LastOrDefaultAsync();
+                    var lastPosition = last != null ? last.Posicio + 1 : 0;
+                    if (dofusContext.Personatges.FirstOrDefault(x => x.Nom == classe.Nom) == null)
+                    {
+                        await dofusContext.Personatges.AddAsync(new Personatge()
+                        {
+                            Nom = add.tbxName.Text,
+                            Posicio = lastPosition,
+                            IdClasse = classe.Id,
+                            IsActive = 1
+
+                        });
+                        await dofusContext.SaveChangesAsync();
+                        personatgeViewSource.View.Refresh();
+                    }
+                    else
+                    {
+                        MessageBox.Show(Properties.Resources.error_already_exists, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show(Properties.Resources.error_max_characters, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -643,8 +658,8 @@ namespace DofusAccountOptimizer2
                         resS = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
                         var winexS = new Win32Exception(Marshal.GetLastWin32Error());
                         errorCodeS = winexS.ErrorCode;
-                        
-                        File.AppendAllText("ordenar finestres.txt",$"\n{account.Nom} {resS} {resH} {pr.MainWindowHandle} {pr.MainWindowTitle} {errorCodeH} {errorCodeS} {winexH.Message} {winexS.Message}");
+
+                        File.AppendAllText("ordenar finestres.txt", $"\n{account.Nom} {resS} {resH} {pr.MainWindowHandle} {pr.MainWindowTitle} {errorCodeH} {errorCodeS} {winexH.Message} {winexS.Message}");
                         isOrdered = true;
                     } while ((resH.Value != 24 || resS.Value != 0) && i < 3);
                     File.AppendAllText("ordenar finestres.txt", "-------------------------------END------------------------------------");
@@ -700,11 +715,40 @@ namespace DofusAccountOptimizer2
             var trobat = dofusContext.Configuracios.FirstOrDefault();
             if (trobat != null && trobat.Language != (string)comboBox.SelectedValue)
             {
-                trobat.Language= (string)comboBox.SelectedValue;
-                
+                trobat.Language = (string)comboBox.SelectedValue;
+
                 dofusContext.SaveChanges();
                 MessageBox.Show("Restart the app to apply the language changes");
             }
+        }
+
+        private void Character_CharacterRemoved(object sender, string id)
+        {
+            var personatges = (ObservableCollection<Personatge>)personatgeViewSource.Source;
+            var found = personatges.FirstOrDefault(x => x.Nom == id);
+            if (found != null)
+            {
+                personatges.Remove(found);
+                dofusContext.SaveChanges();
+                personatgeViewSource.View.Refresh();
+            }
+        }
+
+        private void Character_CharacterIsActiveChanged(object sender, string id, bool isActive)
+        {
+            var personatges = (ObservableCollection<Personatge>)personatgeViewSource.Source;
+            var found = personatges.FirstOrDefault(x => x.Nom == id);
+            if (found != null)
+            {
+                found.SetActive(isActive);
+                dofusContext.SaveChanges();
+                personatgeViewSource.View.Refresh();
+            }
+        }
+
+        private void btnHelp_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("First, Create your in game characters (The name has to be the same exactly the name as it is called on dofus), once created you can use the left side buttons of your mouse to switch between windows, first button you go forward second button you go backwards, if you dont have this buttons in your mouse, you can use a keyboard key, by default is 'F1' but you can change it using the textbox you have on the bottom left side of the program.\n You can toggle the navigation of a certain character by disablign or enabling the checkbox taht every character has, also you can delete them using the red cross button of the top right side. You can change the characters position by modifiying the number, or by clicking on the left/right arrows.", Properties.Resources.help, MessageBoxButton.OK, MessageBoxImage.Question);
         }
     }
 }

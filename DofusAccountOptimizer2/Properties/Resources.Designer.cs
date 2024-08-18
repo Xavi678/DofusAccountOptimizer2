@@ -268,6 +268,33 @@ namespace DofusAccountOptimizer2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have already a Character with this name.
+        /// </summary>
+        public static string error_already_exists {
+            get {
+                return ResourceManager.GetString("error_already_exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have already 8 characters, delete at least one if you want to add more.
+        /// </summary>
+        public static string error_max_characters {
+            get {
+                return ResourceManager.GetString("error_max_characters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        public static string help {
+            get {
+                return ResourceManager.GetString("help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Key to switch between windows.
         /// </summary>
         public static string key_swap_windows {

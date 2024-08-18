@@ -183,6 +183,15 @@
   <data name="class_9" xml:space="preserve">
     <value>HUPPERMAGE</value>
   </data>
+  <data name="error_already_exists" xml:space="preserve">
+    <value>Ja tens un Personatge creat amb aquest nom</value>
+  </data>
+  <data name="error_max_characters" xml:space="preserve">
+    <value>Ja tens 8 creats, borra'n algun si vols afegir-ne algun més</value>
+  </data>
+  <data name="help" xml:space="preserve">
+    <value>Ajuda</value>
+  </data>
   <data name="key_swap_windows" xml:space="preserve">
     <value>Tecla per canviar entre Finestres</value>
   </data>

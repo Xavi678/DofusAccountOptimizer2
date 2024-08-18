@@ -186,6 +186,15 @@
   <data name="class_9" xml:space="preserve">
     <value>HIPERMAGO</value>
   </data>
+  <data name="error_already_exists" xml:space="preserve">
+    <value>Ya tienes un Personaje creado con este nombre</value>
+  </data>
+  <data name="error_max_characters" xml:space="preserve">
+    <value>Ya tienes 8 personajes, borra alguno si quieres añadir más</value>
+  </data>
+  <data name="help" xml:space="preserve">
+    <value>Ayuda</value>
+  </data>
   <data name="key_swap_windows" xml:space="preserve">
     <value>Tecla para canviar entre Ventanas</value>
   </data>

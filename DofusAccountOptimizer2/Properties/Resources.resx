@@ -186,6 +186,15 @@
   <data name="class_9" xml:space="preserve">
     <value>HUPPERMAGE</value>
   </data>
+  <data name="error_already_exists" xml:space="preserve">
+    <value>You have already a Character with this name</value>
+  </data>
+  <data name="error_max_characters" xml:space="preserve">
+    <value>You have already 8 characters, delete at least one if you want to add more</value>
+  </data>
+  <data name="help" xml:space="preserve">
+    <value>Help</value>
+  </data>
   <data name="key_swap_windows" xml:space="preserve">
     <value>Key to switch between windows</value>
   </data>

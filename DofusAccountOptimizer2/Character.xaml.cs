@@ -154,7 +154,6 @@ flags: FrameworkPropertyMetadataOptions.AffectsRender));
                 SetValue(FotoProperty, value);
             }
         }
-        public MainWindow Parent_ { get; set; }
         public string Classe
         {
             get
@@ -232,6 +231,30 @@ flags: FrameworkPropertyMetadataOptions.AffectsRender));
             {
                 this.Position = $"{pos + 1}";
             }
+        }
+
+        [Browsable(true)]
+        [Category("Action")]
+        [Description("Invoked when user removes a Character")]
+        public event CharacterRemoveEventHandler CharacterRemoved;
+
+        public delegate void CharacterRemoveEventHandler(object? sender, string id);
+        private void btnRemove_Click(object sender, RoutedEventArgs e)
+        {
+            if(CharacterRemoved!=null)
+                CharacterRemoved.Invoke(this, this.CustomText);
+        }
+        [Browsable(true)]
+        [Category("Action")]
+        [Description("Invoked when IsActive is modified from a Character")]
+        public event CharacterIsActiveChangedEventHandler CharacterIsActiveChanged;
+
+        public delegate void CharacterIsActiveChangedEventHandler(object? sender, string id,bool isActive);
+
+        private void cbxIsActive_Click(object sender, RoutedEventArgs e)
+        {
+            if (CharacterIsActiveChanged != null)
+                CharacterIsActiveChanged.Invoke(this, this.CustomText, cbxIsActive.IsChecked.GetValueOrDefault());
         }
     }
 }
