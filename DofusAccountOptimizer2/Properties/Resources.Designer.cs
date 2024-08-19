@@ -268,6 +268,15 @@ namespace DofusAccountOptimizer2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string edit_key {
+            get {
+                return ResourceManager.GetString("edit_key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have already a Character with this name.
         /// </summary>
         public static string error_already_exists {
@@ -327,6 +336,15 @@ namespace DofusAccountOptimizer2.Properties {
         public static string order_windows {
             get {
                 return ResourceManager.GetString("order_windows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Selected.
+        /// </summary>
+        public static string remove_selected {
+            get {
+                return ResourceManager.GetString("remove_selected", resourceCulture);
             }
         }
     }

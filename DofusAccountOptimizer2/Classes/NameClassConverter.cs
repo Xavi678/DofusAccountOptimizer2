@@ -21,13 +21,7 @@ namespace DofusAccountOptimizer2.Classes
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string strValue = value as string;
-            DateTime resultDateTime;
-            if (DateTime.TryParse(strValue, out resultDateTime))
-            {
-                return resultDateTime;
-            }
-            return DependencyProperty.UnsetValue;
+            throw new NotImplementedException();
         }
     }
 }

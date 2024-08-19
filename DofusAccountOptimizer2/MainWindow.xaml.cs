@@ -31,6 +31,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Markup;
 using System.Globalization;
+using System.Windows.Threading;
+using System.Net;
 
 namespace DofusAccountOptimizer2
 {
@@ -43,7 +45,7 @@ namespace DofusAccountOptimizer2
         private static CollectionViewSource personatgeViewSource;
         DofusContext dofusContext = new DofusContext();
         //static private List<Personatge> accounts = new List<Personatge>();
-        static System.Timers.Timer windowChecker;
+        static DispatcherTimer windowChecker;
         static Dictionary<string, Process> ProcessList = new Dictionary<string, Process>();
         private static ManagementEventWatcher startWatch;
 
@@ -72,6 +74,12 @@ namespace DofusAccountOptimizer2
             InitializeComponent();
 
             personatgeViewSource = (CollectionViewSource)FindResource(nameof(personatgeViewSource));
+            dofusContext.Personatges.LoadAsync();
+            dofusContext.Classes.LoadAsync();
+            var obsCollection = dofusContext.Personatges.Local.ToObservableCollection();
+            ItemsCount = obsCollection.Count;
+            // bind to the source
+            personatgeViewSource.Source = obsCollection;
             //DataContext = this;
             //db.Database.Log = X => { Console.WriteLine(X); };
             var trobat = dofusContext.Configuracios.FirstOrDefault();
@@ -98,11 +106,28 @@ namespace DofusAccountOptimizer2
                 dofusContext.SaveChanges();
             }
 
-            (_hookID, _hookIDM) = SetHook(_procKeyBoard, _proc);
+            _hookIDM = SetHookM(_proc);
+            _hookID= SetHookKey(_procKeyBoard);
             //GetPersonatges();
         }
 
-        private static (IntPtr, IntPtr) SetHook(HOOKPROC proc, HOOKPROC procM)
+        private static IntPtr SetHookM(HOOKPROC procM)
+        {
+            using (Process curProcess = Process.GetCurrentProcess())
+            using (ProcessModule curModule = curProcess.MainModule!)
+            {
+                unsafe
+                {
+                    fixed (char* modName = curModule.ModuleName)
+                    {
+                        return (PInvoke.SetWindowsHookEx(Windows.Win32.UI.WindowsAndMessaging.WINDOWS_HOOK_ID.WH_MOUSE_LL, procM, PInvoke.GetModuleHandle(modName), 0));
+                    }
+                }
+
+
+            }
+        }
+        private static IntPtr SetHookKey(HOOKPROC proc)
         {
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule!)
@@ -112,8 +137,6 @@ namespace DofusAccountOptimizer2
                     fixed (char* modName = curModule.ModuleName)
                     {
                         return (PInvoke.SetWindowsHookEx(Windows.Win32.UI.WindowsAndMessaging.WINDOWS_HOOK_ID.WH_KEYBOARD_LL, proc,
-    PInvoke.GetModuleHandle(modName), 0),
-    PInvoke.SetWindowsHookEx(Windows.Win32.UI.WindowsAndMessaging.WINDOWS_HOOK_ID.WH_MOUSE_LL, procM,
     PInvoke.GetModuleHandle(modName), 0));
                     }
                 }
@@ -124,6 +147,7 @@ namespace DofusAccountOptimizer2
         private static LRESULT HookCallback(int code, WPARAM wParam, LPARAM lParam)
         {
             int vkCode = Marshal.ReadInt32(lParam);
+            Console.WriteLine(vkCode);
             if (code >= 0 && ((wParam == WM_KEYDOWN && vkCode == handleKey)))
             {
                 HandleHook();
@@ -337,16 +361,18 @@ namespace DofusAccountOptimizer2
         {
             if (@checked)
             {
+                
                 if (windowChecker == null)
                 {
-                    windowChecker = new System.Timers.Timer();
+                    windowChecker = new DispatcherTimer();
                 }
                 windowChecker.Stop();
 
-                windowChecker.Interval = 60000;
-                windowChecker.Elapsed += WindowChecker_Elapsed;
+                windowChecker.Interval =TimeSpan.FromMilliseconds( 60000);
+                windowChecker.Tick += WindowChecker_Elapsed;
                 if (Process.GetProcessesByName("Dofus").Count() != 0)
                 {
+                    SetWindowsIcons();
                     windowChecker.Start();
                 }
 
@@ -367,23 +393,22 @@ namespace DofusAccountOptimizer2
                 if (windowChecker != null)
                 {
                     windowChecker.Stop();
-                    windowChecker.Dispose();
                 }
             }
         }
 
-        private static void WindowChecker_Elapsed(object? sender, ElapsedEventArgs e)
+        private static void WindowChecker_Elapsed(object? sender, EventArgs e)
         {
             SetWindowsIcons();
         }
         private static void SetWindowsIcons()
         {
+            
             var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
             var allProcess = GetAllProcess();
             if (allProcess == null || (allProcess != null && allProcess.Count == 0))
             {
                 windowChecker.Stop();
-                windowChecker.Dispose();
             }
             else
             {
@@ -411,7 +436,7 @@ namespace DofusAccountOptimizer2
                 {
                     var c = db.Classes.First(x => x.Id == p.IdClasse);
                     img = c.Foto;
-                    title = $"{c.Nom} - {p.Nom} Dofus";
+                    title = $"{DofusAccountOptimizer2.Properties.Resources.ResourceManager.GetString($"class_{c.Id}")} - {p.Nom} Dofus";
                 }
                 if (img != null)
                 {
@@ -474,12 +499,7 @@ namespace DofusAccountOptimizer2
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var mw = sender as MainWindow;
-            await dofusContext.Personatges.LoadAsync();
-            await dofusContext.Classes.LoadAsync();
-            var obsCollection = dofusContext.Personatges.Local.ToObservableCollection();
-            ItemsCount = obsCollection.Count;
-            // bind to the source
-            personatgeViewSource.Source = obsCollection;
+
 
 
 
@@ -609,6 +629,7 @@ namespace DofusAccountOptimizer2
         private void cbxCanviIcones_Click(object sender, RoutedEventArgs e)
         {
             bool @checked = cbxCanviIcones.IsChecked.GetValueOrDefault();
+
             StartIconsChecker(@checked);
 
             var trobat = dofusContext.Configuracios.First();
@@ -750,6 +771,14 @@ namespace DofusAccountOptimizer2
         {
             Help help = new Help();
             help.ShowDialog();
+        }
+
+        private void btnChangekey_Click(object sender, RoutedEventArgs e)
+        {
+            PInvoke.UnhookWindowsHookEx(new HHOOK(_hookID));
+            EditKey editKey = new EditKey();
+            editKey.ShowDialog();
+            SetHookKey(_procKeyBoard);
         }
     }
 }

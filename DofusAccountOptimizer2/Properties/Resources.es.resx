@@ -186,6 +186,9 @@
   <data name="class_9" xml:space="preserve">
     <value>HIPERMAGO</value>
   </data>
+  <data name="edit_key" xml:space="preserve">
+    <value>Editar</value>
+  </data>
   <data name="error_already_exists" xml:space="preserve">
     <value>Ya tienes un Personaje creado con este nombre</value>
   </data>
@@ -206,5 +209,8 @@
   </data>
   <data name="order_windows" xml:space="preserve">
     <value>Ordenar las ventanas</value>
+  </data>
+  <data name="remove_selected" xml:space="preserve">
+    <value>Borrar los Seleccionados</value>
   </data>
 </root>
