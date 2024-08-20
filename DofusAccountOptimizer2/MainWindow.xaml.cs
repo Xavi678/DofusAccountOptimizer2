@@ -66,7 +66,7 @@ namespace DofusAccountOptimizer2
         private static HOOKPROC _procKeyBoard = MainWindow.HookCallback;
         static int window = 0;
         bool isOrdered = false;
-
+        public static List<int> keyCodes = new List<int>();
         public static int ItemsCount { get; set; } = -1;
         public string LanguageCode { get; set; } = "en";
         public MainWindow()
@@ -90,16 +90,19 @@ namespace DofusAccountOptimizer2
                 {
                     StartIconsChecker(updIcons);
                 }
+
+
                 cbxCanviIcones.IsChecked = updIcons;
                 LanguageCode = trobat.Language;
-                tbxKey.Text = ((Key)trobat.Key).ToString();
+                //tbxKey.Text = ((Key)trobat.Key).ToString();
             }
             else
             {
+                MainWindow.keyCodes = new List<int>() { 90 };
                 var c = new Configuracio()
                 {
                     Id = 1,
-
+                    KeyCodes = "90"
                 };
                 c.SetUpdateIcons(false);
                 dofusContext.Configuracios.Add(c);
@@ -107,7 +110,7 @@ namespace DofusAccountOptimizer2
             }
 
             _hookIDM = SetHookM(_proc);
-            _hookID= SetHookKey(_procKeyBoard);
+            _hookID = SetHookKey(_procKeyBoard);
             //GetPersonatges();
         }
 
@@ -148,9 +151,26 @@ namespace DofusAccountOptimizer2
         {
             int vkCode = Marshal.ReadInt32(lParam);
             Console.WriteLine(vkCode);
-            if (code >= 0 && ((wParam == WM_KEYDOWN && vkCode == handleKey)))
+            if (code >= 0 && ((wParam == WM_KEYDOWN && keyCodes.Contains(vkCode))))
             {
-                HandleHook();
+                bool areAllClicked = true;
+                if (keyCodes.Count > 1)
+                {
+                    foreach (var keyCode in keyCodes.Where(x => x != vkCode))
+                    {
+                        var keyState = PInvoke.GetKeyState(keyCode);
+                        Debug.WriteLine($"{(System.Windows.Forms.Keys)keyCode}: {keyState}");
+                        if (keyState >= 0)
+                        {
+                            areAllClicked = false;
+                        }
+                    }
+                }
+                if (areAllClicked)
+                {
+                    Debug.WriteLine("Hooked");
+                    HandleHook();
+                }
                 //SetForegroundWindow(currentIntpr);
             }
             return PInvoke.CallNextHookEx(new HHOOK(_hookID), code, wParam, lParam);
@@ -361,14 +381,14 @@ namespace DofusAccountOptimizer2
         {
             if (@checked)
             {
-                
+
                 if (windowChecker == null)
                 {
                     windowChecker = new DispatcherTimer();
                 }
                 windowChecker.Stop();
 
-                windowChecker.Interval =TimeSpan.FromMilliseconds( 60000);
+                windowChecker.Interval = TimeSpan.FromMilliseconds(60000);
                 windowChecker.Tick += WindowChecker_Elapsed;
                 if (Process.GetProcessesByName("Dofus").Count() != 0)
                 {
@@ -403,7 +423,7 @@ namespace DofusAccountOptimizer2
         }
         private static void SetWindowsIcons()
         {
-            
+
             var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
             var allProcess = GetAllProcess();
             if (allProcess == null || (allProcess != null && allProcess.Count == 0))
@@ -499,8 +519,9 @@ namespace DofusAccountOptimizer2
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var mw = sender as MainWindow;
-
-
+            var keyCodes = dofusContext.Configuracios.FirstOrDefault()?.KeyCodes.Split("|");
+            MainWindow.keyCodes = keyCodes.Select(x => Convert.ToInt32(x)).ToList();
+            tbxKey.Text = string.Join(" + ", MainWindow.keyCodes.Select(x => (System.Windows.Forms.Keys)x));
 
 
         }
@@ -616,7 +637,7 @@ namespace DofusAccountOptimizer2
         {
             var key = e.Key;
 
-            dofusContext.Configuracios.First().Key = handleKey = (int)key;
+            //dofusContext.Configuracios.First().Key = handleKey = (int)key;
             dofusContext.SaveChanges();
 
 
@@ -776,8 +797,17 @@ namespace DofusAccountOptimizer2
         private void btnChangekey_Click(object sender, RoutedEventArgs e)
         {
             PInvoke.UnhookWindowsHookEx(new HHOOK(_hookID));
+            var trobat = dofusContext.Configuracios.First();
+
             EditKey editKey = new EditKey();
-            editKey.ShowDialog();
+            editKey.KeyCodes = new ObservableCollection<int>(trobat.KeyCodes.Split("|").Select(x => Convert.ToInt32(x)));
+            if (editKey.ShowDialog().GetValueOrDefault())
+            {
+                MainWindow.keyCodes = editKey.KeyCodes.ToList();
+                trobat.KeyCodes = String.Join("|", editKey.KeyCodes);
+                tbxKey.Text = String.Join(" + ", editKey.KeyCodes.Select(x => $"{(System.Windows.Forms.Keys)x}"));
+                dofusContext.SaveChanges();
+            }
             SetHookKey(_procKeyBoard);
         }
     }

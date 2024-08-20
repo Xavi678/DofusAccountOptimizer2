@@ -7,7 +7,7 @@ namespace DofusAccountOptimizer2.Models
     {
         public long Id { get; set; }
         public long UpdateIcons { get; set; }
-        public long Key { get; set; }
+        public string KeyCodes { get; set; } = null!;
         public long OrderWindows { get; set; }
         public string Language { get; set; } = null!;
     }

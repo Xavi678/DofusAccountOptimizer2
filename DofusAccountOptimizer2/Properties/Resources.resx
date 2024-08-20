@@ -123,6 +123,9 @@
   <data name="add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="change_icons" xml:space="preserve">
     <value>Change icons</value>
   </data>
@@ -186,6 +189,9 @@
   <data name="class_9" xml:space="preserve">
     <value>HUPPERMAGE</value>
   </data>
+  <data name="clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
   <data name="edit_key" xml:space="preserve">
     <value>Edit</value>
   </data>
@@ -201,6 +207,12 @@
   <data name="key_swap_windows" xml:space="preserve">
     <value>Key to switch between windows</value>
   </data>
+  <data name="max_key_codes" xml:space="preserve">
+    <value>Max 3 Keys</value>
+  </data>
+  <data name="message_keys" xml:space="preserve">
+    <value>Press the keys you want to use to siwtch between and then press save (3 keys Max)</value>
+  </data>
   <data name="name" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -212,5 +224,8 @@
   </data>
   <data name="remove_selected" xml:space="preserve">
     <value>Remove Selected</value>
+  </data>
+  <data name="save" xml:space="preserve">
+    <value>Save</value>
   </data>
 </root>

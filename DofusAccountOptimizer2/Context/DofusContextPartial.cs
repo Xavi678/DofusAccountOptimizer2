@@ -35,7 +35,7 @@ namespace DofusAccountOptimizer2.Context
 
 
             modelBuilder.Entity<Classe>().HasData(classes);
-            modelBuilder.Entity<Configuracio>().HasData(new Configuracio() { Id = 1, UpdateIcons = 0, Key = 90, OrderWindows = 0 });
+            modelBuilder.Entity<Configuracio>().HasData(new Configuracio() { Id = 1, UpdateIcons = 0,KeyCodes="90", OrderWindows = 0 });
         }
     }
 }

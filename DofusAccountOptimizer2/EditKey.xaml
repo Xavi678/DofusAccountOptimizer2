@@ -7,14 +7,15 @@
         xmlns:classes="clr-namespace:DofusAccountOptimizer2.Classes"
         xmlns:prop="clr-namespace:DofusAccountOptimizer2.Properties"
         mc:Ignorable="d"
-        Title="EditKey" Height="200" Width="450" WindowStartupLocation="CenterScreen">
+        Title="EditKey" Height="200" Width="450" WindowStartupLocation="CenterScreen" Closed="Window_Closed"    >
     <Window.Resources>
         <classes:KeyConverter x:Key="keyConverter" />
     </Window.Resources>
     <Grid>
-        <Label Content="Press the keys you want to use to siwtch between and then press save"></Label>
-        <TextBlock x:Name="textBlock1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" Text="{Binding KeyCodes,Converter={StaticResource keyConverter}}" Width="200" FontSize="14" />
-        <Button Content="Save" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,5,5,0" Click="Button_Click"></Button>
-        <Button Content="Cancel" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,5,50,0"></Button>
+        <Label Content="{x:Static prop:Resources.message_keys}"></Label>
+        <TextBlock x:Name="textBlock1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" Text="{Binding KeyCodes,Converter={StaticResource keyConverter}}" FontSize="14" Width="auto" Margin="10,0,10,0" TextWrapping="WrapWithOverflow"/>
+        <Button x:Name="btnSave" Content="{x:Static prop:Resources.save}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,5,5,5" Click="btnSave_Click"/>
+        <Button x:Name="btnCancel" Content="{x:Static prop:Resources.cancel}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,5,50,5" Click="btnCancel_Click"/>
+        <Button x:Name="btnClear"  Content="{x:Static prop:Resources.clear}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,102,5" Click="btnClear_Click"   ></Button>
     </Grid>
 </Window>

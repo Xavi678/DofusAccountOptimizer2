@@ -53,7 +53,9 @@ namespace DofusAccountOptimizer2.Context
                     .ValueGeneratedNever()
                     .HasColumnName("ID");
 
-                entity.Property(e => e.Key).HasColumnName("KEY");
+                entity.Property(e => e.KeyCodes)
+                    .HasColumnType("NVARCHAR(100)")
+                    .HasColumnName("KEY_CODES");
 
                 entity.Property(e => e.Language)
                     .HasColumnType("VARCHAR(2)")

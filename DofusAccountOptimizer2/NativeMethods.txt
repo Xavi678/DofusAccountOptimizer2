@@ -12,3 +12,4 @@ FocusWindow
 CallNextHookEx
 UnhookWindowsHookEx
 GetLastError
+GetKeyState

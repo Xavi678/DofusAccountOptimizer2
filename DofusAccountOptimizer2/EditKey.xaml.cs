@@ -32,7 +32,7 @@ namespace DofusAccountOptimizer2
         private static IntPtr _hookID;
         private HOOKPROC _prockeyboard = EditKey.HookCallback;
 
-        public static ObservableCollection<int> keyCodes= new ObservableCollection<int>();
+        private static ObservableCollection<int> keyCodes= new ObservableCollection<int>();
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -49,7 +49,6 @@ namespace DofusAccountOptimizer2
             set
             {
                 keyCodes = value;
-                RaisePropertyChanged("KeyCodes");
 
             }
         }
@@ -101,10 +100,35 @@ namespace DofusAccountOptimizer2
             return PInvoke.CallNextHookEx(new HHOOK(_hookID), code, wParam, lParam);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-           
+            this.DialogResult = false;
+            this.Close();
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (KeyCodes.Count()<=3)
+            {
+                this.DialogResult = true;
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show(Properties.Resources.max_key_codes,"Error",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
             
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            KeyCodes.Clear();
+            this.RaisePropertyChanged("KeyCodes");
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            PInvoke.UnhookWindowsHookEx(new HHOOK(_hookID));
         }
     }
 }
