@@ -62,7 +62,7 @@
         <Button x:Name="btnChangeIcons" Content="{x:Static prop:Resources.change_icons}" Height="30" Width="120" Margin="200,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangeIcons_Click"  />
         <Button x:Name="btnAdd" Content="{x:Static prop:Resources.add}" Height="30" Width="55" Margin="0,2,10,0" VerticalAlignment="Top" Click="btnAdd_Click" HorizontalAlignment="Right" />
         <Button x:Name="btnHelp" Content="{x:Static prop:Resources.help}" Height="30" Width="55" Margin="0,2,70,0" VerticalAlignment="Top" HorizontalAlignment="Right" Click="btnHelp_Click" />
-        <Button x:Name="btnChangeOrder" Content="{x:Static prop:Resources.order_windows}" Height="30" Width="160" Margin="10,0,520,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangeOrder_Click" />
+        <Button x:Name="btnChangeOrder" Content="{x:Static prop:Resources.order_windows}" Height="30" Width="160" Margin="10,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangeOrder_Click" />
         <Button x:Name="btnChangekey" Content="{x:Static prop:Resources.edit_key}" Margin="221,0,0,45" Height="30" Width="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangekey_Click"/>
         <!--<Label x:Name="label1" Content="{Binding Converter={StaticResource provaConverter},ConverterParameter={StaticResource ChangeIcons},Path=LanguageCode, RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Left" Margin="291,17,0,0" VerticalAlignment="Top" >
 </Label>-->
