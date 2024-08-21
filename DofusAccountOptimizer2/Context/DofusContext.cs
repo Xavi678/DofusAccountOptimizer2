@@ -18,6 +18,7 @@ namespace DofusAccountOptimizer2.Context
         }
 
         public virtual DbSet<Classe> Classes { get; set; } = null!;
+        public virtual DbSet<Composition> Compositions { get; set; } = null!;
         public virtual DbSet<Configuracio> Configuracios { get; set; } = null!;
         public virtual DbSet<Personatge> Personatges { get; set; } = null!;
 
@@ -45,6 +46,19 @@ namespace DofusAccountOptimizer2.Context
                 entity.Property(e => e.Nom).HasColumnName("NOM");
             });
 
+            modelBuilder.Entity<Composition>(entity =>
+            {
+                entity.ToTable("COMPOSITIONS");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.Nom)
+                    .HasColumnName("NOM")
+                    .HasDefaultValueSql("\"DEFAULT\"");
+            });
+
             modelBuilder.Entity<Configuracio>(entity =>
             {
                 entity.ToTable("CONFIGURACIO");
@@ -62,6 +76,10 @@ namespace DofusAccountOptimizer2.Context
                     .HasColumnName("LANGUAGE")
                     .HasDefaultValueSql("'en'");
 
+                entity.Property(e => e.LastCompositionId)
+                    .HasColumnName("LAST_COMPOSITION_ID")
+                    .HasDefaultValueSql("1");
+
                 entity.Property(e => e.OrderWindows).HasColumnName("ORDER_WINDOWS");
 
                 entity.Property(e => e.UpdateIcons).HasColumnName("UPDATE_ICONS");
@@ -77,6 +95,8 @@ namespace DofusAccountOptimizer2.Context
 
                 entity.Property(e => e.IdClasse).HasColumnName("ID_CLASSE");
 
+                entity.Property(e => e.IdComposition).HasColumnName("ID_COMPOSITION");
+
                 entity.Property(e => e.IsActive).HasColumnName("IS_ACTIVE");
 
                 entity.Property(e => e.Posicio).HasColumnName("POSICIO");
@@ -84,6 +104,10 @@ namespace DofusAccountOptimizer2.Context
                 entity.HasOne(d => d.IdClasseNavigation)
                     .WithMany(p => p.Personatges)
                     .HasForeignKey(d => d.IdClasse);
+
+                entity.HasOne(d => d.IdCompositionNavigation)
+                    .WithMany(p => p.Personatges)
+                    .HasForeignKey(d => d.IdComposition);
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -123,6 +123,9 @@
   <data name="add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="add_composition" xml:space="preserve">
+    <value>Add Composition</value>
+  </data>
   <data name="cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>

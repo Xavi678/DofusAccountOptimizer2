@@ -9,7 +9,9 @@ namespace DofusAccountOptimizer2.Models
         public long Posicio { get; set; }
         public long IdClasse { get; set; }
         public long IsActive { get; set; }
+        public long IdComposition { get; set; }
 
         public virtual Classe IdClasseNavigation { get; set; } = null!;
+        public virtual Composition IdCompositionNavigation { get; set; } = null!;
     }
 }

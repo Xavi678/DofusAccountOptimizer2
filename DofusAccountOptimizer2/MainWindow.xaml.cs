@@ -43,6 +43,7 @@ namespace DofusAccountOptimizer2
     {
 
         private static CollectionViewSource personatgeViewSource;
+        private static CollectionViewSource compositionsViewSource;
         DofusContext dofusContext = new DofusContext();
         //static private List<Personatge> accounts = new List<Personatge>();
         static DispatcherTimer windowChecker;
@@ -72,17 +73,23 @@ namespace DofusAccountOptimizer2
         public MainWindow()
         {
             InitializeComponent();
-
+            var trobat = dofusContext.Configuracios.FirstOrDefault();
             personatgeViewSource = (CollectionViewSource)FindResource(nameof(personatgeViewSource));
-            dofusContext.Personatges.LoadAsync();
+            compositionsViewSource = (CollectionViewSource)FindResource(nameof(compositionsViewSource));
+            var lastCompId = (trobat.LastCompositionId.HasValue ? trobat.LastCompositionId.Value : 1);
+            dofusContext.Personatges.Load();
             dofusContext.Classes.LoadAsync();
+            dofusContext.Compositions.LoadAsync();
             var obsCollection = dofusContext.Personatges.Local.ToObservableCollection();
             ItemsCount = obsCollection.Count;
+
             // bind to the source
             personatgeViewSource.Source = obsCollection;
+            compositionsViewSource.Source = dofusContext.Compositions.Local.ToObservableCollection();
             //DataContext = this;
             //db.Database.Log = X => { Console.WriteLine(X); };
-            var trobat = dofusContext.Configuracios.FirstOrDefault();
+
+
             if (trobat != null)
             {
                 bool updIcons = trobat.GetUpdateIcons();
@@ -91,7 +98,7 @@ namespace DofusAccountOptimizer2
                     StartIconsChecker(updIcons);
                 }
 
-
+                comboBoxCompositions.SelectedItem = dofusContext.Compositions.Local.Where(x => x.Id == lastCompId);
                 cbxCanviIcones.IsChecked = updIcons;
                 LanguageCode = trobat.Language;
                 //tbxKey.Text = ((Key)trobat.Key).ToString();
@@ -104,6 +111,7 @@ namespace DofusAccountOptimizer2
                     Id = 1,
                     KeyCodes = "90"
                 };
+                comboBoxCompositions.SelectedValue = 1;
                 c.SetUpdateIcons(false);
                 dofusContext.Configuracios.Add(c);
                 dofusContext.SaveChanges();
@@ -493,7 +501,7 @@ namespace DofusAccountOptimizer2
                 timer.Start();
             }
         }
-        private static void Timer_Elapsed(object sender,EventArgs e, uint processId)
+        private static void Timer_Elapsed(object sender, EventArgs e, uint processId)
         {
             var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
             var process = Process.GetProcesses().OfType<Process>().FirstOrDefault(x => x.Id == processId);
@@ -610,7 +618,8 @@ namespace DofusAccountOptimizer2
                             Nom = add.tbxName.Text,
                             Posicio = lastPosition,
                             IdClasse = classe.Id,
-                            IsActive = 1
+                            IsActive = 1,
+                            IdComposition = 1,
 
                         });
                         await dofusContext.SaveChangesAsync();
@@ -771,7 +780,7 @@ namespace DofusAccountOptimizer2
             if (found != null)
             {
                 personatges.Remove(found);
-                dofusContext.SaveChanges();
+                var r=dofusContext.SaveChanges();
                 personatgeViewSource.View.Refresh();
             }
         }
@@ -809,6 +818,21 @@ namespace DofusAccountOptimizer2
                 dofusContext.SaveChanges();
             }
             SetHookKey(_procKeyBoard);
+        }
+
+        private void btnAddComp_Click(object sender, RoutedEventArgs e)
+        {
+
+            AddComposition addComposition = new AddComposition();
+            if (addComposition.ShowDialog().GetValueOrDefault()) {
+                var compo = new Composition()
+                {
+                    Nom = addComposition.CompositionName
+                };
+                dofusContext.Compositions.Add(compo);
+                dofusContext.SaveChanges();
+
+            }
         }
     }
 }

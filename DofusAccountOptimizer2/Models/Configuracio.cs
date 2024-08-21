@@ -10,5 +10,6 @@ namespace DofusAccountOptimizer2.Models
         public string KeyCodes { get; set; } = null!;
         public long OrderWindows { get; set; }
         public string Language { get; set; } = null!;
+        public long? LastCompositionId { get; set; }
     }
 }

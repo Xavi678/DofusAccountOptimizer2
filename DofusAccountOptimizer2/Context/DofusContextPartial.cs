@@ -16,11 +16,11 @@ namespace DofusAccountOptimizer2.Context
             classes.Add(new Classe() { Id = 2, Foto = "cra", Nom = "CRA" });
             classes.Add(new Classe() { Id = 3, Foto = "ecaflip", Nom = "ECAFLIP" });
             classes.Add(new Classe() { Id = 4, Foto = "eliotrope", Nom = "ELIOTROPE" });
-            classes.Add(new Classe() {  Id     = 5, Foto = "eniripsa", Nom = "ENIRIPSA" });
+            classes.Add(new Classe() { Id = 5, Foto = "eniripsa", Nom = "ENIRIPSA" });
             classes.Add(new Classe() { Id = 6, Foto = "enutrof", Nom = "ENUTROF" });
             classes.Add(new Classe() { Id = 7, Foto = "feca", Nom = "FECA" });
             classes.Add(new Classe() { Id = 8, Foto = "forgelance", Nom = "FORGELANCE" });
-            classes.Add(new Classe() {  Id = 9, Foto = "huppermage", Nom = "HUPPERMAGE" });
+            classes.Add(new Classe() { Id = 9, Foto = "huppermage", Nom = "HUPPERMAGE" });
             classes.Add(new Classe() { Id = 10, Foto = "iop", Nom = "IOP" });
             classes.Add(new Classe() { Id = 11, Foto = "osamodas", Nom = "OSAMODAS" });
             classes.Add(new Classe() { Id = 12, Foto = "ouginak", Nom = "OUGINAK" });
@@ -35,7 +35,8 @@ namespace DofusAccountOptimizer2.Context
 
 
             modelBuilder.Entity<Classe>().HasData(classes);
-            modelBuilder.Entity<Configuracio>().HasData(new Configuracio() { Id = 1, UpdateIcons = 0,KeyCodes="90", OrderWindows = 0 });
+            modelBuilder.Entity<Configuracio>().HasData(new Configuracio() { Id = 1, UpdateIcons = 0, KeyCodes = "90", OrderWindows = 0 });
+            modelBuilder.Entity<Composition>().HasData(new Composition() { Id=1, Nom = "DEFAULT" });
         }
     }
 }

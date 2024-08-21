@@ -1,0 +1,14 @@
+﻿<Window x:Class="DofusAccountOptimizer2.AddComposition"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DofusAccountOptimizer2"
+        xmlns:prop="clr-namespace:DofusAccountOptimizer2.Properties"
+        mc:Ignorable="d"
+        Title="AddComposition" Height="100" Width="200" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Width="120"/>
+        <Button x:Name="btnSave" Content="{x:Static prop:Resources.save}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" FontSize="14" Click="btnSave_Click"></Button>
+    </Grid>
+</Window>

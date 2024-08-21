@@ -79,6 +79,15 @@ namespace DofusAccountOptimizer2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Composition.
+        /// </summary>
+        public static string add_composition {
+            get {
+                return ResourceManager.GetString("add_composition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string cancel {

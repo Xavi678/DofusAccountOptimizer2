@@ -13,7 +13,7 @@
         Loaded="Window_Loaded" 
         WindowStartupLocation="CenterScreen" 
         WindowStyle="ThreeDBorderWindow" 
-        FontSize="14" Height="430" Width="690" ResizeMode="CanMinimize" 
+        FontSize="14" Height="460" Width="690" ResizeMode="CanMinimize" 
         Closing="Window_Closing" >
     <Window.Resources>
         <CollectionViewSource x:Key="personatgeViewSource">
@@ -23,7 +23,9 @@
                 </scm:SortDescription>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-
+        <CollectionViewSource x:Key="compositionsViewSource">
+            
+        </CollectionViewSource>
     </Window.Resources>
     <Grid>
         <ComboBox x:Name="comboBox" Margin="10,2,0,0" Height="30" Width="150" VerticalAlignment="Top" HorizontalAlignment="Left" SelectionChanged="comboBox_SelectionChanged" SelectedValue="{Binding Path=LanguageCode, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Window}}" SelectedValuePath="Tag" >
@@ -39,7 +41,15 @@
         </ComboBox>
         <CheckBox x:Name="cbxCanviIcones" Margin="10,40,0,0" VerticalAlignment="Top" Content="{x:Static prop:Resources.change_icons_auto}" Checked="cbxCanviIcones_Checked" ClickMode="Press" IsChecked="False" Cursor="Hand" Click="cbxCanviIcones_Click" />
         <CheckBox Visibility="Hidden" x:Name="cbxOrder" Margin="10,60,0,0" Content="Ordenar les finestres" VerticalAlignment="Top" ClickMode="Press" IsChecked="False" Cursor="Hand" Click="cbxOrder_Click" />
-        <ScrollViewer Margin="10,80,10,80" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
+        <ComboBox x:Name="comboBoxCompositions" Margin="10,70,0,0" Height="30" Width="150" VerticalAlignment="Top" HorizontalAlignment="Left"  ItemsSource="{Binding Source={StaticResource compositionsViewSource}}" FontSize="12" SelectedValuePath="{Binding Path=Id}" >
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding Path=Nom}"></Label>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button x:Name="btnAddComp" Height="30"  Content="{x:Static prop:Resources.add_composition}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="175,70,0,0" Width="130" Click="btnAddComp_Click"></Button>
+        <ScrollViewer Margin="10,110,10,80" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
             <ItemsControl Name="itemsControl" ItemsSource="{Binding Source={StaticResource personatgeViewSource}}" BorderBrush="Black" BorderThickness="2">
                 <ItemsControl.ItemsPanel >
                     <ItemsPanelTemplate >
