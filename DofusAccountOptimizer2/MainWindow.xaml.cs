@@ -486,14 +486,14 @@ namespace DofusAccountOptimizer2
             {
                 var f = ((IntPtr)e.NewEvent);
                 var procesid = (uint)e.NewEvent.Properties["ProcessID"].Value;
-                System.Timers.Timer timer = new System.Timers.Timer(5000);
+
+                DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Background, Application.Current.Dispatcher);
+                timer.Interval = TimeSpan.FromSeconds(5);
+                timer.Tick += (s, e1) => Timer_Elapsed(s, e1, procesid);
                 timer.Start();
-                timer.Elapsed += (s, e1) => Timer_Elapsed(s, e1, procesid);
-
-
             }
         }
-        private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e, uint processId)
+        private static void Timer_Elapsed(object sender,EventArgs e, uint processId)
         {
             var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
             var process = Process.GetProcesses().OfType<Process>().FirstOrDefault(x => x.Id == processId);
@@ -502,13 +502,13 @@ namespace DofusAccountOptimizer2
                 if (accounts.FirstOrDefault(x => process.MainWindowTitle.Contains(x.Nom) && !process.MainWindowTitle.EndsWith("Dofus")) != null)
                 {
                     windowChecker.Start();
-                    ((System.Timers.Timer)sender).Stop();
+                    ((DispatcherTimer)sender).Stop();
                     SetSettings(process);
                 }
             }
             else
             {
-                ((System.Timers.Timer)sender).Stop();
+                ((DispatcherTimer)sender).Stop();
             }
         }
         private void Window_Initialized(object sender, EventArgs e)
