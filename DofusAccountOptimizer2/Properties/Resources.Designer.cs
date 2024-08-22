@@ -385,6 +385,15 @@ namespace DofusAccountOptimizer2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove Composition.
+        /// </summary>
+        public static string remove_composition {
+            get {
+                return ResourceManager.GetString("remove_composition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove Selected.
         /// </summary>
         public static string remove_selected {

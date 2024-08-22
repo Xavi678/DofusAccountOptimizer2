@@ -70,17 +70,19 @@ namespace DofusAccountOptimizer2
         public static List<int> keyCodes = new List<int>();
         public static int ItemsCount { get; set; } = -1;
         public string LanguageCode { get; set; } = "en";
+        public long lastCompId { get; set; }
         public MainWindow()
         {
             InitializeComponent();
             var trobat = dofusContext.Configuracios.FirstOrDefault();
             personatgeViewSource = (CollectionViewSource)FindResource(nameof(personatgeViewSource));
             compositionsViewSource = (CollectionViewSource)FindResource(nameof(compositionsViewSource));
-            var lastCompId = (trobat.LastCompositionId.HasValue ? trobat.LastCompositionId.Value : 1);
+            lastCompId = (trobat.LastCompositionId.HasValue ? trobat.LastCompositionId.Value : 1);
             dofusContext.Personatges.Load();
             dofusContext.Classes.LoadAsync();
             dofusContext.Compositions.LoadAsync();
             var obsCollection = dofusContext.Personatges.Local.ToObservableCollection();
+            
             ItemsCount = obsCollection.Count;
 
             // bind to the source
@@ -602,6 +604,7 @@ namespace DofusAccountOptimizer2
         {
 
             var clases = await dofusContext.Classes.AsNoTracking().ToListAsync();
+            var compAct = (Composition)comboBoxCompositions.SelectedItem;
             if ((await dofusContext.Personatges.CountAsync()) < 8)
             {
                 Add add = new Add(clases);
@@ -609,7 +612,7 @@ namespace DofusAccountOptimizer2
                 if (add.ShowDialog().GetValueOrDefault())
                 {
                     Classe classe = (Classe)add.cbxClasse.SelectedItem;
-                    var last = await dofusContext.Personatges.OrderBy(x => x.Posicio).LastOrDefaultAsync();
+                    var last = await dofusContext.Personatges.Where(x=>x.IdComposition==compAct.Id).OrderBy(x => x.Posicio ).LastOrDefaultAsync();
                     var lastPosition = last != null ? last.Posicio + 1 : 0;
                     if (dofusContext.Personatges.FirstOrDefault(x => x.Nom == classe.Nom) == null)
                     {
@@ -619,7 +622,7 @@ namespace DofusAccountOptimizer2
                             Posicio = lastPosition,
                             IdClasse = classe.Id,
                             IsActive = 1,
-                            IdComposition = 1,
+                            IdComposition = compAct.Id,
 
                         });
                         await dofusContext.SaveChangesAsync();
@@ -830,8 +833,31 @@ namespace DofusAccountOptimizer2
                     Nom = addComposition.CompositionName
                 };
                 dofusContext.Compositions.Add(compo);
+                
                 dofusContext.SaveChanges();
+                comboBoxCompositions.SelectedItem = compo;
+            }
+        }
 
+        private void btnRemoveComp_Click(object sender, RoutedEventArgs e)
+        {
+            var item=(Composition)comboBoxCompositions.SelectedItem;
+
+            dofusContext.Compositions.Remove(item);
+            dofusContext.SaveChanges();
+            //compositionsViewSource.View.Refresh();
+        }
+
+        private void comboBoxCompositions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var comp=(Composition)comboBoxCompositions.SelectedItem;
+            if (comp != null)
+            {
+                personatgeViewSource.View.Filter = x =>
+                {
+                    var p = (Personatge)x;
+                    return p.IdComposition == comp.Id;
+                };
             }
         }
     }
