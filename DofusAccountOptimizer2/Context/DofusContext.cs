@@ -87,15 +87,15 @@ namespace DofusAccountOptimizer2.Context
 
             modelBuilder.Entity<Personatge>(entity =>
             {
-                entity.HasKey(e => e.Nom);
+                entity.HasKey(e => new { e.Nom, e.IdComposition });
 
                 entity.ToTable("PERSONATGE");
 
                 entity.Property(e => e.Nom).HasColumnName("NOM");
 
-                entity.Property(e => e.IdClasse).HasColumnName("ID_CLASSE");
-
                 entity.Property(e => e.IdComposition).HasColumnName("ID_COMPOSITION");
+
+                entity.Property(e => e.IdClasse).HasColumnName("ID_CLASSE");
 
                 entity.Property(e => e.IsActive).HasColumnName("IS_ACTIVE");
 

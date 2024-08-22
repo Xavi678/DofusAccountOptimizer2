@@ -247,7 +247,7 @@ namespace DofusAccountOptimizer2
         //}
         private static void HandleHook(bool forward = true)
         {
-            var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
+            var accounts = personatgeViewSource.View.Cast<Personatge>();
             var list = Process.GetProcesses().ToList();
             var actual = PInvoke.GetForegroundWindow();
             var t = list.Where(x => x.ProcessName == "Dofus").ToList();
@@ -355,7 +355,7 @@ namespace DofusAccountOptimizer2
         }
         private static void FocusWindow(List<Process> t, Personatge p1, Process at)
         {
-            var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
+            var accounts = personatgeViewSource.View.Cast<Personatge>();
             if (at != null)
             {
                 PInvoke.ShowWindow(new Windows.Win32.Foundation.HWND(at.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOWMAXIMIZED);
@@ -434,7 +434,7 @@ namespace DofusAccountOptimizer2
         private static void SetWindowsIcons()
         {
 
-            var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
+            var accounts = personatgeViewSource.View.Cast<Personatge>();
             var allProcess = GetAllProcess();
             if (allProcess == null || (allProcess != null && allProcess.Count == 0))
             {
@@ -454,7 +454,7 @@ namespace DofusAccountOptimizer2
         }
         private static void SetSettings(Process process)
         {
-            var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
+            var accounts = personatgeViewSource.View.Cast<Personatge>();
             string img = null;
             string title = null;
             //var i=Icon.ExtractAssociatedIcon(process.MainModule.FileName);
@@ -505,7 +505,7 @@ namespace DofusAccountOptimizer2
         }
         private static void Timer_Elapsed(object sender, EventArgs e, uint processId)
         {
-            var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
+            var accounts = personatgeViewSource.View.Cast<Personatge>();
             var process = Process.GetProcesses().OfType<Process>().FirstOrDefault(x => x.Id == processId);
             if (process != null)
             {
@@ -689,7 +689,7 @@ namespace DofusAccountOptimizer2
 
         private void OrderWindows()
         {
-            var accounts = (ObservableCollection<Personatge>)personatgeViewSource.Source;
+            var accounts = personatgeViewSource.View.Cast<Personatge>();
             var allProcess = GetAllProcess();
             foreach (var account in accounts.OrderBy(x => x.Posicio))
             {
@@ -753,9 +753,10 @@ namespace DofusAccountOptimizer2
         {
             var caracter = ((Character)sender);
             var actualData = (Personatge)caracter.DataContext;
+            var comp=(Composition)comboBoxCompositions.SelectedItem;
             var personatges = (ObservableCollection<Personatge>)personatgeViewSource.Source;
 
-            var found = personatges.FirstOrDefault(x => x.Posicio == e.PosicioNova && x.Nom != actualData.Nom);
+            var found = personatges.FirstOrDefault(x => x.Posicio == e.PosicioNova && x.IdComposition==comp.Id && x.Nom != actualData.Nom);
             if (found != null)
             {
                 found.Posicio = e.PosicioAntiga;
