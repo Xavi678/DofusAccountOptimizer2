@@ -605,7 +605,7 @@ namespace DofusAccountOptimizer2
 
             var clases = await dofusContext.Classes.AsNoTracking().ToListAsync();
             var compAct = (Composition)comboBoxCompositions.SelectedItem;
-            if ((await dofusContext.Personatges.CountAsync()) < 8)
+            if ((await dofusContext.Personatges.Where(x=>x.IdComposition==compAct.Id).CountAsync()) < 8)
             {
                 Add add = new Add(clases);
 

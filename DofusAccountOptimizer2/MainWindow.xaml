@@ -13,7 +13,7 @@
         Loaded="Window_Loaded" 
         WindowStartupLocation="CenterScreen" 
         WindowStyle="ThreeDBorderWindow" 
-        FontSize="14" Height="460" Width="690" ResizeMode="CanMinimize" 
+        FontSize="14" Height="480" Width="690" ResizeMode="CanMinimize" 
         Closing="Window_Closing" >
     <Window.Resources>
         <CollectionViewSource x:Key="personatgeViewSource">
@@ -50,8 +50,8 @@
         </ComboBox>
         <Button x:Name="btnAddComp" Height="30"  Content="{x:Static prop:Resources.add_composition}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="175,70,0,0" Width="130" Click="btnAddComp_Click"></Button>
         <Button x:Name="btnRemoveComp" Height="30"  Content="{x:Static prop:Resources.remove_composition}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="320,70,0,0" Width="150" Click="btnRemoveComp_Click"></Button>
-        <ScrollViewer Margin="10,110,10,80" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
-            <ItemsControl Name="itemsControl" ItemsSource="{Binding Source={StaticResource personatgeViewSource}}" BorderBrush="Black" BorderThickness="2">
+        <ScrollViewer Margin="10,130,10,80" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
+            <ItemsControl Name="itemsControl" ItemsSource="{Binding Source={StaticResource personatgeViewSource}}" BorderBrush="Black" BorderThickness="2 0 2 2">
                 <ItemsControl.ItemsPanel >
                     <ItemsPanelTemplate >
                         <WrapPanel  Orientation="Horizontal" VerticalAlignment="Top" MaxWidth="666" >
@@ -71,10 +71,13 @@
         </Label>
         <TextBox x:Name="tbxKey" IsReadOnly="True" TextWrapping="Wrap" Text="TextBox" Width="auto"  Height="30" Margin="278,0,0,45" VerticalAlignment="Bottom" HorizontalAlignment="Left" TextAlignment="Center" />
         <Button x:Name="btnChangeIcons" Content="{x:Static prop:Resources.change_icons}" Height="30" Width="120" Margin="200,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangeIcons_Click"  />
-        <Button x:Name="btnAdd" Content="{x:Static prop:Resources.add}" Height="30" Width="55" Margin="0,2,10,0" VerticalAlignment="Top" Click="btnAdd_Click" HorizontalAlignment="Right" />
+        <Button x:Name="btnAdd" Height="20" Width="30" Margin="0,110,15,0" VerticalAlignment="Top" Click="btnAdd_Click" HorizontalAlignment="Right" >
+            <TextBlock  Margin="0,-8,0,0" FontSize="20">+</TextBlock>
+        </Button>
         <Button x:Name="btnHelp" Content="{x:Static prop:Resources.help}" Height="30" Width="55" Margin="0,2,70,0" VerticalAlignment="Top" HorizontalAlignment="Right" Click="btnHelp_Click" />
         <Button x:Name="btnChangeOrder" Content="{x:Static prop:Resources.order_windows}" Height="30" Width="160" Margin="10,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangeOrder_Click" />
         <Button x:Name="btnChangekey" Content="{x:Static prop:Resources.edit_key}" Margin="221,0,0,45" Height="30" Width="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangekey_Click"/>
+        <Border Margin="0,105,0,0" UseLayoutRounding="True" Width="650" BorderBrush="Black" BorderThickness="2 2 2 0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center" />
         <!--<Label x:Name="label1" Content="{Binding Converter={StaticResource provaConverter},ConverterParameter={StaticResource ChangeIcons},Path=LanguageCode, RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Left" Margin="291,17,0,0" VerticalAlignment="Top" >
 </Label>-->
 
