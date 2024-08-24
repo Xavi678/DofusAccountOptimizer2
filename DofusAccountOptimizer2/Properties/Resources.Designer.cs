@@ -295,6 +295,15 @@ namespace DofusAccountOptimizer2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Composition.
+        /// </summary>
+        public static string edit_composition {
+            get {
+                return ResourceManager.GetString("edit_composition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string edit_key {

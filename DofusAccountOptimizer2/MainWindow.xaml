@@ -41,7 +41,7 @@
         </ComboBox>
         <CheckBox x:Name="cbxCanviIcones" Margin="10,40,0,0" VerticalAlignment="Top" Content="{x:Static prop:Resources.change_icons_auto}" Checked="cbxCanviIcones_Checked" ClickMode="Press" IsChecked="False" Cursor="Hand" Click="cbxCanviIcones_Click" />
         <CheckBox Visibility="Hidden" x:Name="cbxOrder" Margin="10,60,0,0" Content="Ordenar les finestres" VerticalAlignment="Top" ClickMode="Press" IsChecked="False" Cursor="Hand" Click="cbxOrder_Click" />
-        <ComboBox x:Name="comboBoxCompositions" Margin="10,70,0,0" Height="30" Width="150" VerticalAlignment="Top" HorizontalAlignment="Left"  ItemsSource="{Binding Source={StaticResource compositionsViewSource}}" FontSize="12" SelectedValuePath="{Binding Path=Id}" SelectionChanged="comboBoxCompositions_SelectionChanged" >
+        <ComboBox x:Name="comboBoxCompositions" Margin="10,70,0,0" Height="30" Width="150" VerticalAlignment="Top" HorizontalAlignment="Left"  ItemsSource="{Binding Source={StaticResource compositionsViewSource}}" FontSize="12" SelectionChanged="comboBoxCompositions_SelectionChanged"  >
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <Label Content="{Binding Path=Nom}"></Label>
@@ -49,6 +49,7 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
         <Button x:Name="btnAddComp" Height="30"  Content="{x:Static prop:Resources.add_composition}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="175,70,0,0" Width="130" Click="btnAddComp_Click"></Button>
+        <Button x:Name="btnEditComp" Height="30"  Content="{x:Static prop:Resources.edit_composition}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="485,70,0,0" Width="130" Click="btnEditComp_Click"  ></Button>
         <Button x:Name="btnRemoveComp" Height="30"  Content="{x:Static prop:Resources.remove_composition}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="320,70,0,0" Width="150" Click="btnRemoveComp_Click"></Button>
         <ScrollViewer Margin="10,130,10,80" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
             <ItemsControl Name="itemsControl" ItemsSource="{Binding Source={StaticResource personatgeViewSource}}" BorderBrush="Black" BorderThickness="2 0 2 2">

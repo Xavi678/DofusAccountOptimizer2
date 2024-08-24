@@ -39,7 +39,7 @@ namespace DofusAccountOptimizer2
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
         private static CollectionViewSource personatgeViewSource;
@@ -71,6 +71,39 @@ namespace DofusAccountOptimizer2
         public static int ItemsCount { get; set; } = -1;
         public string LanguageCode { get; set; } = "en";
         public long lastCompId { get; set; }
+        public ObservableCollection<Composition> compositions_;
+        public ObservableCollection<Composition> Compositions
+        {
+            get
+            {
+                return compositions_;
+            }
+            set
+            {
+                compositions_ = value;
+                this.RaisePropertyChanged("Compositions");
+            }
+        }
+        private Composition selectedComposition;
+        public Composition SelectedComposition
+        {
+            get
+            {
+                return selectedComposition;
+            }
+            set
+            {
+                selectedComposition = value;
+                RaisePropertyChanged("SelectedComposition");
+            }
+        }
+        private void RaisePropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
         public MainWindow()
         {
             InitializeComponent();
@@ -82,12 +115,13 @@ namespace DofusAccountOptimizer2
             dofusContext.Classes.LoadAsync();
             dofusContext.Compositions.LoadAsync();
             var obsCollection = dofusContext.Personatges.Local.ToObservableCollection();
-            
+
             ItemsCount = obsCollection.Count;
 
             // bind to the source
             personatgeViewSource.Source = obsCollection;
-            compositionsViewSource.Source = dofusContext.Compositions.Local.ToObservableCollection();
+            compositions_ = dofusContext.Compositions.Local.ToObservableCollection();
+            compositionsViewSource.Source = compositions_;
             //DataContext = this;
             //db.Database.Log = X => { Console.WriteLine(X); };
 
@@ -99,8 +133,10 @@ namespace DofusAccountOptimizer2
                 {
                     StartIconsChecker(updIcons);
                 }
+                comboBoxCompositions.SelectedIndex = compositions_.IndexOf(dofusContext.Compositions.Local.First(x => x.Id == lastCompId));
 
-                comboBoxCompositions.SelectedItem = dofusContext.Compositions.Local.Where(x => x.Id == lastCompId);
+
+                //comboBoxCompositions.SelectedValue = lastCompId;
                 cbxCanviIcones.IsChecked = updIcons;
                 LanguageCode = trobat.Language;
                 //tbxKey.Text = ((Key)trobat.Key).ToString();
@@ -217,6 +253,9 @@ namespace DofusAccountOptimizer2
         private const nint VM_XBUTTON1 = 0x020000;
         private const nint VM_XBUTTON2 = 0x010000;
         private const int WM_XBUTTONUP = 0x020C;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         [StructLayout(LayoutKind.Sequential)]
         public struct Point
         {
@@ -605,14 +644,14 @@ namespace DofusAccountOptimizer2
 
             var clases = await dofusContext.Classes.AsNoTracking().ToListAsync();
             var compAct = (Composition)comboBoxCompositions.SelectedItem;
-            if ((await dofusContext.Personatges.Where(x=>x.IdComposition==compAct.Id).CountAsync()) < 8)
+            if ((await dofusContext.Personatges.Where(x => x.IdComposition == compAct.Id).CountAsync()) < 8)
             {
                 Add add = new Add(clases);
 
                 if (add.ShowDialog().GetValueOrDefault())
                 {
                     Classe classe = (Classe)add.cbxClasse.SelectedItem;
-                    var last = await dofusContext.Personatges.Where(x=>x.IdComposition==compAct.Id).OrderBy(x => x.Posicio ).LastOrDefaultAsync();
+                    var last = await dofusContext.Personatges.Where(x => x.IdComposition == compAct.Id).OrderBy(x => x.Posicio).LastOrDefaultAsync();
                     var lastPosition = last != null ? last.Posicio + 1 : 0;
                     if (dofusContext.Personatges.FirstOrDefault(x => x.Nom == classe.Nom) == null)
                     {
@@ -753,10 +792,10 @@ namespace DofusAccountOptimizer2
         {
             var caracter = ((Character)sender);
             var actualData = (Personatge)caracter.DataContext;
-            var comp=(Composition)comboBoxCompositions.SelectedItem;
+            var comp = (Composition)comboBoxCompositions.SelectedItem;
             var personatges = (ObservableCollection<Personatge>)personatgeViewSource.Source;
 
-            var found = personatges.FirstOrDefault(x => x.Posicio == e.PosicioNova && x.IdComposition==comp.Id && x.Nom != actualData.Nom);
+            var found = personatges.FirstOrDefault(x => x.Posicio == e.PosicioNova && x.IdComposition == comp.Id && x.Nom != actualData.Nom);
             if (found != null)
             {
                 found.Posicio = e.PosicioAntiga;
@@ -784,7 +823,7 @@ namespace DofusAccountOptimizer2
             if (found != null)
             {
                 personatges.Remove(found);
-                var r=dofusContext.SaveChanges();
+                var r = dofusContext.SaveChanges();
                 personatgeViewSource.View.Refresh();
             }
         }
@@ -828,13 +867,14 @@ namespace DofusAccountOptimizer2
         {
 
             AddComposition addComposition = new AddComposition();
-            if (addComposition.ShowDialog().GetValueOrDefault()) {
+            if (addComposition.ShowDialog().GetValueOrDefault())
+            {
                 var compo = new Composition()
                 {
                     Nom = addComposition.CompositionName
                 };
                 dofusContext.Compositions.Add(compo);
-                
+
                 dofusContext.SaveChanges();
                 comboBoxCompositions.SelectedItem = compo;
             }
@@ -842,7 +882,7 @@ namespace DofusAccountOptimizer2
 
         private void btnRemoveComp_Click(object sender, RoutedEventArgs e)
         {
-            var item=(Composition)comboBoxCompositions.SelectedItem;
+            var item = (Composition)comboBoxCompositions.SelectedItem;
 
             dofusContext.Compositions.Remove(item);
             dofusContext.SaveChanges();
@@ -851,14 +891,34 @@ namespace DofusAccountOptimizer2
 
         private void comboBoxCompositions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var comp=(Composition)comboBoxCompositions.SelectedItem;
+            var comp = (Composition)comboBoxCompositions.SelectedItem;
             if (comp != null)
             {
+                var conf = dofusContext.Configuracios.First();
+                if (conf.LastCompositionId != comp.Id)
+                {
+                    conf.LastCompositionId = comp.Id;
+                    dofusContext.SaveChanges();
+                }
                 personatgeViewSource.View.Filter = x =>
                 {
                     var p = (Personatge)x;
                     return p.IdComposition == comp.Id;
                 };
+            }
+        }
+
+        private void btnEditComp_Click(object sender, RoutedEventArgs e)
+        {
+            var comp = (Composition)comboBoxCompositions.SelectedItem;
+            AddComposition addComposition = new AddComposition(comp.Nom);
+            if (addComposition.ShowDialog().GetValueOrDefault())
+            {
+                var c = dofusContext.Compositions.Local.First(x => x.Id == comp.Id);
+                c.Nom = addComposition.CompositionName;
+                comboBoxCompositions.SelectedIndex = dofusContext.Compositions.Local.ToList().IndexOf(c);
+                dofusContext.SaveChanges();
+                compositionsViewSource.View.Refresh();
             }
         }
     }

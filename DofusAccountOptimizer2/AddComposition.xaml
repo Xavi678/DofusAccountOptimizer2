@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="AddComposition" Height="100" Width="200" WindowStartupLocation="CenterScreen">
     <Grid>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Width="120"/>
+        <TextBox x:Name="textBox" Text="{Binding Path=CompositionName}" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Width="120"/>
         <Button x:Name="btnSave" Content="{x:Static prop:Resources.save}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" FontSize="14" Click="btnSave_Click"></Button>
     </Grid>
 </Window>

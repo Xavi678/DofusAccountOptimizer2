@@ -19,15 +19,20 @@ namespace DofusAccountOptimizer2
     /// </summary>
     public partial class AddComposition : Window
     {
-        public string CompositionName { get; private set; }
+        public string CompositionName { get; set; }
         public AddComposition()
         {
             InitializeComponent();
+            this.DataContext= this;
+        }
+        public AddComposition(string CompositionName) : this()
+        {
+            this.CompositionName= CompositionName;
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            CompositionName = textBox.Text;
+            //CompositionName = textBox.Text;
             this.DialogResult = true;
         }
     }

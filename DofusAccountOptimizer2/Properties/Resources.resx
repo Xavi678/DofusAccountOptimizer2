@@ -195,6 +195,9 @@
   <data name="clear" xml:space="preserve">
     <value>Clear</value>
   </data>
+  <data name="edit_composition" xml:space="preserve">
+    <value>Edit Composition</value>
+  </data>
   <data name="edit_key" xml:space="preserve">
     <value>Edit</value>
   </data>
