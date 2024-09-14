@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="1" xml:space="preserve">
+    <value>CRA</value>
+  </data>
   <data name="add" xml:space="preserve">
     <value>Afegir</value>
+  </data>
+  <data name="add_composition" xml:space="preserve">
+    <value>Afegir Composició</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>Cancel·lar</value>
   </data>
   <data name="change_icons" xml:space="preserve">
     <value>Canviar les icones</value>
@@ -183,6 +192,12 @@
   <data name="class_9" xml:space="preserve">
     <value>HUPPERMAGE</value>
   </data>
+  <data name="clear" xml:space="preserve">
+    <value>Borrar</value>
+  </data>
+  <data name="edit_composition" xml:space="preserve">
+    <value>Editar Composició</value>
+  </data>
   <data name="edit_key" xml:space="preserve">
     <value>Editar</value>
   </data>
@@ -198,6 +213,12 @@
   <data name="key_swap_windows" xml:space="preserve">
     <value>Tecla per canviar entre Finestres</value>
   </data>
+  <data name="max_key_codes" xml:space="preserve">
+    <value>Màxim 3 Tecles</value>
+  </data>
+  <data name="message_keys" xml:space="preserve">
+    <value>Prem les tecles que vols fer servir per canviar de finestres i després clica a guardar (màxim 3 tecles)</value>
+  </data>
   <data name="name" xml:space="preserve">
     <value>Nom</value>
   </data>
@@ -207,7 +228,19 @@
   <data name="order_windows" xml:space="preserve">
     <value>Ordenar les finestres</value>
   </data>
+  <data name="remove_composition" xml:space="preserve">
+    <value>Eliminar Composició</value>
+  </data>
   <data name="remove_selected" xml:space="preserve">
     <value>Borrar els Seleccionats</value>
+  </data>
+  <data name="save" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="enable_mouse" xml:space="preserve">
+    <value>Activar el Ratolí</value>
+  </data>
+  <data name="enable_keyboard" xml:space="preserve">
+    <value>Activar el Teclat</value>
   </data>
 </root>
