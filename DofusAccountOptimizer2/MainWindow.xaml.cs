@@ -71,6 +71,8 @@ namespace DofusAccountOptimizer2
         public static int ItemsCount { get; set; } = -1;
         public string LanguageCode { get; set; } = "en";
         public long lastCompId { get; set; }
+        public bool IsMouseEnabled { get; set; } = true;
+        public bool IsKeyboardEnabled { get; set; } = true;
         public ObservableCollection<Composition> compositions_;
         public ObservableCollection<Composition> Compositions
         {
@@ -139,24 +141,32 @@ namespace DofusAccountOptimizer2
                 //comboBoxCompositions.SelectedValue = lastCompId;
                 cbxCanviIcones.IsChecked = updIcons;
                 LanguageCode = trobat.Language;
+                IsMouseEnabled=trobat.GetMouseEnabled();
+                IsKeyboardEnabled=trobat.GetKeyboardEnabled();
                 //tbxKey.Text = ((Key)trobat.Key).ToString();
             }
             else
             {
-                MainWindow.keyCodes = new List<int>() { 90 };
+                MainWindow.keyCodes = new List<int>() { 112,160 };
                 var c = new Configuracio()
                 {
                     Id = 1,
-                    KeyCodes = "90"
+                    KeyCodes = "112|160"
                 };
                 comboBoxCompositions.SelectedValue = 1;
                 c.SetUpdateIcons(false);
                 dofusContext.Configuracios.Add(c);
                 dofusContext.SaveChanges();
             }
+            if (IsMouseEnabled)
+            {
 
-            _hookIDM = SetHookM(_proc);
-            _hookID = SetHookKey(_procKeyBoard);
+                _hookIDM = SetHookM(_proc);
+            }
+            if (IsKeyboardEnabled)
+            {
+                _hookID = SetHookKey(_procKeyBoard);
+            }
             //GetPersonatges();
         }
 
@@ -920,6 +930,36 @@ namespace DofusAccountOptimizer2
                 dofusContext.SaveChanges();
                 compositionsViewSource.View.Refresh();
             }
+        }
+
+        private void cbxKeyboard_Click(object sender, RoutedEventArgs e)
+        {
+            var conf = dofusContext.Configuracios.First();
+            conf.SetKeyboardEnabled(cbxKeyboard.IsChecked.GetValueOrDefault());
+            if (cbxKeyboard.IsChecked == true)
+            {
+                _hookID = SetHookKey(_procKeyBoard);
+            }
+            else
+            {
+                PInvoke.UnhookWindowsHookEx(new Windows.Win32.UI.WindowsAndMessaging.HHOOK(_hookID));
+            }
+            dofusContext.SaveChanges();
+        }
+
+        private void cbxMouse_Click(object sender, RoutedEventArgs e)
+        {
+            var conf=dofusContext.Configuracios.First();
+            conf.SetMouseEnabled(cbxMouse.IsChecked.GetValueOrDefault());
+            if (cbxMouse.IsChecked == true)
+            {
+                _hookIDM = SetHookM(_proc);
+            }
+            else
+            {
+                PInvoke.UnhookWindowsHookEx(new Windows.Win32.UI.WindowsAndMessaging.HHOOK(_hookIDM));
+            }
+            dofusContext.SaveChanges();
         }
     }
 }

@@ -24,5 +24,23 @@ namespace DofusAccountOptimizer2.Models
         {
             this.OrderWindows = orderWindows ? 1 : 0;
         }
+
+        public void SetMouseEnabled(bool isMouseEnabled)
+        {
+            this.EnableMouse = isMouseEnabled ? 1 : 0;
+        }
+
+        public void SetKeyboardEnabled(bool isKeyboardEnabled)
+        {
+            this.EnableKeyboard = isKeyboardEnabled ? 1 : 0;
+        }
+        public bool GetMouseEnabled()
+        {
+          return  this.EnableMouse==1;
+        }
+        public bool GetKeyboardEnabled()
+        {
+            return this.EnableKeyboard == 1;
+        }
     }
 }

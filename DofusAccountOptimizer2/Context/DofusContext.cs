@@ -67,6 +67,14 @@ namespace DofusAccountOptimizer2.Context
                     .ValueGeneratedNever()
                     .HasColumnName("ID");
 
+                entity.Property(e => e.EnableKeyboard)
+                    .HasColumnName("ENABLE_KEYBOARD")
+                    .HasDefaultValueSql("1");
+
+                entity.Property(e => e.EnableMouse)
+                    .HasColumnName("ENABLE_MOUSE")
+                    .HasDefaultValueSql("1");
+
                 entity.Property(e => e.KeyCodes)
                     .HasColumnType("NVARCHAR(100)")
                     .HasColumnName("KEY_CODES");

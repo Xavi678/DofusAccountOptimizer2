@@ -237,4 +237,10 @@
   <data name="save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="enable_mouse" xml:space="preserve">
+    <value>Enable Mouse</value>
+  </data>
+  <data name="enable_keyboard" xml:space="preserve">
+    <value>Enable Keyboard</value>
+  </data>
 </root>

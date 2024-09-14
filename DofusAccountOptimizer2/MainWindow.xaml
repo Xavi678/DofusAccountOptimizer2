@@ -24,7 +24,7 @@
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
         <CollectionViewSource x:Key="compositionsViewSource">
-            
+
         </CollectionViewSource>
     </Window.Resources>
     <Grid>
@@ -79,6 +79,8 @@
         <Button x:Name="btnChangeOrder" Content="{x:Static prop:Resources.order_windows}" Height="30" Width="160" Margin="10,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangeOrder_Click" />
         <Button x:Name="btnChangekey" Content="{x:Static prop:Resources.edit_key}" Margin="221,0,0,45" Height="30" Width="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangekey_Click"/>
         <Border Margin="0,105,0,0" UseLayoutRounding="True" Width="650" BorderBrush="Black" BorderThickness="2 2 2 0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center" />
+        <CheckBox x:Name="cbxKeyboard" IsChecked="{Binding Path=IsKeyboardEnabled,RelativeSource={RelativeSource AncestorType=Window}}" Content="{x:Static prop:Resources.enable_keyboard}" Margin="0,0,53,21" HorizontalAlignment="Right" Width="124" Height="18" VerticalAlignment="Bottom" Click="cbxKeyboard_Click"/>
+        <CheckBox x:Name="cbxMouse" IsChecked="{Binding Path=IsMouseEnabled,RelativeSource={RelativeSource AncestorType=Window}}" Content="{x:Static prop:Resources.enable_mouse }" Margin="0,0,70,50" Height="18" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="107" Click="cbxMouse_Click"/>
         <!--<Label x:Name="label1" Content="{Binding Converter={StaticResource provaConverter},ConverterParameter={StaticResource ChangeIcons},Path=LanguageCode, RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Left" Margin="291,17,0,0" VerticalAlignment="Top" >
 </Label>-->
 

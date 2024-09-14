@@ -313,6 +313,24 @@ namespace DofusAccountOptimizer2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable Keyboard.
+        /// </summary>
+        public static string enable_keyboard {
+            get {
+                return ResourceManager.GetString("enable_keyboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Mouse.
+        /// </summary>
+        public static string enable_mouse {
+            get {
+                return ResourceManager.GetString("enable_mouse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have already a Character with this name.
         /// </summary>
         public static string error_already_exists {
