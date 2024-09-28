@@ -33,6 +33,8 @@ using System.Windows.Markup;
 using System.Globalization;
 using System.Windows.Threading;
 using System.Net;
+using DofusAccountOptimizer2.Classes;
+using Windows.Win32.UI.Shell.PropertiesSystem;
 
 namespace DofusAccountOptimizer2
 {
@@ -106,6 +108,8 @@ namespace DofusAccountOptimizer2
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+        private bool WindowsAreSeparated = false;
+        private const string APP_IID = "com.dofus.d1elauncher";
         public MainWindow()
         {
             InitializeComponent();
@@ -141,13 +145,13 @@ namespace DofusAccountOptimizer2
                 //comboBoxCompositions.SelectedValue = lastCompId;
                 cbxCanviIcones.IsChecked = updIcons;
                 LanguageCode = trobat.Language;
-                IsMouseEnabled=trobat.GetMouseEnabled();
-                IsKeyboardEnabled=trobat.GetKeyboardEnabled();
+                IsMouseEnabled = trobat.GetMouseEnabled();
+                IsKeyboardEnabled = trobat.GetKeyboardEnabled();
                 //tbxKey.Text = ((Key)trobat.Key).ToString();
             }
             else
             {
-                MainWindow.keyCodes = new List<int>() { 112,160 };
+                MainWindow.keyCodes = new List<int>() { 112, 160 };
                 var c = new Configuracio()
                 {
                     Id = 1,
@@ -949,7 +953,7 @@ namespace DofusAccountOptimizer2
 
         private void cbxMouse_Click(object sender, RoutedEventArgs e)
         {
-            var conf=dofusContext.Configuracios.First();
+            var conf = dofusContext.Configuracios.First();
             conf.SetMouseEnabled(cbxMouse.IsChecked.GetValueOrDefault());
             if (cbxMouse.IsChecked == true)
             {
@@ -960,6 +964,40 @@ namespace DofusAccountOptimizer2
                 PInvoke.UnhookWindowsHookEx(new Windows.Win32.UI.WindowsAndMessaging.HHOOK(_hookIDM));
             }
             dofusContext.SaveChanges();
+        }
+
+        private void btnSeparateWindows_Click(object sender, RoutedEventArgs e)
+        {
+            var processes = GetAllProcess();
+
+            var g = new Guid("886D8EEB-8CF2-4446-8D02-CDBA1DBDCF99");
+            object ppsTemp;
+            int i = 1;
+            foreach (var proces in processes)
+            {
+                var result = PInvoke.SHGetPropertyStoreForWindow(new HWND(proces.MainWindowHandle), g, out ppsTemp);
+                var win32exc = new Win32Exception(Marshal.GetLastWin32Error());
+                IPropertyStore propertyStore1 = (IPropertyStore)ppsTemp;
+                PropertyKey pROPERTYKEY = new PropertyKey(new Guid("9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3"), 5);
+                string appIid = !WindowsAreSeparated ? APP_IID + i : APP_IID;
+                PropVariant propVariant = new PropVariant(appIid);
+                propertyStore1.SetValue(pROPERTYKEY, propVariant);
+                propertyStore1.Commit();
+                Console.WriteLine(win32exc.Message);
+                i++;
+            }
+
+            if (!WindowsAreSeparated)
+            {
+                btnSeparateWindows.Content = Properties.Resources.group_windows;
+                WindowsAreSeparated = true;
+            }
+            else
+            {
+                btnSeparateWindows.Content = Properties.Resources.separate_windows;
+                WindowsAreSeparated = false;
+            }
+
         }
     }
 }

@@ -243,4 +243,10 @@
   <data name="enable_keyboard" xml:space="preserve">
     <value>Enable Keyboard</value>
   </data>
+  <data name="separate_windows" xml:space="preserve">
+    <value>Separate the Windows</value>
+  </data>
+  <data name="group_windows" xml:space="preserve">
+    <value>Group the Windows</value>
+  </data>
 </root>

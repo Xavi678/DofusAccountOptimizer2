@@ -13,3 +13,5 @@ CallNextHookEx
 UnhookWindowsHookEx
 GetLastError
 GetKeyState
+SHGetPropertyStoreForWindow
+PROPERTYKEY

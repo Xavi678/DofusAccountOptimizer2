@@ -243,4 +243,10 @@
   <data name="enable_keyboard" xml:space="preserve">
     <value>Activar el Teclat</value>
   </data>
+  <data name="separate_windows" xml:space="preserve">
+    <value>Separar les finestres</value>
+  </data>
+  <data name="group_windows" xml:space="preserve">
+    <value>Agrupar les finestres</value>
+  </data>
 </root>

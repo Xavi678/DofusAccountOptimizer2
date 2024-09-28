@@ -349,6 +349,15 @@ namespace DofusAccountOptimizer2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Group the Windows.
+        /// </summary>
+        public static string group_windows {
+            get {
+                return ResourceManager.GetString("group_windows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help.
         /// </summary>
         public static string help {
@@ -435,6 +444,15 @@ namespace DofusAccountOptimizer2.Properties {
         public static string save {
             get {
                 return ResourceManager.GetString("save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Separate the Windows.
+        /// </summary>
+        public static string separate_windows {
+            get {
+                return ResourceManager.GetString("separate_windows", resourceCulture);
             }
         }
     }
