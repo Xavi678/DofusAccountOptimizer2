@@ -249,4 +249,7 @@
   <data name="group_windows" xml:space="preserve">
     <value>Agrupar als ventanas</value>
   </data>
+  <data name="character_not_found" xml:space="preserve">
+    <value>Personaje no encontrado</value>
+  </data>
 </root>

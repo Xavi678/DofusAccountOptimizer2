@@ -115,6 +115,15 @@ namespace DofusAccountOptimizer2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Character not found.
+        /// </summary>
+        public static string character_not_found {
+            get {
+                return ResourceManager.GetString("character_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IOP.
         /// </summary>
         public static string class_10 {

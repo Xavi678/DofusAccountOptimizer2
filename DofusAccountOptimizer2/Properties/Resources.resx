@@ -249,4 +249,7 @@
   <data name="group_windows" xml:space="preserve">
     <value>Group the Windows</value>
   </data>
+  <data name="character_not_found" xml:space="preserve">
+    <value>Character not found</value>
+  </data>
 </root>

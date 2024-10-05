@@ -347,7 +347,14 @@ namespace DofusAccountOptimizer2
             else
             {
                 var e = accounts.FirstOrDefault(x => act.MainWindowTitle.Contains(x.Nom));
+                if (e == null)
+                {
+                    
+                    MessageBox.Show($"{Properties.Resources.character_not_found} '{act.MainWindowTitle}'", "Error");
+                    return;
+                }
                 Personatge? p1;
+
                 if (forward)
                 {
                     p1 = accounts.Where(x => x.GetActive).OrderBy(x => x.Posicio).FirstOrDefault(x => x.Posicio > e.Posicio);
@@ -367,7 +374,7 @@ namespace DofusAccountOptimizer2
                         }
                         else
                         {
-                            MessageBox.Show($"El Personatge no existeix '{p1.Nom}'", "Error");
+                            MessageBox.Show($"{Properties.Resources.character_not_found} '{p1.Nom}'", "Error");
                         }
                     }
                     catch (Exception ex)
@@ -833,10 +840,18 @@ namespace DofusAccountOptimizer2
         private void Character_CharacterRemoved(object sender, string id)
         {
             var personatges = (ObservableCollection<Personatge>)personatgeViewSource.Source;
+            var compId = ((Composition)comboBoxCompositions.SelectedItem).Id;
             var found = personatges.FirstOrDefault(x => x.Nom == id);
             if (found != null)
             {
                 personatges.Remove(found);
+                int i = 0;
+                foreach (var personatge in personatges.Where(x => x.IdComposition == compId).OrderBy(x => x.Posicio))
+                {
+                    personatge.Posicio = i;
+                    i++;
+                }
+
                 var r = dofusContext.SaveChanges();
                 personatgeViewSource.View.Refresh();
             }
@@ -881,11 +896,14 @@ namespace DofusAccountOptimizer2
         {
 
             AddComposition addComposition = new AddComposition();
+
             if (addComposition.ShowDialog().GetValueOrDefault())
             {
+                var lastid = dofusContext.Compositions.AsNoTracking().OrderByDescending(x => x.Id).FirstOrDefault()?.Id;
                 var compo = new Composition()
                 {
-                    Nom = addComposition.CompositionName
+                    Nom = addComposition.CompositionName,
+                    Id = lastid.HasValue ? lastid.Value + 1 : 1,
                 };
                 dofusContext.Compositions.Add(compo);
 
