@@ -91,7 +91,7 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-        <CheckBox x:Name="chbxOrderWindowsOnChange" Content="{Binding Path=OrderAutomatically,RelativeSource={RelativeSource AncestorType=Window}}" Click="chbxOrderWindowsOnChange_Click"   />
+        <CheckBox x:Name="chbxOrderWindowsOnChange" Content="{x:Static prop:Resources.order_windows_change}" IsChecked="{Binding Path=OrderAutomatically,RelativeSource={RelativeSource AncestorType=Window}}" Click="chbxOrderWindowsOnChange_Click" VerticalAlignment="Bottom" Margin="20,0,0,50" HorizontalAlignment="Left"   />
 
     </Grid>
 

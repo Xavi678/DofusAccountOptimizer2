@@ -15,7 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_40B91193248B4CEC9B423F12DBFA0FD1"
+        "MsmKey" = "8:_A25424DA368445E8B409D85559D2A4F4"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CFCAFB17DE5B46FBB92B2BB1006CAAC1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -37,6 +43,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -53,6 +75,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -70,10 +100,41 @@
         {
             "LaunchCondition"
             {
+                "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_33D175C6758A40989925D88208881CE3"
+                {
+                "Name" = "8:.NET Core"
+                "Message" = "8:[VSDNETCOREMSG]"
+                "FrameworkVersion" = "8:6.0.7"
+                "AllowLaterVersions" = "11:FALSE"
+                "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
+                "IsNETCore" = "11:TRUE"
+                "Architecture" = "2:2"
+                "Runtime" = "2:2"
+                }
             }
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CFCAFB17DE5B46FBB92B2BB1006CAAC1"
+            {
+            "SourcePath" = "8:..\\DofusAccountOptimizer2\\bin\\Release\\net6.0-windows\\DofusAccountOptimizer2.deps.json"
+            "TargetName" = "8:DofusAccountOptimizer2.deps.json"
+            "Tag" = "8:"
+            "Folder" = "8:_DA4266AE34384262B05A4E895C5E9F45"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -93,7 +154,7 @@
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_DA4266AE34384262B05A4E895C5E9F45"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFiles64Folder][Manufacturer]\\[ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -131,28 +192,28 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:DofusAccountOptimizer2Setup"
         "ProductCode" = "8:{10346FCF-8342-4298-A713-FE8F98015E3B}"
-        "PackageCode" = "8:{A25B8107-C281-41A7-A70A-1B03B90391D1}"
+        "PackageCode" = "8:{FFDAEF78-5EAD-4D5E-9AB2-DD65EAF8A3CF}"
         "UpgradeCode" = "8:{D2B395A6-736D-4535-98D3-2B214D5F3156}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
-        "InstallAllUsers" = "11:FALSE"
+        "InstallAllUsers" = "11:TRUE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Default Company Name"
+        "Manufacturer" = "8:Xavi678"
         "ARPHELPTELEPHONE" = "8:"
-        "ARPHELPLINK" = "8:"
+        "ARPHELPLINK" = "8:https://github.com/Xavi678/DofusAccountOptimizer2"
         "Title" = "8:DofusAccountOptimizer2Setup"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Default Company Name"
+        "ARPCONTACT" = "8:Xavi678"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
-        "ARPURLINFOABOUT" = "8:"
+        "ARPURLINFOABOUT" = "8:https://github.com/Xavi678/DofusAccountOptimizer2"
         "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
-        "TargetPlatform" = "3:0"
+        "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
         "PostBuildEvent" = "8:"
         "RunPostBuildEvent" = "3:0"
@@ -251,6 +312,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_E30F5E4092B94A57A5CCE3E6D176C4DC"
+            {
+            "Name" = "8:DofusAccountOptimizer2"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_A25424DA368445E8B409D85559D2A4F4"
+            "Folder" = "8:_FC0A3F8F14684351954F604357CEDB98"
+            "WorkingFolder" = "8:_DA4266AE34384262B05A4E895C5E9F45"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
@@ -650,7 +725,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_40B91193248B4CEC9B423F12DBFA0FD1"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A25424DA368445E8B409D85559D2A4F4"
             {
             "SourcePath" = "8:..\\DofusAccountOptimizer2\\obj\\Debug\\net6.0-windows\\apphost.exe"
             "TargetName" = "8:"
