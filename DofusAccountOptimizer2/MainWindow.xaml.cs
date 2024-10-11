@@ -101,6 +101,8 @@ namespace DofusAccountOptimizer2
                 RaisePropertyChanged("SelectedComposition");
             }
         }
+
+        public bool OrderAutomatically { get; set; } = false;
         private void RaisePropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
@@ -147,7 +149,7 @@ namespace DofusAccountOptimizer2
                 LanguageCode = trobat.Language;
                 IsMouseEnabled = trobat.GetMouseEnabled();
                 IsKeyboardEnabled = trobat.GetKeyboardEnabled();
-                //tbxKey.Text = ((Key)trobat.Key).ToString();
+                OrderAutomatically = trobat.GetOrderWindowsOnChangeComp();
             }
             else
             {
@@ -937,6 +939,10 @@ namespace DofusAccountOptimizer2
                     var p = (Personatge)x;
                     return p.IdComposition == comp.Id;
                 };
+                if (OrderAutomatically)
+                {
+                    OrderWindows();
+                }
             }
         }
 
@@ -1016,6 +1022,17 @@ namespace DofusAccountOptimizer2
                 WindowsAreSeparated = false;
             }
 
+        }
+
+        private void chbxOrderWindowsOnChange_Click(object sender, RoutedEventArgs e)
+        {
+            
+            var conf = dofusContext.Configuracios.First();
+            if (conf != null)
+            {
+                conf.SetOrderWindowsOnChangeComp(OrderAutomatically);
+                dofusContext.SaveChanges();
+            }
         }
     }
 }

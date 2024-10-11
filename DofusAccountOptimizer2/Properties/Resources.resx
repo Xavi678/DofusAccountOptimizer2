@@ -252,4 +252,7 @@
   <data name="character_not_found" xml:space="preserve">
     <value>Character not found</value>
   </data>
+  <data name="order_windows_change" xml:space="preserve">
+    <value>Order The Windows when the composition changes</value>
+  </data>
 </root>

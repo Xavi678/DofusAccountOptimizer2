@@ -42,5 +42,14 @@ namespace DofusAccountOptimizer2.Models
         {
             return this.EnableKeyboard == 1;
         }
+
+        public bool GetOrderWindowsOnChangeComp()
+        {
+            return this.OrderWindowsOnChangeComp == 1;
+        }
+        public void SetOrderWindowsOnChangeComp(bool isOrderWindowsOnChangeComp)
+        {
+            this.OrderWindowsOnChangeComp = isOrderWindowsOnChangeComp ? 1 : 0;
+        }
     }
 }

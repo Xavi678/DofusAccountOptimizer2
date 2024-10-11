@@ -430,6 +430,15 @@ namespace DofusAccountOptimizer2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order The Windows when the composition changes.
+        /// </summary>
+        public static string order_windows_change {
+            get {
+                return ResourceManager.GetString("order_windows_change", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove Composition.
         /// </summary>
         public static string remove_composition {

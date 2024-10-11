@@ -13,5 +13,6 @@ namespace DofusAccountOptimizer2.Models
         public long? LastCompositionId { get; set; }
         public long EnableMouse { get; set; }
         public long EnableKeyboard { get; set; }
+        public long OrderWindowsOnChangeComp { get; set; }
     }
 }

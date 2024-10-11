@@ -252,4 +252,7 @@
   <data name="character_not_found" xml:space="preserve">
     <value>Personatge no trobat</value>
   </data>
+  <data name="order_windows_change" xml:space="preserve">
+    <value>Ordenar les Finestres quan canvii la composició</value>
+  </data>
 </root>
