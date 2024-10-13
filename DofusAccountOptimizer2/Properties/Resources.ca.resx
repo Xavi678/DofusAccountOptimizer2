@@ -255,4 +255,7 @@
   <data name="order_windows_change" xml:space="preserve">
     <value>Ordenar les Finestres quan canvii la composició</value>
   </data>
+  <data name="privilege_error" xml:space="preserve">
+    <value>Assegura't d'exeutar aquesta aplicació com a administrador</value>
+  </data>
 </root>

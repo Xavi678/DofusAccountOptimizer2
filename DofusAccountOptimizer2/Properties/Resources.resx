@@ -255,4 +255,7 @@
   <data name="order_windows_change" xml:space="preserve">
     <value>Order The Windows when the composition changes</value>
   </data>
+  <data name="privilege_error" xml:space="preserve">
+    <value>Make Sure to execute this application as Administrator</value>
+  </data>
 </root>

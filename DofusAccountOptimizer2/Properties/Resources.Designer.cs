@@ -439,6 +439,15 @@ namespace DofusAccountOptimizer2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Make Sure to execute this application as Administrator.
+        /// </summary>
+        public static string privilege_error {
+            get {
+                return ResourceManager.GetString("privilege_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove Composition.
         /// </summary>
         public static string remove_composition {

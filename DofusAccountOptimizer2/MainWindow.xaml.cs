@@ -35,6 +35,7 @@ using System.Windows.Threading;
 using System.Net;
 using DofusAccountOptimizer2.Classes;
 using Windows.Win32.UI.Shell.PropertiesSystem;
+using System.Runtime.CompilerServices;
 
 namespace DofusAccountOptimizer2
 {
@@ -467,13 +468,20 @@ namespace DofusAccountOptimizer2
                     SetWindowsIcons();
                     windowChecker.Start();
                 }
+                try
+                {
+                    startWatch = new ManagementEventWatcher(
+       new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace WHERE ProcessName='Dofus.exe'"));
+                    startWatch.EventArrived
+                                        += StartWatch_EventArrived;
 
-                startWatch = new ManagementEventWatcher(
-   new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace WHERE ProcessName='Dofus.exe'"));
-                startWatch.EventArrived
-                                    += StartWatch_EventArrived;
-
-                startWatch.Start();
+                    startWatch.Start();
+                }
+                catch (ManagementException ex)
+                {
+                    MessageBox.Show(Properties.Resources.privilege_error);
+                    App.Current.Shutdown();
+                }
             }
             else
             {
