@@ -258,4 +258,7 @@
   <data name="privilege_error" xml:space="preserve">
     <value>Make Sure to execute this application as Administrator</value>
   </data>
+  <data name="error_keybinding_duplicated" xml:space="preserve">
+    <value>This Key Shortcut is already in use</value>
+  </data>
 </root>

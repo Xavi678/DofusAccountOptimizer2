@@ -16,5 +16,9 @@ namespace DofusAccountOptimizer2.Models
         {
             this.IsActive = isActive ? 1 : 0;
         }
+        public IEnumerable<int>? GetKeyCodes()
+        {
+            return this.KeyCodes?.Split("|").Select(x => Convert.ToInt32(x));
+        }
     }
 }

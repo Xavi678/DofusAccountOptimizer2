@@ -62,7 +62,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate  >
-                        <local:Character ItemsLength="{Binding Source={x:Static Application.Current},Path=MainWindow.ItemsCount}"  Margin="10,5,10,5" CustomText="{Binding Nom}" Position="{Binding Posicio,Mode=TwoWay}" Foto="{Binding IdClasseNavigation.Foto}" Classe="{Binding IdClasseNavigation.Nom}" IsActive="{Binding GetActive}"   PositionChanged="Character_PositionChanged" CharacterRemoved="Character_CharacterRemoved" CharacterIsActiveChanged="Character_CharacterIsActiveChanged" KeyEdited="Character_KeyEdited" KeyRemoved="Character_KeyRemoved" />
+                        <local:Character ItemsLength="{Binding Source={x:Static Application.Current},Path=MainWindow.ItemsCount}"  Margin="10,5,10,5" CustomText="{Binding Nom}" Position="{Binding Posicio,Mode=TwoWay}" Foto="{Binding IdClasseNavigation.Foto}" Classe="{Binding IdClasseNavigation.Nom}" IsActive="{Binding GetActive}" CharacterKey="{Binding KeyCodes}"  PositionChanged="Character_PositionChanged" CharacterRemoved="Character_CharacterRemoved" CharacterIsActiveChanged="Character_CharacterIsActiveChanged" KeyRemoved="Character_KeyRemoved" KeyEdited="Character_KeyEdited" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

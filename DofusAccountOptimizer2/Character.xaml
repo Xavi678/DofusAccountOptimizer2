@@ -21,7 +21,7 @@
         </Button>
         <TextBox MaxLength="1" x:Name="tbPos" HorizontalAlignment="Right" Margin="0,54,80,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="18" Height="13" FontSize="10" TextAlignment="Center" CharacterCasing="Upper" FontWeight="Bold" Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:Character}}, Path=Position}" KeyUp="tbPos_KeyUp"/>
         <CheckBox Content="" Margin="0,53,36,0" VerticalAlignment="Top" FontSize="14" HorizontalAlignment="Right" Width="20" Panel.ZIndex="2" x:Name="cbxIsActive" Click="cbxIsActive_Click" />
-        <TextBox x:Name="tbKey" Margin="0,95,15,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" TextAlignment="Center"/>
+        <TextBox x:Name="tbKey" Margin="0,95,15,0" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="14" FontWeight="Bold" TextAlignment="Center" IsReadOnly="True"/>
         <Button x:Name="btnEditKey"  HorizontalAlignment="Right" Width="15" Margin="0,0,0,13" Height="10" VerticalAlignment="Bottom" Click="btnEditKey_Click">
             <Image Source="/Resources/pencil.png" />
         </Button>

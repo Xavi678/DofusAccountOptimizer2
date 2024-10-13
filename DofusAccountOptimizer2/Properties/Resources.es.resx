@@ -258,4 +258,7 @@
   <data name="privilege_error" xml:space="preserve">
     <value>Asegurate de ejecutar esta aplicación como administrador</value>
   </data>
+  <data name="error_keybinding_duplicated" xml:space="preserve">
+    <value>Estas Teclas ya estan siendo utilizadas</value>
+  </data>
 </root>

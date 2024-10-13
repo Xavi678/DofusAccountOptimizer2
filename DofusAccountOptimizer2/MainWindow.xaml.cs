@@ -36,6 +36,7 @@ using System.Net;
 using DofusAccountOptimizer2.Classes;
 using Windows.Win32.UI.Shell.PropertiesSystem;
 using System.Runtime.CompilerServices;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace DofusAccountOptimizer2
 {
@@ -214,6 +215,53 @@ namespace DofusAccountOptimizer2
         {
             int vkCode = Marshal.ReadInt32(lParam);
             Console.WriteLine(vkCode);
+            var persos = ((ObservableCollection<Personatge>)personatgeViewSource.Source).Where(x=>x.KeyCodes!=null && x.KeyCodes!=String.Empty);
+            bool keyCharacterClicked = false;
+            Personatge? keyPersonatge=null;
+            foreach (var perso in persos)
+            {
+                var keyCodes = perso.KeyCodes;
+                foreach (var keyCode in keyCodes.Split("|"))
+                {
+                    if(vkCode== Convert.ToInt32(keyCode))
+                    {
+                        keyCharacterClicked = true;
+                        keyPersonatge = perso;
+                        break;
+                    }
+                }
+                if (keyCharacterClicked)
+                {
+                    break;
+                }
+            }
+            if(code >= 0 && keyCharacterClicked && keyPersonatge!=null)
+            {
+                bool areAllClicked = true;
+                foreach (var otherKey in keyPersonatge!.KeyCodes!.Split("|"))
+                {
+                    var keyState = PInvoke.GetKeyState(Convert.ToInt32( otherKey));
+                    if (keyState >= 0)
+                    {
+                        areAllClicked = false;
+                    }
+                }
+                if (areAllClicked)
+                {
+                    Debug.WriteLine("Hooked");
+                    var list = Process.GetProcesses().ToList();
+                    var t = list.Where(x => x.ProcessName == "Dofus").ToList();
+                    var at=t.FirstOrDefault(x => x.MainWindowTitle.Contains(keyPersonatge.Nom));
+                    if (at != null)
+                    {
+                        PInvoke.ShowWindow(new Windows.Win32.Foundation.HWND(at.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOWMAXIMIZED);
+                        Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: {at.MainWindowTitle}");
+                        Console.WriteLine(PInvoke.SetForegroundWindow(new Windows.Win32.Foundation.HWND(at.MainWindowHandle)).Value);
+                    }
+                    return PInvoke.CallNextHookEx(new HHOOK(_hookID), code, wParam, lParam);
+                }
+            }
+            
             if (code >= 0 && ((wParam == WM_KEYDOWN && keyCodes.Contains(vkCode))))
             {
                 bool areAllClicked = true;
@@ -229,6 +277,7 @@ namespace DofusAccountOptimizer2
                         }
                     }
                 }
+
                 if (areAllClicked)
                 {
                     Debug.WriteLine("Hooked");
@@ -1043,16 +1092,16 @@ namespace DofusAccountOptimizer2
             }
         }
 
-        private void Character_KeyEdited(object sender, string id, string newValue)
-        {
-            var compId = ((Composition)comboBoxCompositions.SelectedValue).Id;
-            var found = dofusContext.Personatges.FirstOrDefault(x => x.IdComposition == compId && x.Nom == id);
-            if (found != null)
-            {
-                found.KeyCodes = newValue;
-                dofusContext.SaveChanges();
-            }
-        }
+        //private void Character_KeyEdited(object sender, string id, string newValue)
+        //{
+        //    var compId = ((Composition)comboBoxCompositions.SelectedValue).Id;
+        //    var found = dofusContext.Personatges.FirstOrDefault(x => x.IdComposition == compId && x.Nom == id);
+        //    if (found != null)
+        //    {
+        //        found.KeyCodes = newValue;
+        //        dofusContext.SaveChanges();
+        //    }
+        //}
 
         private void Character_KeyRemoved(object sender, string id)
         {
@@ -1062,6 +1111,25 @@ namespace DofusAccountOptimizer2
             {
                 found.KeyCodes = null;
                 dofusContext.SaveChanges();
+                personatgeViewSource.View.Refresh();
+            }
+        }
+
+        private void Character_KeyEdited(object sender, string id, ICollection<int> newValue, string parsedKeyCodes)
+        {
+            var compId = ((Composition)comboBoxCompositions.SelectedValue).Id;
+            var personatgesCompo = dofusContext.Personatges.Where(x => x.IdComposition == compId);
+            if (personatgesCompo.FirstOrDefault(x => x.Nom != id && x.KeyCodes == parsedKeyCodes) != null)
+            {
+                MessageBox.Show(Properties.Resources.error_keybinding_duplicated);
+                return;
+            }
+            var found = personatgesCompo.FirstOrDefault(x => x.Nom == id);
+            if (found != null)
+            {
+                found.KeyCodes = parsedKeyCodes;
+                dofusContext.SaveChanges();
+                personatgeViewSource.View.Refresh();
             }
         }
     }

@@ -1,7 +1,9 @@
 ﻿using DofusAccountOptimizer2.Classes;
+using DofusAccountOptimizer2.Context;
 using DofusAccountOptimizer2.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -84,7 +86,18 @@ propertyChangedCallback: new PropertyChangedCallback(CharacterKeyChanged)));
         private static void CharacterKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var p = d as Character;
-            p.tbKey.Text = Convert.ToString(e.NewValue);
+            //String.Join(" + ", editKey.KeyCodes.Select(x => $"{(System.Windows.Forms.Keys)x}"));
+            var keys = Convert.ToString(e.NewValue);            
+            if (!String.IsNullOrWhiteSpace(keys))
+            {
+                List<string> listKeys = new List<string>();
+                foreach (var key in keys?.Split("|"))
+                {
+                    var parsedKey = (System.Windows.Forms.Keys)Convert.ToInt32(key);
+                    listKeys.Add(parsedKey.ToString());
+                }
+                p.tbKey.Text = String.Join(" + ", listKeys);
+            }
         }
 
         private static void OnItemsLengthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -287,12 +300,27 @@ propertyChangedCallback: new PropertyChangedCallback(CharacterKeyChanged)));
         public delegate void CharacterKeyRemovedEventHandler(object? sender, string id);
         private void btnEditKey_Click(object sender, RoutedEventArgs e)
         {
-            if (KeyEdited != null)
+            EditKey editKey = new EditKey();
+            if (!String.IsNullOrWhiteSpace(CharacterKey))
             {
-                KeyEdited.Invoke(this, this.CustomText, tbKey.Text);
+                editKey.KeyCodes = new ObservableCollection<int>(CharacterKey.Split("|").Select(x => Convert.ToInt32(x)));
             }
+            else
+            {
+                editKey.KeyCodes = new ObservableCollection<int>();
+            }
+            if (editKey.ShowDialog().GetValueOrDefault())
+            {
+                //trobat.KeyCodes = String.Join("|", editKey.KeyCodes);
+                //dofusContext.SaveChanges();
+                if (KeyEdited != null)
+                {
+                    KeyEdited.Invoke(this, this.CustomText, editKey.KeyCodes, String.Join("|", editKey.KeyCodes.Select(x => $"{x}")));
+                }
+            }
+
         }
-        public delegate void CharacterKeyEditedEventHandler(object? sender, string id, string newValue);
+        public delegate void CharacterKeyEditedEventHandler(object? sender, string id, ICollection<int> newValue, string parsedKeyCodes);
         [Browsable(true)]
         [Category("Action")]
         [Description("Invoked when the key binding is edited from a Character")]

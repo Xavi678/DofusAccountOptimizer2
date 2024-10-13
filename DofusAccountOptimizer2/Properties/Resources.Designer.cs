@@ -349,6 +349,15 @@ namespace DofusAccountOptimizer2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This Key Shortcut is already in use.
+        /// </summary>
+        public static string error_keybinding_duplicated {
+            get {
+                return ResourceManager.GetString("error_keybinding_duplicated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have already 8 characters, delete at least one if you want to add more.
         /// </summary>
         public static string error_max_characters {
