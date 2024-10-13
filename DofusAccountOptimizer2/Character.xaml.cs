@@ -60,11 +60,16 @@ DependencyProperty.Register("ItemsLength", typeof(int),
 typeof(Character), typeMetadata: new FrameworkPropertyMetadata(0,
 flags: FrameworkPropertyMetadataOptions.AffectsRender));
 
+        public static DependencyProperty CharacterKeysProperty =
+DependencyProperty.Register("CharacterKey", typeof(string),
+typeof(Character), typeMetadata: new FrameworkPropertyMetadata("",
+flags: FrameworkPropertyMetadataOptions.AffectsRender,
+propertyChangedCallback: new PropertyChangedCallback(CharacterKeyChanged)));
         private static object CoerceCallback(DependencyObject d, object baseValue)
         {
             long res;
             var c = d as Character;
-            if (long.TryParse((string)baseValue, out res) && ((c.ItemsLength==0) || (res >= 0 && res < c.ItemsLength)))
+            if (long.TryParse((string)baseValue, out res) && ((c.ItemsLength == 0) || (res >= 0 && res < c.ItemsLength)))
             {
                 return baseValue;
             }
@@ -74,6 +79,12 @@ flags: FrameworkPropertyMetadataOptions.AffectsRender));
         {
             var p = d as Character;
             p.cbxIsActive.IsChecked = Convert.ToBoolean(e.NewValue);
+        }
+
+        private static void CharacterKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var p = d as Character;
+            p.tbKey.Text = Convert.ToString(e.NewValue);
         }
 
         private static void OnItemsLengthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -141,6 +152,17 @@ flags: FrameworkPropertyMetadataOptions.AffectsRender));
             set
             {
                 SetValue(CustomTextProperty, value);
+            }
+        }
+        public string CharacterKey
+        {
+            get
+            {
+                return (string)GetValue(CharacterKeysProperty);
+            }
+            set
+            {
+                SetValue(CharacterKeysProperty, value);
             }
         }
         public string Foto
@@ -241,7 +263,7 @@ flags: FrameworkPropertyMetadataOptions.AffectsRender));
         public delegate void CharacterRemoveEventHandler(object? sender, string id);
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
-            if(CharacterRemoved!=null)
+            if (CharacterRemoved != null)
                 CharacterRemoved.Invoke(this, this.CustomText);
         }
         [Browsable(true)]
@@ -249,12 +271,39 @@ flags: FrameworkPropertyMetadataOptions.AffectsRender));
         [Description("Invoked when IsActive is modified from a Character")]
         public event CharacterIsActiveChangedEventHandler CharacterIsActiveChanged;
 
-        public delegate void CharacterIsActiveChangedEventHandler(object? sender, string id,bool isActive);
+        public delegate void CharacterIsActiveChangedEventHandler(object? sender, string id, bool isActive);
 
         private void cbxIsActive_Click(object sender, RoutedEventArgs e)
         {
             if (CharacterIsActiveChanged != null)
                 CharacterIsActiveChanged.Invoke(this, this.CustomText, cbxIsActive.IsChecked.GetValueOrDefault());
+        }
+
+        [Browsable(true)]
+        [Category("Action")]
+        [Description("Invoked when the key binding is removed from a Character")]
+        public event CharacterKeyRemovedEventHandler KeyRemoved;
+
+        public delegate void CharacterKeyRemovedEventHandler(object? sender, string id);
+        private void btnEditKey_Click(object sender, RoutedEventArgs e)
+        {
+            if (KeyEdited != null)
+            {
+                KeyEdited.Invoke(this, this.CustomText, tbKey.Text);
+            }
+        }
+        public delegate void CharacterKeyEditedEventHandler(object? sender, string id, string newValue);
+        [Browsable(true)]
+        [Category("Action")]
+        [Description("Invoked when the key binding is edited from a Character")]
+        public event CharacterKeyEditedEventHandler KeyEdited;
+
+        private void btnRemoveKey_Click(object sender, RoutedEventArgs e)
+        {
+            if (KeyRemoved != null)
+            {
+                KeyRemoved.Invoke(this, this.CustomText);
+            }
         }
     }
 }

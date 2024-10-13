@@ -51,7 +51,7 @@
         <Button x:Name="btnAddComp" Height="30"  Content="{x:Static prop:Resources.add_composition}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="175,70,0,0" Width="130" Click="btnAddComp_Click"></Button>
         <Button x:Name="btnEditComp" Height="30"  Content="{x:Static prop:Resources.edit_composition}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="485,70,0,0" Width="130" Click="btnEditComp_Click"  ></Button>
         <Button x:Name="btnRemoveComp" Height="30"  Content="{x:Static prop:Resources.remove_composition}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="320,70,0,0" Width="150" Click="btnRemoveComp_Click"></Button>
-        <ScrollViewer Margin="10,130,10,160" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
+        <ScrollViewer Margin="10,130,10,140" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
             <ItemsControl Name="itemsControl" ItemsSource="{Binding Source={StaticResource personatgeViewSource}}" BorderBrush="Black" BorderThickness="2 0 2 2">
                 <ItemsControl.ItemsPanel >
                     <ItemsPanelTemplate >
@@ -62,36 +62,28 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate  >
-                        <local:Character ItemsLength="{Binding Source={x:Static Application.Current},Path=MainWindow.ItemsCount}"  Margin="10,5,10,5" CustomText="{Binding Nom}" Position="{Binding Posicio,Mode=TwoWay}" Foto="{Binding IdClasseNavigation.Foto}" Classe="{Binding IdClasseNavigation.Nom}" IsActive="{Binding GetActive}"   PositionChanged="Character_PositionChanged" CharacterRemoved="Character_CharacterRemoved" CharacterIsActiveChanged="Character_CharacterIsActiveChanged" />
+                        <local:Character ItemsLength="{Binding Source={x:Static Application.Current},Path=MainWindow.ItemsCount}"  Margin="10,5,10,5" CustomText="{Binding Nom}" Position="{Binding Posicio,Mode=TwoWay}" Foto="{Binding IdClasseNavigation.Foto}" Classe="{Binding IdClasseNavigation.Nom}" IsActive="{Binding GetActive}"   PositionChanged="Character_PositionChanged" CharacterRemoved="Character_CharacterRemoved" CharacterIsActiveChanged="Character_CharacterIsActiveChanged" KeyEdited="Character_KeyEdited" KeyRemoved="Character_KeyRemoved" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        <Label x:Name="label" Margin="10,0,0,120" Width="auto" Height="30" Content="{x:Static prop:Resources.key_swap_windows}" VerticalAlignment="Bottom" HorizontalAlignment="Left" >
+        <Label x:Name="label" Margin="10,0,0,100" Width="auto" Height="30" Content="{x:Static prop:Resources.key_swap_windows}" VerticalAlignment="Bottom" HorizontalAlignment="Left" >
 
         </Label>
-        <TextBox x:Name="tbxKey" IsReadOnly="True" TextWrapping="Wrap" Text="TextBox" Width="auto"  Height="30" Margin="278,0,0,120" VerticalAlignment="Bottom" HorizontalAlignment="Left" TextAlignment="Center" />
-        <Button x:Name="btnChangeIcons" Content="{x:Static prop:Resources.change_icons}" Height="30" Width="120" Margin="197,0,0,79" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangeIcons_Click"  />
+        <TextBox x:Name="tbxKey" IsReadOnly="True" TextWrapping="Wrap" Text="TextBox" Width="auto"  Height="30" Margin="278,0,0,100" VerticalAlignment="Bottom" HorizontalAlignment="Left" TextAlignment="Center" />
+        <Button x:Name="btnChangeIcons" Content="{x:Static prop:Resources.change_icons}" Height="30" Width="120" Margin="197,0,0,65" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangeIcons_Click"  />
         <Button x:Name="btnAdd" Height="20" Width="30" Margin="0,110,15,0" VerticalAlignment="Top" Click="btnAdd_Click" HorizontalAlignment="Right" >
             <TextBlock  Margin="0,-8,0,0" FontSize="20">+</TextBlock>
         </Button>
         <Button x:Name="btnHelp" Content="{x:Static prop:Resources.help}" Height="30" Width="55" Margin="0,2,70,0" VerticalAlignment="Top" HorizontalAlignment="Right" Click="btnHelp_Click" />
-        <Button x:Name="btnChangeOrder" Content="{x:Static prop:Resources.order_windows}" Height="30" Width="160" Margin="20,0,0,79" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangeOrder_Click" />
-        <Button x:Name="btnChangekey" Content="{x:Static prop:Resources.edit_key}" Margin="221,0,0,120" Height="30" Width="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangekey_Click"/>
+        <Button x:Name="btnChangeOrder" Content="{x:Static prop:Resources.order_windows}" Height="30" Width="160" Margin="20,0,0,65" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangeOrder_Click" />
+        <Button x:Name="btnChangekey" Content="{x:Static prop:Resources.edit_key}" Margin="221,0,0,100" Height="30" Width="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnChangekey_Click"/>
         <Border Margin="0,105,0,0" UseLayoutRounding="True" Width="650" BorderBrush="Black" BorderThickness="2 2 2 0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center" />
-        <CheckBox x:Name="cbxKeyboard" IsChecked="{Binding Path=IsKeyboardEnabled,RelativeSource={RelativeSource AncestorType=Window}}" Content="{x:Static prop:Resources.enable_keyboard}" Margin="0,0,53,100" HorizontalAlignment="Right" Width="124" Height="18" VerticalAlignment="Bottom" Click="cbxKeyboard_Click"/>
-        <CheckBox x:Name="cbxMouse" IsChecked="{Binding Path=IsMouseEnabled,RelativeSource={RelativeSource AncestorType=Window}}" Content="{x:Static prop:Resources.enable_mouse }" Margin="0,0,60,125" Height="18" VerticalAlignment="Bottom" Click="cbxMouse_Click" HorizontalAlignment="Right" />
-        <Button x:Name="btnSeparateWindows" Content="{x:Static prop:Resources.separate_windows}" Margin="336,0,0,80" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Click="btnSeparateWindows_Click" RenderTransformOrigin="0.5,0.5" >
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleX="2.353"/>
-                    <RotateTransform/>
-                    <TranslateTransform X="-0.616"/>
-                </TransformGroup>
-            </Button.RenderTransform>
+        <CheckBox x:Name="cbxKeyboard" IsChecked="{Binding Path=IsKeyboardEnabled,RelativeSource={RelativeSource AncestorType=Window}}" Content="{x:Static prop:Resources.enable_keyboard}" Margin="0,0,53,80" HorizontalAlignment="Right" Width="124" Height="18" VerticalAlignment="Bottom" Click="cbxKeyboard_Click"/>
+        <CheckBox x:Name="cbxMouse" IsChecked="{Binding Path=IsMouseEnabled,RelativeSource={RelativeSource AncestorType=Window}}" Content="{x:Static prop:Resources.enable_mouse }" Margin="0,0,60,105" Height="18" VerticalAlignment="Bottom" Click="cbxMouse_Click" HorizontalAlignment="Right" />
+        <Button x:Name="btnSeparateWindows" Content="{x:Static prop:Resources.separate_windows}" Margin="336,0,0,65" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Click="btnSeparateWindows_Click" RenderTransformOrigin="0.5,0.5" >
         </Button>
-        <CheckBox x:Name="chbxOrderWindowsOnChange" Content="{x:Static prop:Resources.order_windows_change}" IsChecked="{Binding Path=OrderAutomatically,RelativeSource={RelativeSource AncestorType=Window}}" Click="chbxOrderWindowsOnChange_Click" VerticalAlignment="Bottom" Margin="20,0,0,50" HorizontalAlignment="Left"   />
+        <CheckBox x:Name="chbxOrderWindowsOnChange" Content="{x:Static prop:Resources.order_windows_change}" IsChecked="{Binding Path=OrderAutomatically,RelativeSource={RelativeSource AncestorType=Window}}" Click="chbxOrderWindowsOnChange_Click" VerticalAlignment="Bottom" Margin="20,0,0,35" HorizontalAlignment="Left"   />
 
     </Grid>
 

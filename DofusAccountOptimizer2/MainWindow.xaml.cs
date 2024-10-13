@@ -351,7 +351,7 @@ namespace DofusAccountOptimizer2
                 var e = accounts.FirstOrDefault(x => act.MainWindowTitle.Contains(x.Nom));
                 if (e == null)
                 {
-                    
+
                     MessageBox.Show($"{Properties.Resources.character_not_found} '{act.MainWindowTitle}'", "Error");
                     return;
                 }
@@ -1026,11 +1026,33 @@ namespace DofusAccountOptimizer2
 
         private void chbxOrderWindowsOnChange_Click(object sender, RoutedEventArgs e)
         {
-            
+
             var conf = dofusContext.Configuracios.First();
             if (conf != null)
             {
                 conf.SetOrderWindowsOnChangeComp(OrderAutomatically);
+                dofusContext.SaveChanges();
+            }
+        }
+
+        private void Character_KeyEdited(object sender, string id, string newValue)
+        {
+            var compId = ((Composition)comboBoxCompositions.SelectedValue).Id;
+            var found = dofusContext.Personatges.FirstOrDefault(x => x.IdComposition == compId && x.Nom == id);
+            if (found != null)
+            {
+                found.KeyCodes = newValue;
+                dofusContext.SaveChanges();
+            }
+        }
+
+        private void Character_KeyRemoved(object sender, string id)
+        {
+            var compId = ((Composition)comboBoxCompositions.SelectedValue).Id;
+            var found = dofusContext.Personatges.FirstOrDefault(x => x.IdComposition == compId && x.Nom == id);
+            if (found != null)
+            {
+                found.KeyCodes = null;
                 dofusContext.SaveChanges();
             }
         }

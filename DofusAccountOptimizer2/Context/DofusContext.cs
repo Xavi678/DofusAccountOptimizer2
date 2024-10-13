@@ -109,6 +109,10 @@ namespace DofusAccountOptimizer2.Context
 
                 entity.Property(e => e.IsActive).HasColumnName("IS_ACTIVE");
 
+                entity.Property(e => e.KeyCodes)
+                    .HasColumnType("NVARCHAR(100)")
+                    .HasColumnName("KEY_CODES");
+
                 entity.Property(e => e.Posicio).HasColumnName("POSICIO");
 
                 entity.HasOne(d => d.IdClasseNavigation)

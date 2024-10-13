@@ -10,6 +10,7 @@ namespace DofusAccountOptimizer2.Models
         public long IdClasse { get; set; }
         public long IsActive { get; set; }
         public long IdComposition { get; set; }
+        public string? KeyCodes { get; set; }
 
         public virtual Classe IdClasseNavigation { get; set; } = null!;
         public virtual Composition IdCompositionNavigation { get; set; } = null!;
