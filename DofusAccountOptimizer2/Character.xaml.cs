@@ -309,6 +309,9 @@ propertyChangedCallback: new PropertyChangedCallback(CharacterKeyChanged)));
             {
                 editKey.KeyCodes = new ObservableCollection<int>();
             }
+            
+            var res=Windows.Win32.PInvoke.UnhookWindowsHookEx(new Windows.Win32.UI.WindowsAndMessaging.HHOOK(MainWindow._hookID));
+            
             if (editKey.ShowDialog().GetValueOrDefault())
             {
                 //trobat.KeyCodes = String.Join("|", editKey.KeyCodes);
@@ -318,6 +321,7 @@ propertyChangedCallback: new PropertyChangedCallback(CharacterKeyChanged)));
                     KeyEdited.Invoke(this, this.CustomText, editKey.KeyCodes, String.Join("|", editKey.KeyCodes.Select(x => $"{x}")));
                 }
             }
+            MainWindow._hookID = MainWindow.SetHookKey(MainWindow._procKeyBoard);
 
         }
         public delegate void CharacterKeyEditedEventHandler(object? sender, string id, ICollection<int> newValue, string parsedKeyCodes);

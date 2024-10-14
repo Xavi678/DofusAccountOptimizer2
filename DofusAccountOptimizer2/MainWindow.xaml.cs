@@ -68,7 +68,7 @@ namespace DofusAccountOptimizer2
         public delegate IntPtr MouseHookHandler(int nCode, IntPtr wParam, IntPtr lParam);
         public delegate IntPtr KeyBoardHookHandler(int nCode, IntPtr wParam, IntPtr lParam);
         private static HOOKPROC _proc = MainWindow.HookCallbackM;
-        private static HOOKPROC _procKeyBoard = MainWindow.HookCallback;
+        internal static HOOKPROC _procKeyBoard = MainWindow.HookCallback;
         static int window = 0;
         bool isOrdered = false;
         public static List<int> keyCodes = new List<int>();
@@ -194,7 +194,7 @@ namespace DofusAccountOptimizer2
 
             }
         }
-        private static IntPtr SetHookKey(HOOKPROC proc)
+        internal static IntPtr SetHookKey(HOOKPROC proc)
         {
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule!)
@@ -948,7 +948,7 @@ namespace DofusAccountOptimizer2
                 tbxKey.Text = String.Join(" + ", editKey.KeyCodes.Select(x => $"{(System.Windows.Forms.Keys)x}"));
                 dofusContext.SaveChanges();
             }
-            SetHookKey(_procKeyBoard);
+           _hookID= SetHookKey(_procKeyBoard);
         }
 
         private void btnAddComp_Click(object sender, RoutedEventArgs e)
