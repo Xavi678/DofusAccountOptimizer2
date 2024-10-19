@@ -215,15 +215,15 @@ namespace DofusAccountOptimizer2
         {
             int vkCode = Marshal.ReadInt32(lParam);
             Console.WriteLine(vkCode);
-            var persos = ((ObservableCollection<Personatge>)personatgeViewSource.Source).Where(x=>x.KeyCodes!=null && x.KeyCodes!=String.Empty);
+            var persos = ((ObservableCollection<Personatge>)personatgeViewSource.Source).Where(x => x.KeyCodes != null && x.KeyCodes != String.Empty);
             bool keyCharacterClicked = false;
-            Personatge? keyPersonatge=null;
+            Personatge? keyPersonatge = null;
             foreach (var perso in persos)
             {
                 var keyCodes = perso.KeyCodes;
                 foreach (var keyCode in keyCodes.Split("|"))
                 {
-                    if(vkCode== Convert.ToInt32(keyCode))
+                    if (vkCode == Convert.ToInt32(keyCode))
                     {
                         keyCharacterClicked = true;
                         keyPersonatge = perso;
@@ -235,12 +235,12 @@ namespace DofusAccountOptimizer2
                     break;
                 }
             }
-            if(code >= 0 && keyCharacterClicked && keyPersonatge!=null)
+            if (code >= 0 && keyCharacterClicked && keyPersonatge != null)
             {
                 bool areAllClicked = true;
                 foreach (var otherKey in keyPersonatge!.KeyCodes!.Split("|"))
                 {
-                    var keyState = PInvoke.GetKeyState(Convert.ToInt32( otherKey));
+                    var keyState = PInvoke.GetKeyState(Convert.ToInt32(otherKey));
                     if (keyState >= 0)
                     {
                         areAllClicked = false;
@@ -251,7 +251,7 @@ namespace DofusAccountOptimizer2
                     Debug.WriteLine("Hooked");
                     var list = Process.GetProcesses().ToList();
                     var t = list.Where(x => x.ProcessName == "Dofus").ToList();
-                    var at=t.FirstOrDefault(x => x.MainWindowTitle.Contains(keyPersonatge.Nom));
+                    var at = t.FirstOrDefault(x => x.MainWindowTitle.Contains(keyPersonatge.Nom));
                     if (at != null)
                     {
                         PInvoke.ShowWindow(new Windows.Win32.Foundation.HWND(at.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOWMAXIMIZED);
@@ -261,7 +261,7 @@ namespace DofusAccountOptimizer2
                     return PInvoke.CallNextHookEx(new HHOOK(_hookID), code, wParam, lParam);
                 }
             }
-            
+
             if (code >= 0 && ((wParam == WM_KEYDOWN && keyCodes.Contains(vkCode))))
             {
                 bool areAllClicked = true;
@@ -948,7 +948,7 @@ namespace DofusAccountOptimizer2
                 tbxKey.Text = String.Join(" + ", editKey.KeyCodes.Select(x => $"{(System.Windows.Forms.Keys)x}"));
                 dofusContext.SaveChanges();
             }
-           _hookID= SetHookKey(_procKeyBoard);
+            _hookID = SetHookKey(_procKeyBoard);
         }
 
         private void btnAddComp_Click(object sender, RoutedEventArgs e)
@@ -1119,9 +1119,24 @@ namespace DofusAccountOptimizer2
         {
             var compId = ((Composition)comboBoxCompositions.SelectedValue).Id;
             var personatgesCompo = dofusContext.Personatges.Where(x => x.IdComposition == compId);
-            if (personatgesCompo.FirstOrDefault(x => x.Nom != id && x.KeyCodes == parsedKeyCodes) != null)
+            bool isDuplicated = false;
+            foreach (var personatge in personatgesCompo.Where(x=>x.Nom!=id))
             {
-                MessageBox.Show(Properties.Resources.error_keybinding_duplicated);
+                var keyCodes = personatge.GetKeyCodes();
+                isDuplicated = AlreadyHasKey(newValue, keyCodes);
+                if (isDuplicated)
+                {
+                    MessageBox.Show(Properties.Resources.error_keybinding_duplicated, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+            }
+
+            isDuplicated = AlreadyHasKey(newValue, keyCodes);
+
+            if (isDuplicated)
+            {
+                MessageBox.Show(Properties.Resources.error_keybinding_duplicated, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             var found = personatgesCompo.FirstOrDefault(x => x.Nom == id);
@@ -1131,6 +1146,29 @@ namespace DofusAccountOptimizer2
                 dofusContext.SaveChanges();
                 personatgeViewSource.View.Refresh();
             }
+        }
+
+        private static bool AlreadyHasKey(ICollection<int> newValue, IEnumerable<int>? keyCodes)
+        {
+            bool hasAlready = true;
+            if (keyCodes != null && keyCodes.Count() > 0)
+            {
+                var orderedKeyCodes = keyCodes.OrderBy(x => x);
+                var orderedNewKeyCodes = newValue.OrderBy(x => x);
+                int i = 0;
+
+                foreach (var keyCode in orderedNewKeyCodes)
+                {
+                    if (keyCode != orderedKeyCodes.ElementAtOrDefault(i))
+                    {
+                        hasAlready = false;
+                        break;
+                    }
+                    i++;
+                }
+
+            }
+            return hasAlready;
         }
     }
 }
