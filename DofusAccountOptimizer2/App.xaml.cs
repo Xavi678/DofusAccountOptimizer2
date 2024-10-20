@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,6 +37,12 @@ namespace DofusAccountOptimizer2
             this.Exit += App_Exit;
             using (DofusContext dofusContext = new DofusContext())
             {
+               var folder= Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\DofusAccountOptimizer";
+                if (!Directory.Exists(folder))
+                {
+                    
+                    Directory.CreateDirectory(folder);
+                }
                 dofusContext.Database.EnsureCreated();
                var conf= dofusContext.Configuracios.FirstOrDefault();
                 if (conf != null)

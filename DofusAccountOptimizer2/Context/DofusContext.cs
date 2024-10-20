@@ -55,8 +55,8 @@ namespace DofusAccountOptimizer2.Context
                     .HasColumnName("ID");
 
                 entity.Property(e => e.Nom)
-                    .HasColumnName("NOM")
-                    .HasDefaultValueSql("\"DEFAULT\"");
+                    .HasColumnName("NOM");
+                    //.HasDefaultValueSql("\"DEFAULT\"");
             });
 
             modelBuilder.Entity<Configuracio>(entity =>
