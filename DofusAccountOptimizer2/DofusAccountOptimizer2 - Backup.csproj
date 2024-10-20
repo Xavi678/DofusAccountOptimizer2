@@ -179,7 +179,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&#xD;&#xA;IF $(Configuration)==Release (&#xD;&#xA;IF exist dofus-account-optimizer2.zip (&#xD;&#xA;del dofus-account-optimizer2.zip&#xD;&#xA;)&#xD;&#xA;&#xD;&#xA;cd $(OutDir)&#xD;&#xA;WinRaR a -r  dofus-account-optimizer2.zip  *.*&#xD;&#xA;&#xD;&#xA;)" />
+    <Exec Command="echo $(OutDir)&#xD;&#xA;IF $(Configuration)==Release (&#xD;&#xA;WinRaR a -r dofus.zip *.*&#xD;&#xA;)" />
   </Target>
 
 </Project>
