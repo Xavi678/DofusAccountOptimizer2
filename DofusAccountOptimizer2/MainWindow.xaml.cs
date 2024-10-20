@@ -1170,5 +1170,14 @@ namespace DofusAccountOptimizer2
             }
             return hasAlready;
         }
+
+        private void btnKillWindows_Click(object sender, RoutedEventArgs e)
+        {
+           var processes= GetAllProcess();
+            foreach (var item in processes)
+            {              
+                item.Kill();
+            }
+        }
     }
 }

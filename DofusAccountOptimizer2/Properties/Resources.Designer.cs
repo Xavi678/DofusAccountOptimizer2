@@ -394,6 +394,15 @@ namespace DofusAccountOptimizer2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close All the Windows.
+        /// </summary>
+        public static string kill_windows {
+            get {
+                return ResourceManager.GetString("kill_windows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max 3 Keys.
         /// </summary>
         public static string max_key_codes {

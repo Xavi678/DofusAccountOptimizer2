@@ -84,6 +84,7 @@
         <Button x:Name="btnSeparateWindows" Content="{x:Static prop:Resources.separate_windows}" Margin="336,0,0,65" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Click="btnSeparateWindows_Click" RenderTransformOrigin="0.5,0.5" >
         </Button>
         <CheckBox x:Name="chbxOrderWindowsOnChange" Content="{x:Static prop:Resources.order_windows_change}" IsChecked="{Binding Path=OrderAutomatically,RelativeSource={RelativeSource AncestorType=Window}}" Click="chbxOrderWindowsOnChange_Click" VerticalAlignment="Bottom" Margin="20,0,0,35" HorizontalAlignment="Left"   />
+        <Button x:Name="btnKillWindows" Content="{x:Static prop:Resources.kill_windows}" Margin="0,0,30,47" Click="btnKillWindows_Click" HorizontalAlignment="Right" Width="146" Height="23" VerticalAlignment="Bottom"/>
 
     </Grid>
 

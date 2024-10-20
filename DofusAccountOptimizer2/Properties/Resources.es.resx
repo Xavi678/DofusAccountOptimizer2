@@ -261,4 +261,7 @@
   <data name="error_keybinding_duplicated" xml:space="preserve">
     <value>Estas Teclas ya estan siendo utilizadas</value>
   </data>
+  <data name="kill_windows" xml:space="preserve">
+    <value>Cerrar las Ventanas</value>
+  </data>
 </root>

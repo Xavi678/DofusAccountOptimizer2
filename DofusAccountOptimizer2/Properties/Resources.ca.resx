@@ -261,4 +261,7 @@
   <data name="error_keybinding_duplicated" xml:space="preserve">
     <value>Aquestes Tecles ja estan sent utilizatdes</value>
   </data>
+  <data name="kill_windows" xml:space="preserve">
+    <value>Tancar les Finestres</value>
+  </data>
 </root>
