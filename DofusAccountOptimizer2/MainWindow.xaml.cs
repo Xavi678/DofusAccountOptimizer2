@@ -648,9 +648,9 @@ namespace DofusAccountOptimizer2
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var mw = sender as MainWindow;
-            var keyCodes = dofusContext.Configuracios.FirstOrDefault()?.KeyCodes.Split("|");
-            MainWindow.keyCodes = keyCodes.Select(x => Convert.ToInt32(x)).ToList();
-            tbxKey.Text = string.Join(" + ", MainWindow.keyCodes.Select(x => (System.Windows.Forms.Keys)x));
+            MainWindow.keyCodes = KeyCodesExtensions.ConvertKeys(dofusContext.Configuracios.FirstOrDefault()!.KeyCodes).ToList(); 
+            
+            tbxKey.Text = KeyCodesExtensions.ConvertToTextBoxString(MainWindow.keyCodes);
 
 
         }
@@ -940,12 +940,15 @@ namespace DofusAccountOptimizer2
             var trobat = dofusContext.Configuracios.First();
 
             EditKey editKey = new EditKey();
-            editKey.KeyCodes = new ObservableCollection<int>(trobat.KeyCodes.Split("|").Select(x => Convert.ToInt32(x)));
+            
+            editKey.KeyCodes = new ObservableCollection<int>(KeyCodesExtensions.ConvertKeys(trobat.KeyCodes));
             if (editKey.ShowDialog().GetValueOrDefault())
             {
                 MainWindow.keyCodes = editKey.KeyCodes.ToList();
                 trobat.KeyCodes = String.Join("|", editKey.KeyCodes);
-                tbxKey.Text = String.Join(" + ", editKey.KeyCodes.Select(x => $"{(System.Windows.Forms.Keys)x}"));
+
+                
+                tbxKey.Text = KeyCodesExtensions.ConvertToTextBoxString(editKey.KeyCodes);
                 dofusContext.SaveChanges();
             }
             _hookID = SetHookKey(_procKeyBoard);

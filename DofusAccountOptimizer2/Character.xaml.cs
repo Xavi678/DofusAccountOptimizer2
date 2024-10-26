@@ -86,7 +86,6 @@ propertyChangedCallback: new PropertyChangedCallback(CharacterKeyChanged)));
         private static void CharacterKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var p = d as Character;
-            //String.Join(" + ", editKey.KeyCodes.Select(x => $"{(System.Windows.Forms.Keys)x}"));
             var keys = Convert.ToString(e.NewValue);            
             if (!String.IsNullOrWhiteSpace(keys))
             {
@@ -303,7 +302,7 @@ propertyChangedCallback: new PropertyChangedCallback(CharacterKeyChanged)));
             EditKey editKey = new EditKey();
             if (!String.IsNullOrWhiteSpace(CharacterKey))
             {
-                editKey.KeyCodes = new ObservableCollection<int>(CharacterKey.Split("|").Select(x => Convert.ToInt32(x)));
+                editKey.KeyCodes = new ObservableCollection<int>(KeyCodesExtensions.ConvertKeys(CharacterKey));
             }
             else
             {
@@ -314,11 +313,9 @@ propertyChangedCallback: new PropertyChangedCallback(CharacterKeyChanged)));
             
             if (editKey.ShowDialog().GetValueOrDefault())
             {
-                //trobat.KeyCodes = String.Join("|", editKey.KeyCodes);
-                //dofusContext.SaveChanges();
                 if (KeyEdited != null)
                 {
-                    KeyEdited.Invoke(this, this.CustomText, editKey.KeyCodes, String.Join("|", editKey.KeyCodes.Select(x => $"{x}")));
+                    KeyEdited.Invoke(this, this.CustomText, editKey.KeyCodes, KeyCodesExtensions.ConvertToString(editKey.KeyCodes));
                 }
             }
             MainWindow._hookID = MainWindow.SetHookKey(MainWindow._procKeyBoard);

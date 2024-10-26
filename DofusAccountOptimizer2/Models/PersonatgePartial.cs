@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DofusAccountOptimizer2.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,8 @@ namespace DofusAccountOptimizer2.Models
         }
         public IEnumerable<int>? GetKeyCodes()
         {
-            return this.KeyCodes?.Split("|").Select(x => Convert.ToInt32(x));
+           return KeyCodesExtensions.ConvertKeys(this.KeyCodes);
+            //return this.KeyCodes?.Split("|").Select(x => Convert.ToInt32(x));
         }
     }
 }
