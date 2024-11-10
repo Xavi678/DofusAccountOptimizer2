@@ -1,1 +1,1 @@
-﻿Scaffold-DbContext "Data Source=C:\Users\ASUS\AppData\Local\DofusAccountOptimizer\Dofus.db" Microsoft.EntityFrameworkCore.Sqlite -OutputDir Models -ContextDir Context -Force
+﻿Scaffold-DbContext "Data Source=C:\Users\ASUS\AppData\Local\DofusAccountOptimizer\Dofus.db" Microsoft.EntityFrameworkCore.Sqlite -OutputDir Models -ContextDir Context -Force -NoOnConfiguring

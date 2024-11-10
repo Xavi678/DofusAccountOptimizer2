@@ -22,15 +22,6 @@ namespace DofusAccountOptimizer2.Context
         public virtual DbSet<Configuracio> Configuracios { get; set; } = null!;
         public virtual DbSet<Personatge> Personatges { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlite("Data Source=C:\\Users\\ASUS\\AppData\\Local\\DofusAccountOptimizer\\Dofus.db");
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Classe>(entity =>
@@ -54,9 +45,7 @@ namespace DofusAccountOptimizer2.Context
                     .ValueGeneratedNever()
                     .HasColumnName("ID");
 
-                entity.Property(e => e.Nom)
-                    .HasColumnName("NOM");
-                    //.HasDefaultValueSql("\"DEFAULT\"");
+                entity.Property(e => e.Nom).HasColumnName("NOM");
             });
 
             modelBuilder.Entity<Configuracio>(entity =>
@@ -100,6 +89,10 @@ namespace DofusAccountOptimizer2.Context
                 entity.HasKey(e => new { e.Nom, e.IdComposition });
 
                 entity.ToTable("PERSONATGE");
+
+                entity.HasIndex(e => e.IdClasse, "IX_PERSONATGE_ID_CLASSE");
+
+                entity.HasIndex(e => e.IdComposition, "IX_PERSONATGE_ID_COMPOSITION");
 
                 entity.Property(e => e.Nom).HasColumnName("NOM");
 

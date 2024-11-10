@@ -38,5 +38,14 @@ namespace DofusAccountOptimizer2.Context
             modelBuilder.Entity<Configuracio>().HasData(new Configuracio() { Id = 1, UpdateIcons = 0, KeyCodes = "112|160", OrderWindows = 0,EnableKeyboard=1,EnableMouse=1 });
             modelBuilder.Entity<Composition>().HasData(new Composition() { Id=1, Nom = "DEFAULT" });
         }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                var localappdata = Environment.GetEnvironmentVariable("localappdata");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlite($"Data Source={localappdata}\\DofusAccountOptimizer\\Dofus.db");
+            }
+        }
     }
 }
