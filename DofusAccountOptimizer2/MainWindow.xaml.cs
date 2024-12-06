@@ -648,8 +648,8 @@ namespace DofusAccountOptimizer2
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var mw = sender as MainWindow;
-            MainWindow.keyCodes = KeyCodesExtensions.ConvertKeys(dofusContext.Configuracios.FirstOrDefault()!.KeyCodes).ToList(); 
-            
+            MainWindow.keyCodes = KeyCodesExtensions.ConvertKeys(dofusContext.Configuracios.FirstOrDefault()!.KeyCodes).ToList();
+
             tbxKey.Text = KeyCodesExtensions.ConvertToTextBoxString(MainWindow.keyCodes);
 
 
@@ -805,40 +805,84 @@ namespace DofusAccountOptimizer2
                 await dofusContext.SaveChangesAsync();
             }
         }
+        /*public static int GetZOrder(Process p)
+        {
+            IntPtr hWnd = p.MainWindowHandle;
+            var z = 0;
 
+            for (var h = hWnd; h != IntPtr.Zero; h =PInvoke.GetWindow(new HWND(h), GET_WINDOW_CMD.GW_HWNDPREV)) z++;
+            return z;
+        }*/
         private void OrderWindows()
         {
             var accounts = personatgeViewSource.View.Cast<Personatge>();
             var allProcess = GetAllProcess();
-            foreach (var account in accounts.OrderBy(x => x.Posicio))
+            bool areSameOrder = true;
+            LPARAM lPARAM = new LPARAM();
+            List<Process> llistaOrder = new List<Process>();
+            PInvoke.EnumWindows(new WNDENUMPROC((x, y) =>
             {
 
-                var pr = allProcess.FirstOrDefault(x => x.MainWindowTitle.Contains(account.Nom));
-                if (pr != null)
+                var found=allProcess.FirstOrDefault(z => z.MainWindowHandle == x.Value);
+                if (found!=null)
                 {
-                    int i = 0;
-                    BOOL resH;
-                    BOOL resS;
-                    int errorCodeH;
-                    int errorCodeS;
-                    //File.AppendAllText("ordenar finestres.txt", "-------------------------------START------------------------------------");
-                    do
+                    llistaOrder.Add(found);
+                }
+                Console.WriteLine();
+                return true;
+            }), lPARAM);
+            llistaOrder.Reverse();
+            foreach (var item in llistaOrder)
+            {
+                Personatge? currentAccount=null;
+                foreach (var account in accounts)
+                {
+                    if (item.MainWindowTitle.Contains(account.Nom))
                     {
-                        i++;
-                        resH = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
-                        var winexH = new Win32Exception(Marshal.GetLastWin32Error());
-                        errorCodeH = winexH.ErrorCode;
-                        resS = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
-                        var winexS = new Win32Exception(Marshal.GetLastWin32Error());
-                        errorCodeS = winexS.ErrorCode;
-
-                        //File.AppendAllText("ordenar finestres.txt", $"\n{account.Nom} {resS} {resH} {pr.MainWindowHandle} {pr.MainWindowTitle} {errorCodeH} {errorCodeS} {winexH.Message} {winexS.Message}");
-                        isOrdered = true;
-                    } while ((resH.Value != 24 || resS.Value != 0) && i < 3);
-                    //File.AppendAllText("ordenar finestres.txt", "-------------------------------END------------------------------------");
+                        currentAccount = account;
+                        break;
+                    }
                 }
 
-                Thread.Sleep(1000);
+                if(currentAccount!=null && currentAccount.Posicio != llistaOrder.IndexOf(item))
+                {
+                    areSameOrder = false;
+                }
+            }
+
+
+            if (!areSameOrder)
+            {
+                foreach (var account in accounts.OrderBy(x => x.Posicio))
+                {
+
+                    var pr = allProcess.FirstOrDefault(x => x.MainWindowTitle.Contains(account.Nom));
+                    if (pr != null)
+                    {
+                        int i = 0;
+                        BOOL resH;
+                        BOOL resS;
+                        int errorCodeH;
+                        int errorCodeS;
+                        //File.AppendAllText("ordenar finestres.txt", "-------------------------------START------------------------------------");
+                        do
+                        {
+                            i++;
+                            resH = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_HIDE);
+                            var winexH = new Win32Exception(Marshal.GetLastWin32Error());
+                            errorCodeH = winexH.ErrorCode;
+                            resS = PInvoke.ShowWindow(new HWND(pr.MainWindowHandle), SHOW_WINDOW_CMD.SW_SHOW);
+                            var winexS = new Win32Exception(Marshal.GetLastWin32Error());
+                            errorCodeS = winexS.ErrorCode;
+
+                            //File.AppendAllText("ordenar finestres.txt", $"\n{account.Nom} {resS} {resH} {pr.MainWindowHandle} {pr.MainWindowTitle} {errorCodeH} {errorCodeS} {winexH.Message} {winexS.Message}");
+                            isOrdered = true;
+                        } while ((resH.Value != 24 || resS.Value != 0) && i < 3);
+                        //File.AppendAllText("ordenar finestres.txt", "-------------------------------END------------------------------------");
+                    }
+
+                    Thread.Sleep(1000);
+                }
             }
         }
 
@@ -940,14 +984,14 @@ namespace DofusAccountOptimizer2
             var trobat = dofusContext.Configuracios.First();
 
             EditKey editKey = new EditKey();
-            
+
             editKey.KeyCodes = new ObservableCollection<int>(KeyCodesExtensions.ConvertKeys(trobat.KeyCodes));
             if (editKey.ShowDialog().GetValueOrDefault())
             {
                 MainWindow.keyCodes = editKey.KeyCodes.ToList();
                 trobat.KeyCodes = String.Join("|", editKey.KeyCodes);
 
-                
+
                 tbxKey.Text = KeyCodesExtensions.ConvertToTextBoxString(editKey.KeyCodes);
                 dofusContext.SaveChanges();
             }
@@ -1091,6 +1135,11 @@ namespace DofusAccountOptimizer2
             if (conf != null)
             {
                 conf.SetOrderWindowsOnChangeComp(OrderAutomatically);
+
+                if (OrderAutomatically)
+                {
+                    OrderWindows();
+                }
                 dofusContext.SaveChanges();
             }
         }
@@ -1123,7 +1172,7 @@ namespace DofusAccountOptimizer2
             var compId = ((Composition)comboBoxCompositions.SelectedValue).Id;
             var personatgesCompo = dofusContext.Personatges.Where(x => x.IdComposition == compId);
             bool isDuplicated = false;
-            foreach (var personatge in personatgesCompo.Where(x=>x.Nom!=id))
+            foreach (var personatge in personatgesCompo.Where(x => x.Nom != id))
             {
                 var keyCodes = personatge.GetKeyCodes();
                 isDuplicated = AlreadyHasKey(newValue, keyCodes);
@@ -1176,9 +1225,9 @@ namespace DofusAccountOptimizer2
 
         private void btnKillWindows_Click(object sender, RoutedEventArgs e)
         {
-           var processes= GetAllProcess();
+            var processes = GetAllProcess();
             foreach (var item in processes)
-            {              
+            {
                 item.Kill();
             }
         }
