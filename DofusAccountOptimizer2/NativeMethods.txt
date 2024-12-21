@@ -17,3 +17,4 @@ SHGetPropertyStoreForWindow
 PROPERTYKEY
 GetWindow
 EnumWindows
+ITaskbarList

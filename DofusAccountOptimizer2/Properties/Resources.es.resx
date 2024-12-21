@@ -264,4 +264,7 @@
   <data name="kill_windows" xml:space="preserve">
     <value>Cerrar las Ventanas</value>
   </data>
+  <data name="taskbar_icons" xml:space="preserve">
+    <value>Usa las iconos grandes de la barra de herramientas</value>
+  </data>
 </root>

@@ -264,4 +264,7 @@
   <data name="kill_windows" xml:space="preserve">
     <value>Close All the Windows</value>
   </data>
+  <data name="taskbar_icons" xml:space="preserve">
+    <value>Use Taskbar Big Icons</value>
+  </data>
 </root>

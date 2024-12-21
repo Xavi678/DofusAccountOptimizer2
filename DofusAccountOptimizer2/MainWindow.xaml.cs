@@ -37,6 +37,7 @@ using DofusAccountOptimizer2.Classes;
 using Windows.Win32.UI.Shell.PropertiesSystem;
 using System.Runtime.CompilerServices;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
+using Microsoft.Win32;
 
 namespace DofusAccountOptimizer2
 {
@@ -113,6 +114,7 @@ namespace DofusAccountOptimizer2
             }
         }
         private bool WindowsAreSeparated = false;
+        public bool TaskbarSmallIcons { get; set; } = false;
         private const string APP_IID = "com.dofus.d1elauncher";
         public MainWindow()
         {
@@ -135,6 +137,21 @@ namespace DofusAccountOptimizer2
             //DataContext = this;
             //db.Database.Log = X => { Console.WriteLine(X); };
 
+            var taskBarGlomLevel = RegistryExplorer.GetTaskbarRegistryPropertie();
+
+            if (taskBarGlomLevel != null)
+            {
+                var regKind = taskBarGlomLevel.GetValueKind(RegistryExplorer.TASKBAR_GLOOM_LEVEL);
+                var glom = taskBarGlomLevel.GetValue(RegistryExplorer.TASKBAR_GLOOM_LEVEL);
+                if (glom != null)
+                {
+                    if (regKind == RegistryValueKind.DWord)
+                    {
+                        int res = Convert.ToInt32(glom);
+                        TaskbarSmallIcons = res == 2;
+                    }
+                }
+            }
 
             if (trobat != null)
             {
@@ -823,8 +840,8 @@ namespace DofusAccountOptimizer2
             PInvoke.EnumWindows(new WNDENUMPROC((x, y) =>
             {
 
-                var found=allProcess.FirstOrDefault(z => z.MainWindowHandle == x.Value);
-                if (found!=null)
+                var found = allProcess.FirstOrDefault(z => z.MainWindowHandle == x.Value);
+                if (found != null)
                 {
                     llistaOrder.Add(found);
                 }
@@ -834,7 +851,7 @@ namespace DofusAccountOptimizer2
             llistaOrder.Reverse();
             foreach (var item in llistaOrder)
             {
-                Personatge? currentAccount=null;
+                Personatge? currentAccount = null;
                 foreach (var account in accounts)
                 {
                     if (item.MainWindowTitle.Contains(account.Nom))
@@ -844,7 +861,7 @@ namespace DofusAccountOptimizer2
                     }
                 }
 
-                if(currentAccount!=null && currentAccount.Posicio != llistaOrder.IndexOf(item))
+                if (currentAccount != null && currentAccount.Posicio != llistaOrder.IndexOf(item))
                 {
                     areSameOrder = false;
                 }
@@ -1230,6 +1247,64 @@ namespace DofusAccountOptimizer2
             {
                 item.Kill();
             }
+        }
+
+        private void chbTaskbarIcons_Click(object sender, RoutedEventArgs e)
+        {
+            //TaskbarGlomLevel 2(Hexadecimal)
+            var advancedSubKey = RegistryExplorer.GetTaskbarRegistryPropertie();
+            if (chbTaskbarIcons.IsChecked.GetValueOrDefault())
+            {
+
+                var taskBarGlomLevel = advancedSubKey?.GetValue(RegistryExplorer.TASKBAR_GLOOM_LEVEL);
+                var regKind = advancedSubKey.GetValueKind(RegistryExplorer.TASKBAR_GLOOM_LEVEL);
+
+                if (taskBarGlomLevel == null )
+                {
+                    SetTBGlomLevel(advancedSubKey);
+                }
+                else
+                {
+                    if (regKind != RegistryValueKind.DWord)
+                    {
+                        DeleteTBGlomLevel(advancedSubKey);
+                        SetTBGlomLevel(advancedSubKey);
+                    }
+                }
+            }
+            else
+            {
+                DeleteTBGlomLevel(advancedSubKey);
+            }
+            ResetExplorer();
+        }
+
+        private static void DeleteTBGlomLevel(RegistryKey? advancedSubKey)
+        {
+            advancedSubKey?.DeleteValue(RegistryExplorer.TASKBAR_GLOOM_LEVEL);
+        }
+
+        private static void SetTBGlomLevel(RegistryKey? advancedSubKey)
+        {
+            try
+            {
+                advancedSubKey?.SetValue(RegistryExplorer.TASKBAR_GLOOM_LEVEL, 2, RegistryValueKind.DWord);
+            }
+            catch (UnauthorizedAccessException)
+            {
+
+                MessageBox.Show(Properties.Resources.privilege_error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ResetExplorer()
+        {
+            var explorer = Process.GetProcessesByName("explorer").FirstOrDefault();
+            if (explorer != null)
+            {
+                explorer.Kill();
+            }
+
         }
     }
 }

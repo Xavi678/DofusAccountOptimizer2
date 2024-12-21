@@ -85,6 +85,7 @@
         </Button>
         <CheckBox x:Name="chbxOrderWindowsOnChange" Content="{x:Static prop:Resources.order_windows_change}" IsChecked="{Binding Path=OrderAutomatically,RelativeSource={RelativeSource AncestorType=Window}}" Click="chbxOrderWindowsOnChange_Click" VerticalAlignment="Bottom" Margin="20,0,0,35" HorizontalAlignment="Left"   />
         <Button x:Name="btnKillWindows" Content="{x:Static prop:Resources.kill_windows}" Margin="0,0,30,47" Click="btnKillWindows_Click" HorizontalAlignment="Right" Width="146" Height="23" VerticalAlignment="Bottom"/>
+        <CheckBox x:Name="chbTaskbarIcons" Content="{x:Static prop:Resources.taskbar_icons}" HorizontalAlignment="Left" Margin="20,0,0,10" VerticalAlignment="Bottom" Click="chbTaskbarIcons_Click" IsChecked="{Binding Path=TaskbarSmallIcons,RelativeSource={RelativeSource AncestorType=Window}}"/>
 
     </Grid>
 

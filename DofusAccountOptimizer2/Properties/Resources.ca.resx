@@ -264,4 +264,7 @@
   <data name="kill_windows" xml:space="preserve">
     <value>Tancar les Finestres</value>
   </data>
+  <data name="taskbar_icons" xml:space="preserve">
+    <value>Utiliza les icones grans de la barra d'eines</value>
+  </data>
 </root>
