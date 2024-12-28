@@ -415,7 +415,7 @@ namespace DofusAccountOptimizer2
             }
             else
             {
-                var e = accounts.FirstOrDefault(x => act.MainWindowTitle.Contains(x.Nom));
+                var e = accounts.FirstOrDefault(x => act.MainWindowTitle.ContainsCharName(x.Nom));
                 if (e == null)
                 {
 
@@ -581,7 +581,7 @@ namespace DofusAccountOptimizer2
                 foreach (var process in allProcess)
                 {
 
-                    if (accounts.FirstOrDefault(x => process.MainWindowTitle.Contains(x.Nom)) != null)
+                    if (accounts.FirstOrDefault(x => process.MainWindowTitle.ContainsCharName(x.Nom)) != null)
                     {
                         SetSettings(process);
                     }
@@ -595,14 +595,14 @@ namespace DofusAccountOptimizer2
             string title = null;
             //var i=Icon.ExtractAssociatedIcon(process.MainModule.FileName);
             //Console.WriteLine(i.ToString());
-            var p = accounts.FirstOrDefault(x => process.MainWindowTitle.Contains(x.Nom)  /*&& !process.MainWindowTitle.EndsWith("Dofus")*/);
+            var p = accounts.FirstOrDefault(x => process.MainWindowTitle.ContainsCharName(x.Nom)  /*&& !process.MainWindowTitle.EndsWith("Dofus")*/);
             if (p != null)
             {
                 using (DofusContext db = new DofusContext())
                 {
                     var c = db.Classes.First(x => x.Id == p.IdClasse);
                     img = c.Foto;
-                    title = $"{DofusAccountOptimizer2.Properties.Resources.ResourceManager.GetString($"class_{c.Id}")} - {p.Nom} Dofus";
+                    title = $"{DofusAccountOptimizer2.Properties.Resources.ResourceManager.GetString($"class_{c.Id}")} - {p.Nom} - Dofus";
                 }
                 if (img != null)
                 {
@@ -645,7 +645,7 @@ namespace DofusAccountOptimizer2
             var process = Process.GetProcesses().OfType<Process>().FirstOrDefault(x => x.Id == processId);
             if (process != null)
             {
-                if (accounts.FirstOrDefault(x => process.MainWindowTitle.Contains(x.Nom) && !process.MainWindowTitle.EndsWith("Dofus")) != null)
+                if (accounts.FirstOrDefault(x => process.MainWindowTitle.ContainsCharName(x.Nom) && !process.MainWindowTitle.EndsWith("Dofus")) != null)
                 {
                     windowChecker.Start();
                     ((DispatcherTimer)sender).Stop();
