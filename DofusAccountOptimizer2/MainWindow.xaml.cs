@@ -240,9 +240,10 @@ namespace DofusAccountOptimizer2
             foreach (var perso in persos)
             {
                 var keyCodes = perso.KeyCodes;
-                foreach (var keyCode in keyCodes.Split("|"))
+                
+                foreach (var keyCode in KeyCodesExtensions.ConvertKeys( keyCodes))
                 {
-                    if (vkCode == Convert.ToInt32(keyCode))
+                    if (vkCode == keyCode)
                     {
                         keyCharacterClicked = true;
                         keyPersonatge = perso;
@@ -538,14 +539,25 @@ namespace DofusAccountOptimizer2
                 }
                 try
                 {
-                    startWatch = new ManagementEventWatcher(
-       new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace WHERE ProcessName='Dofus.exe'"));
-                    startWatch.Options.Context.Add("updIcons", updIcons);
-                    startWatch.Options.Context.Add("updTitle", updTitle);
-                    startWatch.EventArrived
-                                        += StartWatch_EventArrived;
+                    if (startWatch == null)
+                    {
+                        startWatch = new ManagementEventWatcher(
+           new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace WHERE ProcessName='Dofus.exe'"));
+                        startWatch.Options.Context.Add("updIcons", updIcons);
+                        startWatch.Options.Context.Add("updTitle", updTitle);
+                        startWatch.EventArrived
+                                            += StartWatch_EventArrived;
 
-                    startWatch.Start();
+                        startWatch.Start();
+                    }
+                    else
+                    {
+                        startWatch.Options.Context.Remove("updIcons");
+                        startWatch.Options.Context.Remove("updTitle");
+
+                        startWatch.Options.Context.Add("updIcons", updIcons);
+                        startWatch.Options.Context.Add("updTitle", updTitle);
+                    }
                 }
                 catch (ManagementException ex)
                 {
@@ -559,6 +571,7 @@ namespace DofusAccountOptimizer2
                 {
                     startWatch.Stop();
                     startWatch.Dispose();
+                    startWatch = null;
                 }
                 if (windowChecker != null)
                 {
@@ -1325,6 +1338,11 @@ namespace DofusAccountOptimizer2
                 explorer.Kill();
             }
 
+        }
+
+        private void btnChangeTitle_Click(object sender, RoutedEventArgs e)
+        {
+            SetWindowsIcons(false, true);
         }
     }
 }

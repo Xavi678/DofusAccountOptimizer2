@@ -87,6 +87,7 @@
         <Button x:Name="btnKillWindows" Content="{x:Static prop:Resources.kill_windows}" Margin="0,0,30,47" Click="btnKillWindows_Click" HorizontalAlignment="Right" Width="146" Height="23" VerticalAlignment="Bottom"/>
         <CheckBox x:Name="chbTaskbarIcons" Content="{x:Static prop:Resources.taskbar_icons}" HorizontalAlignment="Left" Margin="20,0,0,10" VerticalAlignment="Bottom" Click="chbTaskbarIcons_Click" IsChecked="{Binding Path=TaskbarSmallIcons,RelativeSource={RelativeSource AncestorType=Window}}"/>
         <CheckBox x:Name="cbxCanviTitle" Margin="0,40,10,0" VerticalAlignment="Top" Content="{x:Static prop:Resources.change_title}" Checked="cbxCanviIcones_Checked" ClickMode="Press" IsChecked="False" Cursor="Hand" Click="cbxCanviIcones_Click" HorizontalAlignment="Right"  />
+        <Button x:Name="btnChangeTitle" Content="{x:Static prop:Resources.change_title}" Height="30" Width="120" Margin="0,0,55,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="btnChangeTitle_Click"  />
 
     </Grid>
 
