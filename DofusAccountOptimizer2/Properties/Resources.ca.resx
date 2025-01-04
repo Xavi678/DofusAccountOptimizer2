@@ -267,4 +267,7 @@
   <data name="taskbar_icons" xml:space="preserve">
     <value>Utiliza les icones grans de la barra d'eines</value>
   </data>
+  <data name="change_title" xml:space="preserve">
+    <value>Canviar títol</value>
+  </data>
 </root>

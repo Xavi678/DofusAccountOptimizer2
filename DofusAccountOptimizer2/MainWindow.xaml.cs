@@ -156,15 +156,17 @@ namespace DofusAccountOptimizer2
             if (trobat != null)
             {
                 bool updIcons = trobat.GetUpdateIcons();
-                if (updIcons)
+                bool updTitle = trobat.GetUpdateTitle();
+                if (updIcons || updTitle)
                 {
-                    StartIconsChecker(updIcons);
+                    StartIconsChecker(updIcons, updTitle);
                 }
                 comboBoxCompositions.SelectedIndex = compositions_.IndexOf(dofusContext.Compositions.Local.First(x => x.Id == lastCompId));
 
 
                 //comboBoxCompositions.SelectedValue = lastCompId;
                 cbxCanviIcones.IsChecked = updIcons;
+                cbxCanviTitle.IsChecked = updTitle;
                 LanguageCode = trobat.Language;
                 IsMouseEnabled = trobat.GetMouseEnabled();
                 IsKeyboardEnabled = trobat.GetKeyboardEnabled();
@@ -516,9 +518,9 @@ namespace DofusAccountOptimizer2
                 } while (w == null);
             }
         }
-        private static void StartIconsChecker(bool @checked)
+        private static void StartIconsChecker(bool updIcons, bool updTitle)
         {
-            if (@checked)
+            if (updIcons || updTitle)
             {
 
                 if (windowChecker == null)
@@ -526,18 +528,20 @@ namespace DofusAccountOptimizer2
                     windowChecker = new DispatcherTimer();
                 }
                 windowChecker.Stop();
-
+                windowChecker.Tag = (updIcons, updTitle);
                 windowChecker.Interval = TimeSpan.FromMilliseconds(60000);
                 windowChecker.Tick += WindowChecker_Elapsed;
                 if (Process.GetProcessesByName("Dofus").Count() != 0)
                 {
-                    SetWindowsIcons();
+                    SetWindowsIcons(updIcons, updTitle);
                     windowChecker.Start();
                 }
                 try
                 {
                     startWatch = new ManagementEventWatcher(
        new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace WHERE ProcessName='Dofus.exe'"));
+                    startWatch.Options.Context.Add("updIcons", updIcons);
+                    startWatch.Options.Context.Add("updTitle", updTitle);
                     startWatch.EventArrived
                                         += StartWatch_EventArrived;
 
@@ -565,9 +569,11 @@ namespace DofusAccountOptimizer2
 
         private static void WindowChecker_Elapsed(object? sender, EventArgs e)
         {
-            SetWindowsIcons();
+            var tag = ((DispatcherTimer?)sender).Tag;
+            var tuple = (ValueTuple<bool, bool>)tag;
+            SetWindowsIcons(tuple.Item1, tuple.Item2);
         }
-        private static void SetWindowsIcons()
+        private static void SetWindowsIcons(bool updIcons, bool updTitle)
         {
 
             var accounts = personatgeViewSource.View.Cast<Personatge>();
@@ -583,12 +589,12 @@ namespace DofusAccountOptimizer2
 
                     if (accounts.FirstOrDefault(x => process.MainWindowTitle.ContainsCharName(x.Nom)) != null)
                     {
-                        SetSettings(process);
+                        SetSettings(process, updIcons, updTitle);
                     }
                 }
             }
         }
-        private static void SetSettings(Process process)
+        private static void SetSettings(Process process, bool updIcons, bool updTitle)
         {
             var accounts = personatgeViewSource.View.Cast<Personatge>();
             string img = null;
@@ -617,10 +623,20 @@ namespace DofusAccountOptimizer2
                         ProcessList.Add(title, process);
                     }
 
-                    PInvoke.SetWindowText(handle, title);
-                    Icon icon = new Icon($@"{AppDomain.CurrentDomain.BaseDirectory}\\Resources\\\{img}_ico.ico");
+                    var currentTitle=process.MainWindowTitle;
+                    PInvoke.SetWindowText(handle, updTitle ? title : currentTitle);
 
-                    PInvoke.SendMessage(handle, WM_SETICON, ICON_BIG, icon.Handle);
+                    if (updIcons)
+                    {
+                        Icon icon = new Icon($@"{AppDomain.CurrentDomain.BaseDirectory}\\Resources\\\{img}_ico.ico");
+
+                        var res = PInvoke.SendMessage(handle, WM_SETICON, ICON_BIG, icon.Handle);
+                       
+                        var win32Error = Marshal.GetLastWin32Error();
+                        Console.WriteLine(new Win32Exception(win32Error).Message);
+                        var lastPinvoke=Marshal.GetLastPInvokeError();
+                        Console.WriteLine(lastPinvoke);
+                    }
                 }
             }
         }
@@ -630,16 +646,18 @@ namespace DofusAccountOptimizer2
             Console.WriteLine(e.NewEvent.Properties["ProcessName"].Value);
             if (e.NewEvent.Properties["ProcessName"].Value?.ToString() == "Dofus.exe")
             {
+                var mew = ((ManagementEventWatcher)sender);
                 var f = ((IntPtr)e.NewEvent);
                 var procesid = (uint)e.NewEvent.Properties["ProcessID"].Value;
-
+                var updIcons = (bool)mew.Options.Context["updIcons"];
+                var updTitle = (bool)mew.Options.Context["updTitle"];
                 DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Background, Application.Current.Dispatcher);
                 timer.Interval = TimeSpan.FromSeconds(5);
-                timer.Tick += (s, e1) => Timer_Elapsed(s, e1, procesid);
+                timer.Tick += (s, e1) => Timer_Elapsed(s, e1, procesid, updIcons, updTitle);
                 timer.Start();
             }
         }
-        private static void Timer_Elapsed(object sender, EventArgs e, uint processId)
+        private static void Timer_Elapsed(object sender, EventArgs e, uint processId, bool updIcons, bool updTitle)
         {
             var accounts = personatgeViewSource.View.Cast<Personatge>();
             var process = Process.GetProcesses().OfType<Process>().FirstOrDefault(x => x.Id == processId);
@@ -649,7 +667,7 @@ namespace DofusAccountOptimizer2
                 {
                     windowChecker.Start();
                     ((DispatcherTimer)sender).Stop();
-                    SetSettings(process);
+                    SetSettings(process, updIcons, updTitle);
                 }
             }
             else
@@ -798,11 +816,12 @@ namespace DofusAccountOptimizer2
         private void cbxCanviIcones_Click(object sender, RoutedEventArgs e)
         {
             bool @checked = cbxCanviIcones.IsChecked.GetValueOrDefault();
-
-            StartIconsChecker(@checked);
+            bool updTtitle = cbxCanviTitle.IsChecked.GetValueOrDefault();
+            StartIconsChecker(@checked, updTtitle);
 
             var trobat = dofusContext.Configuracios.First();
             trobat.SetUpdateIcons(@checked);
+            trobat.SetUpdateTitle(updTtitle);
             dofusContext.SaveChanges();
             e.Handled = true;
         }
@@ -910,7 +929,8 @@ namespace DofusAccountOptimizer2
 
         private void btnChangeIcons_Click(object sender, RoutedEventArgs e)
         {
-            SetWindowsIcons();
+
+            SetWindowsIcons(true, false);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -1259,7 +1279,7 @@ namespace DofusAccountOptimizer2
                 var taskBarGlomLevel = advancedSubKey?.GetValue(RegistryExplorer.TASKBAR_GLOOM_LEVEL);
                 var regKind = advancedSubKey.GetValueKind(RegistryExplorer.TASKBAR_GLOOM_LEVEL);
 
-                if (taskBarGlomLevel == null )
+                if (taskBarGlomLevel == null)
                 {
                     SetTBGlomLevel(advancedSubKey);
                 }

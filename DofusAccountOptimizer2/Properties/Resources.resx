@@ -267,4 +267,7 @@
   <data name="taskbar_icons" xml:space="preserve">
     <value>Use Taskbar Big Icons</value>
   </data>
+  <data name="change_title" xml:space="preserve">
+    <value>Change Title</value>
+  </data>
 </root>

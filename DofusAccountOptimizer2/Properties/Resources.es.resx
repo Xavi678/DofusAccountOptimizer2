@@ -267,4 +267,7 @@
   <data name="taskbar_icons" xml:space="preserve">
     <value>Usa las iconos grandes de la barra de herramientas</value>
   </data>
+  <data name="change_title" xml:space="preserve">
+    <value>Cambiar título</value>
+  </data>
 </root>

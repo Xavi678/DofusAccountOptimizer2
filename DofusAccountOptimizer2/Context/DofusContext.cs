@@ -82,6 +82,8 @@ namespace DofusAccountOptimizer2.Context
                 entity.Property(e => e.OrderWindowsOnChangeComp).HasColumnName("ORDER_WINDOWS_ON_CHANGE_COMP");
 
                 entity.Property(e => e.UpdateIcons).HasColumnName("UPDATE_ICONS");
+
+                entity.Property(e => e.UpdateTitle).HasColumnName("UPDATE_TITLE");
             });
 
             modelBuilder.Entity<Personatge>(entity =>

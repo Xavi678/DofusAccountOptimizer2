@@ -18,3 +18,6 @@ PROPERTYKEY
 GetWindow
 EnumWindows
 ITaskbarList
+GetWindowText
+GetWindowTextA
+GetLastError

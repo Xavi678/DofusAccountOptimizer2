@@ -115,6 +115,15 @@ namespace DofusAccountOptimizer2.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Change Title.
+        /// </summary>
+        public static string change_title {
+            get {
+                return ResourceManager.GetString("change_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Character not found.
         /// </summary>
         public static string character_not_found {

@@ -14,5 +14,6 @@ namespace DofusAccountOptimizer2.Models
         public long EnableMouse { get; set; }
         public long EnableKeyboard { get; set; }
         public long OrderWindowsOnChangeComp { get; set; }
+        public long UpdateTitle { get; set; }
     }
 }

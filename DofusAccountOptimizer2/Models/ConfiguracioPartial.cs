@@ -36,7 +36,7 @@ namespace DofusAccountOptimizer2.Models
         }
         public bool GetMouseEnabled()
         {
-          return  this.EnableMouse==1;
+            return this.EnableMouse == 1;
         }
         public bool GetKeyboardEnabled()
         {
@@ -50,6 +50,15 @@ namespace DofusAccountOptimizer2.Models
         public void SetOrderWindowsOnChangeComp(bool isOrderWindowsOnChangeComp)
         {
             this.OrderWindowsOnChangeComp = isOrderWindowsOnChangeComp ? 1 : 0;
+        }
+
+        public bool GetUpdateTitle()
+        {
+            return this.UpdateTitle == 1;
+        }
+        public void SetUpdateTitle(bool isUpdateTitle)
+        {
+            this.UpdateTitle = isUpdateTitle ? 1 : 0;
         }
     }
 }
