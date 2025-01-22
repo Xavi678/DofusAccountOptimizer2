@@ -1291,7 +1291,7 @@ namespace DofusAccountOptimizer2
             {
 
                 var taskBarGlomLevel = advancedSubKey?.GetValue(RegistryExplorer.TASKBAR_GLOOM_LEVEL);
-                var regKind = advancedSubKey.GetValueKind(RegistryExplorer.TASKBAR_GLOOM_LEVEL);
+                
 
                 if (taskBarGlomLevel == null)
                 {
@@ -1299,6 +1299,7 @@ namespace DofusAccountOptimizer2
                 }
                 else
                 {
+                    var regKind = advancedSubKey.GetValueKind(RegistryExplorer.TASKBAR_GLOOM_LEVEL);
                     if (regKind != RegistryValueKind.DWord)
                     {
                         DeleteTBGlomLevel(advancedSubKey);
