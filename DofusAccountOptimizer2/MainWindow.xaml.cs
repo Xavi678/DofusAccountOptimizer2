@@ -141,10 +141,11 @@ namespace DofusAccountOptimizer2
 
             if (taskBarGlomLevel != null)
             {
-                var regKind = taskBarGlomLevel.GetValueKind(RegistryExplorer.TASKBAR_GLOOM_LEVEL);
+                
                 var glom = taskBarGlomLevel.GetValue(RegistryExplorer.TASKBAR_GLOOM_LEVEL);
                 if (glom != null)
                 {
+                    var regKind = taskBarGlomLevel.GetValueKind(RegistryExplorer.TASKBAR_GLOOM_LEVEL);
                     if (regKind == RegistryValueKind.DWord)
                     {
                         int res = Convert.ToInt32(glom);
